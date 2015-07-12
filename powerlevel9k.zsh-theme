@@ -1,4 +1,4 @@
-# vim:ft=zsh ts=2 sw=2 sts=2
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # powerlevel9k Theme
 # https://github.com/bhilburn/powerlevel9k
@@ -61,6 +61,7 @@ case $POWERLEVEL9K_MODE in
     TEST_ICON=$'\uE891' # 
     OK_ICON=$'\u2713' # ✓
     FAIL_ICON=$'\u2718' # ✘
+    SYMFONY_ICON=$'SF'
     VCS_UNTRACKED_ICON=$'\uE16C' # 
     VCS_UNSTAGED_ICON=$'\uE17C' # 
     VCS_STAGED_ICON=$'\uE168' # 
@@ -74,11 +75,10 @@ case $POWERLEVEL9K_MODE in
     VCS_TAG_ICON=$'\uE817 ' # 
     VCS_BOOKMARK_ICON=$'\uE87B' # 
     VCS_COMMIT_ICON=$'\uE821 ' # 
-    #VCS_BRANCH_ICON=$' \uE220' # 
-    VCS_BRANCH_ICON=''
+    VCS_BRANCH_ICON=$'\uE220' # 
     VCS_REMOTE_BRANCH_ICON=$'\uE804' # 
-    VCS_GIT_ICON=$'\uE20E ' # 
-    VCS_HG_ICON=$'\uE1C3 ' # 
+    VCS_GIT_ICON=$'\uE20E  ' # 
+    VCS_HG_ICON=$'\uE1C3  ' # 
   ;;
   'compatible')
     LEFT_SEGMENT_SEPARATOR=$'\u2B80' # ⮀
@@ -90,6 +90,7 @@ case $POWERLEVEL9K_MODE in
     TEST_ICON=''
     OK_ICON=$'\u2713' # ✓
     FAIL_ICON=$'\u2718' # ✘
+    SYMFONY_ICON=$'SF'
     VCS_UNTRACKED_ICON='?'
     VCS_UNSTAGED_ICON=$'\u25CF' # ●
     VCS_STAGED_ICON=$'\u271A' # ✚
@@ -99,8 +100,7 @@ case $POWERLEVEL9K_MODE in
     VCS_TAG_ICON=''
     VCS_BOOKMARK_ICON=$'\u263F' # ☿
     VCS_COMMIT_ICON=''
-    #VCS_BRANCH_ICON='@'
-    VCS_BRANCH_ICON=''
+    VCS_BRANCH_ICON='@'
     VCS_REMOTE_BRANCH_ICON=$'\u2192' # →
     VCS_GIT_ICON='Git'
     VCS_HG_ICON='HG'
@@ -117,6 +117,7 @@ case $POWERLEVEL9K_MODE in
     TEST_ICON=$'\uE891' # 
     OK_ICON=$'\u2713' # ✓
     FAIL_ICON=$'\u2718' # ✘
+    SYMFONY_ICON=$'SF'
     VCS_UNTRACKED_ICON=$'\uE16C' # 
     VCS_UNSTAGED_ICON=$'\uE17C' # 
     VCS_STAGED_ICON=$'\uE168' # 
@@ -130,11 +131,10 @@ case $POWERLEVEL9K_MODE in
     VCS_TAG_ICON=$'\uE817 ' # 
     VCS_BOOKMARK_ICON=$'\uE87B' # 
     VCS_COMMIT_ICON=$'\uE821 ' # 
-    #VCS_BRANCH_ICON=' \uE220' # 
-    VCS_BRANCH_ICON=''
+    VCS_BRANCH_ICON=$'\uE220' # 
     VCS_REMOTE_BRANCH_ICON=$'\uE804' # 
-    VCS_GIT_ICON=$'\uE20E ' # 
-    VCS_HG_ICON=$'\uE1C3 ' # 
+    VCS_GIT_ICON=$'\uE20E  ' # 
+    VCS_HG_ICON=$'\uE1C3  ' # 
   ;;
   *)
     # Powerline-Patched Font required!
@@ -148,6 +148,7 @@ case $POWERLEVEL9K_MODE in
     TEST_ICON=''
     OK_ICON=$'\u2713' # ✓
     FAIL_ICON=$'\u2718' # ✘
+    SYMFONY_ICON=$'SF'
     VCS_UNTRACKED_ICON='?'
     VCS_UNSTAGED_ICON=$'\u25CF' # ●
     VCS_STAGED_ICON=$'\u271A' # ✚
@@ -157,13 +158,16 @@ case $POWERLEVEL9K_MODE in
     VCS_TAG_ICON=''
     VCS_BOOKMARK_ICON=$'\u263F' # ☿
     VCS_COMMIT_ICON=''
-    #VCS_BRANCH_ICON='@'
-    VCS_BRANCH_ICON=''
+    VCS_BRANCH_ICON=$'\uE0A0 ' # 
     VCS_REMOTE_BRANCH_ICON=$'\u2192' # →
-    VCS_GIT_ICON=$'\uE0A0' # 
-    VCS_HG_ICON=$'\uE0A0' # 
+    VCS_GIT_ICON=''
+    VCS_HG_ICON=''
   ;;
 esac
+
+if [[ "$POWERLEVEL9K_HIDE_BRANCH_ICON" == true ]]; then
+    VCS_BRANCH_ICON=''
+fi
 
 ################################################################
 # color scheme
@@ -206,22 +210,23 @@ if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     VCS_CHANGESET_HASH_LENGTH="$POWERLEVEL9K_CHANGESET_HASH_LENGTH"
   fi
 
-  VCS_CHANGESET_PREFIX="%F{$VCS_FOREGROUND_COLOR_DARK}$VCS_COMMIT_ICON%0.$VCS_CHANGESET_HASH_LENGTH""i%f"
+  VCS_CHANGESET_PREFIX="%F{$VCS_FOREGROUND_COLOR_DARK}$VCS_COMMIT_ICON%0.$VCS_CHANGESET_HASH_LENGTH""i%f "
 fi
 
 zstyle ':vcs_info:*' enable git hg
 zstyle ':vcs_info:*' check-for-changes true
 
 VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%F{$VCS_FOREGROUND_COLOR}%b%c%u%m%f"
-zstyle ':vcs_info:git:*' formats "%F{$VCS_FOREGROUND_COLOR}$VCS_GIT_ICON%f $VCS_DEFAULT_FORMAT" 
-zstyle ':vcs_info:hg:*' formats "%F{$VCS_FOREGROUND_COLOR}$VCS_HG_ICON%f $VCS_DEFAULT_FORMAT" 
+zstyle ':vcs_info:git:*' formats "%F{$VCS_FOREGROUND_COLOR}$VCS_GIT_ICON%f$VCS_DEFAULT_FORMAT" 
+zstyle ':vcs_info:hg:*' formats "%F{$VCS_FOREGROUND_COLOR}$VCS_HG_ICON%f$VCS_DEFAULT_FORMAT" 
 
 zstyle ':vcs_info:*' actionformats " %b %F{red}| %a%f"
 
 zstyle ':vcs_info:*' stagedstr " %F{$VCS_FOREGROUND_COLOR}$VCS_STAGED_ICON%f"
 zstyle ':vcs_info:*' unstagedstr " %F{$VCS_FOREGROUND_COLOR}$VCS_UNSTAGED_ICON%f"
 
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-aheadbehind git-stash git-remotebranch git-tagname
+zstyle ':vcs_info:git*+set-message:*' hooks vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname
+zstyle ':vcs_info:hg*+set-message:*' hooks vcs-detect-changes
 
 # For Hg, only show the branch name
 zstyle ':vcs_info:hg*:*' branchformat "$VCS_BRANCH_ICON%b"
@@ -232,10 +237,6 @@ zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
 
 if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
   zstyle ':vcs_info:*' get-revision true
-else
-  # A little performance-boost for large repositories (especially Hg). If we
-  # don't show the changeset, we can switch to simple mode.
-  zstyle ':vcs_info:*' use-simple true
 fi
 
 ################################################################
@@ -243,8 +244,13 @@ fi
 ################################################################
 
 # Begin a left prompt segment
-# Takes two arguments, background and foreground. Both can be omitted,
-# rendering default background/foreground.
+# Takes four arguments:
+#   * $1: Name of the function that was orginally invoked (mandatory).
+#         Necessary, to make the dynamic color-overwrite mechanism work.
+#   * $2: Background color
+#   * $3: Foreground color
+#   * $4: The segment content
+# The latter three can be omitted,
 left_prompt_segment() {
   # Overwrite given background-color by user defined variable for this segment.
   # We get as first Parameter the function name, which called this function. 
@@ -287,9 +293,13 @@ left_prompt_end() {
 }
 
 # Begin a right prompt segment
-# Takes two arguments, background and foreground. Both can be omitted,
-# rendering default background/foreground. No ending for the right prompt
-# segment is needed (unlike the left prompt, above).
+# Takes four arguments:
+#   * $1: Name of the function that was orginally invoked (mandatory).
+#         Necessary, to make the dynamic color-overwrite mechanism work.
+#   * $2: Background color
+#   * $3: Foreground color
+#   * $4: The segment content
+# No ending for the right prompt segment is needed (unlike the left prompt, above).
 right_prompt_segment() {
   # Overwrite given background-color by user defined variable for this segment.
   local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
@@ -510,6 +520,14 @@ prompt_symfony2_tests() {
   fi
 }
 
+# Symfony2-Version
+prompt_symfony2_version() {
+  if [[ -f app/bootstrap.php.cache ]]; then
+    local symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
+    $1_prompt_segment "$0" "240" "$DEFAULT_COLOR" "$SYMFONY_ICON $symfony2_version"
+  fi
+}
+
 # Show a ratio of tests vs code
 build_test_stats() {
   local code_amount="$3"
@@ -575,13 +593,6 @@ build_right_prompt() {
   done
 }
 
-prompt_powerlevel9k_precmd() {
-  vcs_info
-
-  # Add a static hook to examine staged/unstaged changes.
-  vcs_info_hookadd set-message vcs-detect-changes
-}
-
 powerlevel9k_init() {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
@@ -593,7 +604,7 @@ powerlevel9k_init() {
   # initialize VCS
   autoload -Uz add-zsh-hook
 
-  add-zsh-hook precmd prompt_powerlevel9k_precmd
+  add-zsh-hook precmd vcs_info
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="╭─%{%f%b%k%}"'$(build_left_prompt)'" 

@@ -46,7 +46,10 @@ like with a normal installation and default settings:
   - [Further color customizations](#further-color-customizations)
 - [Troubleshooting](#troubleshooting)
   - [Gaps Between Segments](#gaps-between-segments)
-- [Contributions / Bugs / Contact](#contributions--bugs--contact)
+- [Meta](#meta)
+  - [Kudos](#kudos)
+  - [Developing](#developing)
+  - [Contributions / Bugs / Contact](#contributions--bugs--contact)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -225,6 +228,7 @@ currently available are:
 * **rspec_stats** - Show a ratio of test classes vs code classes for RSpec.
 * **status** - The return code of the previous command, and status of background jobs.
 * **symfony2_tests** - Show a ratio of test classes vs code classes for Symfony2.
+* **symfony2_version** - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **time** - System time.
 * **virtualenv** - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
 * **vcs** - Information about this `git` or `hg` repository (if you are in one).
@@ -278,13 +282,18 @@ By default, the `vcs` segment will provide quite a bit of information. If you
 would also like for it to display the current hash / changeset, simply define
 `POWERLEVEL9K_SHOW_CHANGESET` in your `~/.zshrc`. If activated, it will show
 the first 12 characters of the changeset id. To change the amount of characters,
-set `POWERLEVEL9K_CHANGESET_HASH_LENTH` to any value you want.
-Example:
+set `POWERLEVEL9K_CHANGESET_HASH_LENGTH` to any value you want.
 
     # enable the vcs segment in general
     POWERLEVEL9K_SHOW_CHANGESET=true
     # just show the 6 first characters of changeset
     POWERLEVEL9K_CHANGESET_HASH_LENGTH=6
+
+You can also disable the branch icon in your prompt by setting
+`POWERLEVEL9K_HIDE_BRANCH_ICON` to `true`:
+
+    # Hide the branch icon
+    POWERLEVEL9K_HIDE_BRANCH_ICON=true
 
 ##### Symbols
 
@@ -292,7 +301,7 @@ The `vcs` segment uses various symbols to tell you the state of your repository.
 These symbols depend on your installed font and selected `POWERLEVEL9K_MODE`
 from the [Installation](#Installation) section above.
 
-| `Bare Bones` | `Normal` | `Über` | explanation
+| `Compatible` | `Powerline` | `Awesome Powerline` | Explanation
 |--------------|---------------------|-------------------|--------------------------
 | `↑4`         | `↑4`                | ![icon_outgoing](https://cloud.githubusercontent.com/assets/1544760/7976089/b5904d6e-0a76-11e5-8147-5e873ac52d79.gif)4  | Number of commits your repository is ahead of your remote branch
 | `↓5`         | `↓5`                | ![icon_incoming](https://cloud.githubusercontent.com/assets/1544760/7976091/b5909c9c-0a76-11e5-9cad-9bf0a28a897c.gif)5  | Number of commits your repository is behind of your remote branch
@@ -406,6 +415,11 @@ This theme wouldn't have happened without inspiration from the original [agnoste
 
 Before creating this theme, I also tried [jeremyFreeAgent's theme](https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme) and [maverick2000's theme, ZSH2000](https://github.com/maverick2000/zsh2000).
 
+#### Developing
+
+Documentation for developers is kept on the [Powerlevel9k Github
+wiki](https://github.com/bhilburn/powerlevel9k/wiki/Developers'-Guide).
+
 #### Contributions / Bugs / Contact
 
 If you have any requests or bug reports, please use the tracker in this Github
@@ -415,4 +429,3 @@ I'm happy to accept code contributions from anyone who has a bug fix, new featur
 
 If you would like to contact me directly, you can find my e-mail address on my
 [Github profile page](https://github.com/bhilburn).
-
