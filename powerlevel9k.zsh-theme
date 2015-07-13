@@ -44,9 +44,9 @@
 #zstyle ':vcs_info:*+*:*' debug true
 #set -o xtrace
 
-(){
+() {
   local LC_ALL=''
-  local LC_CTYPE=en_US.UTF8 # Set the right locale to protect special characters
+  local LC_CTYPE=en_US.UTF-8 # Set the right locale to protect special characters
 
   # These characters require the Powerline fonts to work properly. If see boxes or
   # bizarre characters below, your fonts are not correctly installed. If you
