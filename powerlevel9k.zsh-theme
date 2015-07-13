@@ -65,7 +65,7 @@
       TEST_ICON=$'\uE891' # 
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
-      SYMFONY_ICON=$'SF'
+      SYMFONY_ICON='SF'
       NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON=$'\uE16C' # 
       VCS_UNSTAGED_ICON=$'\uE17C' # 
@@ -90,12 +90,12 @@
       RIGHT_SEGMENT_SEPARATOR=$'\u2B82' # ⮂
       ROOT_ICON=$'\u26A1' # ⚡
       RUBY_ICON=''
-      AWS_ICON=$'AWS:'
+      AWS_ICON='AWS:'
       BACKGROUND_JOBS_ICON=$'\u2699' # ⚙
       TEST_ICON=''
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
-      SYMFONY_ICON=$'SF'
+      SYMFONY_ICON='SF'
       NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON='?'
       VCS_UNSTAGED_ICON=$'\u25CF' # ●
@@ -123,7 +123,7 @@
       TEST_ICON=$'\uE891' # 
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
-      SYMFONY_ICON=$'SF'
+      SYMFONY_ICON='SF'
       NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON=$'\uE16C' # 
       VCS_UNSTAGED_ICON=$'\uE17C' # 
@@ -155,7 +155,7 @@
       TEST_ICON=''
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
-      SYMFONY_ICON=$'SF'
+      SYMFONY_ICON='SF'
       NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON='?'
       VCS_UNSTAGED_ICON=$'\u25CF' # ●
