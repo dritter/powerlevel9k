@@ -44,126 +44,131 @@
 #zstyle ':vcs_info:*+*:*' debug true
 #set -o xtrace
 
-# These characters require the Powerline fonts to work properly. If see boxes or
-# bizarre characters below, your fonts are not correctly installed. If you
-# do not want to install a special font, you can set `POWERLEVEL9K_MODE` to
-# `compatible`. This shows all icons in regular symbols.
-case $POWERLEVEL9K_MODE in
-  'flat')
-    # Awesome-Patched Font required!
-    # See https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
-    LEFT_SEGMENT_SEPARATOR=''
-    RIGHT_SEGMENT_SEPARATOR=''
-    ROOT_ICON=$'\uE801' # 
-    RUBY_ICON=$'\uE847' # 
-    AWS_ICON=$'\uE895' # 
-    BACKGROUND_JOBS_ICON=$'\uE82F ' # 
-    TEST_ICON=$'\uE891' # 
-    OK_ICON=$'\u2713' # ✓
-    FAIL_ICON=$'\u2718' # ✘
-    SYMFONY_ICON=$'SF'
-    VCS_UNTRACKED_ICON=$'\uE16C' # 
-    VCS_UNSTAGED_ICON=$'\uE17C' # 
-    VCS_STAGED_ICON=$'\uE168' # 
-    VCS_STASH_ICON=$'\uE133 ' # 
-    #VCS_INCOMING_CHANGES=$'\uE1EB ' # 
-    #VCS_INCOMING_CHANGES=$'\uE80D ' # 
-    VCS_INCOMING_CHANGES=$'\uE131 ' # 
-    #VCS_OUTGOING_CHANGES=$'\uE1EC ' # 
-    #VCS_OUTGOING_CHANGES=$'\uE80E ' # 
-    VCS_OUTGOING_CHANGES=$'\uE132 ' # 
-    VCS_TAG_ICON=$'\uE817 ' # 
-    VCS_BOOKMARK_ICON=$'\uE87B' # 
-    VCS_COMMIT_ICON=$'\uE821 ' # 
-    VCS_BRANCH_ICON=$'\uE220' # 
-    VCS_REMOTE_BRANCH_ICON=$'\uE804' # 
-    VCS_GIT_ICON=$'\uE20E  ' # 
-    VCS_HG_ICON=$'\uE1C3  ' # 
-  ;;
-  'compatible')
-    LEFT_SEGMENT_SEPARATOR=$'\u2B80' # ⮀
-    RIGHT_SEGMENT_SEPARATOR=$'\u2B82' # ⮂
-    ROOT_ICON=$'\u26A1' # ⚡
-    RUBY_ICON=''
-    AWS_ICON=$'AWS:'
-    BACKGROUND_JOBS_ICON=$'\u2699' # ⚙
-    TEST_ICON=''
-    OK_ICON=$'\u2713' # ✓
-    FAIL_ICON=$'\u2718' # ✘
-    SYMFONY_ICON=$'SF'
-    VCS_UNTRACKED_ICON='?'
-    VCS_UNSTAGED_ICON=$'\u25CF' # ●
-    VCS_STAGED_ICON=$'\u271A' # ✚
-    VCS_STASH_ICON=$'\u235F' # ⍟
-    VCS_INCOMING_CHANGES=$'\u2193' # ↓
-    VCS_OUTGOING_CHANGES=$'\u2191' # ↑
-    VCS_TAG_ICON=''
-    VCS_BOOKMARK_ICON=$'\u263F' # ☿
-    VCS_COMMIT_ICON=''
-    VCS_BRANCH_ICON='@'
-    VCS_REMOTE_BRANCH_ICON=$'\u2192' # →
-    VCS_GIT_ICON='Git'
-    VCS_HG_ICON='HG'
-  ;;
-  'awesome-patched')
-    # Awesome-Patched Font required!
-    # See https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
-    LEFT_SEGMENT_SEPARATOR=$'\uE0B0' # 
-    RIGHT_SEGMENT_SEPARATOR=$'\uE0B2' # 
-    ROOT_ICON=$'\u26A1' # ⚡
-    RUBY_ICON=$'\uE847' # 
-    AWS_ICON=$'\uE895' # 
-    BACKGROUND_JOBS_ICON=$'\uE82F ' # 
-    TEST_ICON=$'\uE891' # 
-    OK_ICON=$'\u2713' # ✓
-    FAIL_ICON=$'\u2718' # ✘
-    SYMFONY_ICON=$'SF'
-    VCS_UNTRACKED_ICON=$'\uE16C' # 
-    VCS_UNSTAGED_ICON=$'\uE17C' # 
-    VCS_STAGED_ICON=$'\uE168' # 
-    VCS_STASH_ICON=$'\uE133 ' # 
-    #VCS_INCOMING_CHANGES=$'\uE1EB ' # 
-    #VCS_INCOMING_CHANGES=$'\uE80D ' # 
-    VCS_INCOMING_CHANGES=$'\uE131 ' # 
-    #VCS_OUTGOING_CHANGES=$'\uE1EC ' # 
-    #VCS_OUTGOING_CHANGES=$'\uE80E ' # 
-    VCS_OUTGOING_CHANGES=$'\uE132 ' # 
-    VCS_TAG_ICON=$'\uE817 ' # 
-    VCS_BOOKMARK_ICON=$'\uE87B' # 
-    VCS_COMMIT_ICON=$'\uE821 ' # 
-    VCS_BRANCH_ICON=$'\uE220' # 
-    VCS_REMOTE_BRANCH_ICON=$'\uE804' # 
-    VCS_GIT_ICON=$'\uE20E  ' # 
-    VCS_HG_ICON=$'\uE1C3  ' # 
-  ;;
-  *)
-    # Powerline-Patched Font required!
-    # See https://github.com/Lokaltog/powerline-fonts
-    LEFT_SEGMENT_SEPARATOR=$'\uE0B0' # 
-    RIGHT_SEGMENT_SEPARATOR=$'\uE0B2' # 
-    ROOT_ICON=$'\u26A1' # ⚡
-    RUBY_ICON=''
-    AWS_ICON='AWS:'
-    BACKGROUND_JOBS_ICON=$'\u2699' # ⚙
-    TEST_ICON=''
-    OK_ICON=$'\u2713' # ✓
-    FAIL_ICON=$'\u2718' # ✘
-    SYMFONY_ICON=$'SF'
-    VCS_UNTRACKED_ICON='?'
-    VCS_UNSTAGED_ICON=$'\u25CF' # ●
-    VCS_STAGED_ICON=$'\u271A' # ✚
-    VCS_STASH_ICON=$'\u235F' # ⍟
-    VCS_INCOMING_CHANGES=$'\u2193' # ↓
-    VCS_OUTGOING_CHANGES=$'\u2191' # ↑
-    VCS_TAG_ICON=''
-    VCS_BOOKMARK_ICON=$'\u263F' # ☿
-    VCS_COMMIT_ICON=''
-    VCS_BRANCH_ICON=$'\uE0A0 ' # 
-    VCS_REMOTE_BRANCH_ICON=$'\u2192' # →
-    VCS_GIT_ICON=''
-    VCS_HG_ICON=''
-  ;;
-esac
+(){
+  local LC_ALL=''
+  local LC_CTYPE=en_US.UTF8 # Set the right locale to protect special characters
+
+  # These characters require the Powerline fonts to work properly. If see boxes or
+  # bizarre characters below, your fonts are not correctly installed. If you
+  # do not want to install a special font, you can set `POWERLEVEL9K_MODE` to
+  # `compatible`. This shows all icons in regular symbols.
+  case $POWERLEVEL9K_MODE in
+    'flat')
+      # Awesome-Patched Font required!
+      # See https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
+      LEFT_SEGMENT_SEPARATOR=''
+      RIGHT_SEGMENT_SEPARATOR=''
+      ROOT_ICON=$'\uE801' # 
+      RUBY_ICON=$'\uE847' # 
+      AWS_ICON=$'\uE895' # 
+      BACKGROUND_JOBS_ICON=$'\uE82F ' # 
+      TEST_ICON=$'\uE891' # 
+      OK_ICON=$'\u2713' # ✓
+      FAIL_ICON=$'\u2718' # ✘
+      SYMFONY_ICON=$'SF'
+      VCS_UNTRACKED_ICON=$'\uE16C' # 
+      VCS_UNSTAGED_ICON=$'\uE17C' # 
+      VCS_STAGED_ICON=$'\uE168' # 
+      VCS_STASH_ICON=$'\uE133 ' # 
+      #VCS_INCOMING_CHANGES=$'\uE1EB ' # 
+      #VCS_INCOMING_CHANGES=$'\uE80D ' # 
+      VCS_INCOMING_CHANGES=$'\uE131 ' # 
+      #VCS_OUTGOING_CHANGES=$'\uE1EC ' # 
+      #VCS_OUTGOING_CHANGES=$'\uE80E ' # 
+      VCS_OUTGOING_CHANGES=$'\uE132 ' # 
+      VCS_TAG_ICON=$'\uE817 ' # 
+      VCS_BOOKMARK_ICON=$'\uE87B' # 
+      VCS_COMMIT_ICON=$'\uE821 ' # 
+      VCS_BRANCH_ICON=$'\uE220' # 
+      VCS_REMOTE_BRANCH_ICON=$'\uE804' # 
+      VCS_GIT_ICON=$'\uE20E  ' # 
+      VCS_HG_ICON=$'\uE1C3  ' # 
+    ;;
+    'compatible')
+      LEFT_SEGMENT_SEPARATOR=$'\u2B80' # ⮀
+      RIGHT_SEGMENT_SEPARATOR=$'\u2B82' # ⮂
+      ROOT_ICON=$'\u26A1' # ⚡
+      RUBY_ICON=''
+      AWS_ICON=$'AWS:'
+      BACKGROUND_JOBS_ICON=$'\u2699' # ⚙
+      TEST_ICON=''
+      OK_ICON=$'\u2713' # ✓
+      FAIL_ICON=$'\u2718' # ✘
+      SYMFONY_ICON=$'SF'
+      VCS_UNTRACKED_ICON='?'
+      VCS_UNSTAGED_ICON=$'\u25CF' # ●
+      VCS_STAGED_ICON=$'\u271A' # ✚
+      VCS_STASH_ICON=$'\u235F' # ⍟
+      VCS_INCOMING_CHANGES=$'\u2193' # ↓
+      VCS_OUTGOING_CHANGES=$'\u2191' # ↑
+      VCS_TAG_ICON=''
+      VCS_BOOKMARK_ICON=$'\u263F' # ☿
+      VCS_COMMIT_ICON=''
+      VCS_BRANCH_ICON='@'
+      VCS_REMOTE_BRANCH_ICON=$'\u2192' # →
+      VCS_GIT_ICON='Git'
+      VCS_HG_ICON='HG'
+    ;;
+    'awesome-patched')
+      # Awesome-Patched Font required!
+      # See https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
+      LEFT_SEGMENT_SEPARATOR=$'\uE0B0' # 
+      RIGHT_SEGMENT_SEPARATOR=$'\uE0B2' # 
+      ROOT_ICON=$'\u26A1' # ⚡
+      RUBY_ICON=$'\uE847' # 
+      AWS_ICON=$'\uE895' # 
+      BACKGROUND_JOBS_ICON=$'\uE82F ' # 
+      TEST_ICON=$'\uE891' # 
+      OK_ICON=$'\u2713' # ✓
+      FAIL_ICON=$'\u2718' # ✘
+      SYMFONY_ICON=$'SF'
+      VCS_UNTRACKED_ICON=$'\uE16C' # 
+      VCS_UNSTAGED_ICON=$'\uE17C' # 
+      VCS_STAGED_ICON=$'\uE168' # 
+      VCS_STASH_ICON=$'\uE133 ' # 
+      #VCS_INCOMING_CHANGES=$'\uE1EB ' # 
+      #VCS_INCOMING_CHANGES=$'\uE80D ' # 
+      VCS_INCOMING_CHANGES=$'\uE131 ' # 
+      #VCS_OUTGOING_CHANGES=$'\uE1EC ' # 
+      #VCS_OUTGOING_CHANGES=$'\uE80E ' # 
+      VCS_OUTGOING_CHANGES=$'\uE132 ' # 
+      VCS_TAG_ICON=$'\uE817 ' # 
+      VCS_BOOKMARK_ICON=$'\uE87B' # 
+      VCS_COMMIT_ICON=$'\uE821 ' # 
+      VCS_BRANCH_ICON=$'\uE220' # 
+      VCS_REMOTE_BRANCH_ICON=$'\uE804' # 
+      VCS_GIT_ICON=$'\uE20E  ' # 
+      VCS_HG_ICON=$'\uE1C3  ' # 
+    ;;
+    *)
+      # Powerline-Patched Font required!
+      # See https://github.com/Lokaltog/powerline-fonts
+      LEFT_SEGMENT_SEPARATOR=$'\uE0B0' # 
+      RIGHT_SEGMENT_SEPARATOR=$'\uE0B2' # 
+      ROOT_ICON=$'\u26A1' # ⚡
+      RUBY_ICON=''
+      AWS_ICON='AWS:'
+      BACKGROUND_JOBS_ICON=$'\u2699' # ⚙
+      TEST_ICON=''
+      OK_ICON=$'\u2713' # ✓
+      FAIL_ICON=$'\u2718' # ✘
+      SYMFONY_ICON=$'SF'
+      VCS_UNTRACKED_ICON='?'
+      VCS_UNSTAGED_ICON=$'\u25CF' # ●
+      VCS_STAGED_ICON=$'\u271A' # ✚
+      VCS_STASH_ICON=$'\u235F' # ⍟
+      VCS_INCOMING_CHANGES=$'\u2193' # ↓
+      VCS_OUTGOING_CHANGES=$'\u2191' # ↑
+      VCS_TAG_ICON=''
+      VCS_BOOKMARK_ICON=$'\u263F' # ☿
+      VCS_COMMIT_ICON=''
+      VCS_BRANCH_ICON=$'\uE0A0 ' # 
+      VCS_REMOTE_BRANCH_ICON=$'\u2192' # →
+      VCS_GIT_ICON=''
+      VCS_HG_ICON=''
+    ;;
+  esac
+}
 
 if [[ "$POWERLEVEL9K_HIDE_BRANCH_ICON" == true ]]; then
     VCS_BRANCH_ICON=''
