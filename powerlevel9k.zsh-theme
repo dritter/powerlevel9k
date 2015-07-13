@@ -443,7 +443,13 @@ prompt_context() {
 
 # Dir: current working directory
 prompt_dir() {
-  $1_prompt_segment "$0" "blue" "$DEFAULT_COLOR" '%~'
+  local current_path='%~'
+  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+    # shorten path to $POWERLEVEL9K_SHORTEN_DIR_LENGTH
+    current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:.../:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
+  fi
+
+  $1_prompt_segment "$0" "blue" "$DEFAULT_COLOR" "$current_path"
 }
 
 # Command number (in local history)
@@ -470,6 +476,15 @@ prompt_longstatus() {
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}$BACKGROUND_JOBS_ICON"
 
   [[ -n "$symbols" ]] && $1_prompt_segment "$0" "$bg" "$DEFAULT_COLOR" "$symbols"
+}
+
+# Node version
+prompt_node_version() {
+  local nvm_prompt=$(node -v 2>/dev/null)
+  [[ -z "${nvm_prompt}" ]] && return
+	NODE_ICON=$'\u2B22 ' # ⬢
+
+  $1_prompt_segment "$0" "green" "white" "${nvm_prompt:1} $NODE_ICON"
 }
 
 # rbenv information

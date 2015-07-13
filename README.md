@@ -36,6 +36,7 @@ like with a normal installation and default settings:
 - [Segment Customization](#segment-customization)
   - [The AWS Profile Segment](#the-aws-profile-segment)
   - [The 'context' Segment](#the-context-segment)
+  - [The 'dir' segment](#the-dir-segment)
   - [The 'time' segment](#the-time-segment)
   - [Unit Test Ratios](#unit-test-ratios)
   - [The 'vcs' Segment](#the-vcs-segment)
@@ -224,6 +225,7 @@ currently available are:
 * **context** - Your username and host (more info below)
 * **dir** - Your current working directory.
 * **history** - The command number for the current line.
+* **node_version** - Show the version number of the installed Node.js.
 * **rbenv** - Ruby environment information (if one is active).
 * **rspec_stats** - Show a ratio of test classes vs code classes for RSpec.
 * **status** - The return code of the previous command, and status of background jobs.
@@ -258,6 +260,14 @@ To use this feature, make sure the `context` segment is enabled in your prompt
 elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`:
 
     export DEFAULT_USER=<your username>
+
+#### The 'dir' segment
+
+The `dir` segment shows the current working directory. You can limit the output
+to a certain length:
+
+    # Limit to the last two folders
+    POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 
 #### The 'time' segment
 
@@ -418,7 +428,7 @@ Before creating this theme, I also tried [jeremyFreeAgent's theme](https://githu
 #### Developing
 
 Documentation for developers is kept on the [Powerlevel9k Github
-wiki](https://github.com/bhilburn/powerlevel9k/wiki/Developers'-Guide).
+wiki](https://github.com/bhilburn/powerlevel9k/wiki/Developer's-Guide).
 
 #### Contributions / Bugs / Contact
 
