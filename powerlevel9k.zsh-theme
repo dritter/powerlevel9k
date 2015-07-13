@@ -66,6 +66,7 @@
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
       SYMFONY_ICON=$'SF'
+      NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON=$'\uE16C' # 
       VCS_UNSTAGED_ICON=$'\uE17C' # 
       VCS_STAGED_ICON=$'\uE168' # 
@@ -95,6 +96,7 @@
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
       SYMFONY_ICON=$'SF'
+      NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON='?'
       VCS_UNSTAGED_ICON=$'\u25CF' # ●
       VCS_STAGED_ICON=$'\u271A' # ✚
@@ -122,6 +124,7 @@
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
       SYMFONY_ICON=$'SF'
+      NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON=$'\uE16C' # 
       VCS_UNSTAGED_ICON=$'\uE17C' # 
       VCS_STAGED_ICON=$'\uE168' # 
@@ -153,6 +156,7 @@
       OK_ICON=$'\u2713' # ✓
       FAIL_ICON=$'\u2718' # ✘
       SYMFONY_ICON=$'SF'
+      NODE_ICON=$'\u2B22 ' # ⬢
       VCS_UNTRACKED_ICON='?'
       VCS_UNSTAGED_ICON=$'\u25CF' # ●
       VCS_STAGED_ICON=$'\u271A' # ✚
@@ -487,7 +491,6 @@ prompt_longstatus() {
 prompt_node_version() {
   local nvm_prompt=$(node -v 2>/dev/null)
   [[ -z "${nvm_prompt}" ]] && return
-	NODE_ICON=$'\u2B22 ' # ⬢
 
   $1_prompt_segment "$0" "green" "white" "${nvm_prompt:1} $NODE_ICON"
 }
