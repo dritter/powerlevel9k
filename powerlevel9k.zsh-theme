@@ -629,6 +629,9 @@ powerlevel9k_init() {
 
   add-zsh-hook precmd vcs_info
 
+  # Omit right indentation! Otherwise there will be a little space at the right side.
+  ZLE_RPROMPT_INDENT=0
+
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="╭─%{%f%b%k%}"'$(build_left_prompt)'"
 ╰─ "
