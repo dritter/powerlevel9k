@@ -474,7 +474,7 @@ prompt_longstatus() {
   symbols=()
 
   if [[ "$RETVAL" -ne 0 ]]; then
-    symbols+="%{%F{226}%?%} ↵"
+    symbols+="%{%F{226}%?%} ↵%{%f%}"
     bg="009"
   else
     symbols+="%{%F{"046"}%}$OK_ICON%{%f%}"
