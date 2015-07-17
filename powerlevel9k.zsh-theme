@@ -323,8 +323,8 @@ right_prompt_segment() {
   local bg fg
   [[ -n "$2" ]] && bg="%K{$2}" || bg="%k"
   [[ -n "$3" ]] && fg="%F{$3}" || fg="%f"
-  echo -n "%{%f%}%{%F{$2}%}$RIGHT_SEGMENT_SEPARATOR%{%f%}%{$bg%}%{$fg%} "
-  [[ -n "$4" ]] && echo -n "$4 "
+  echo -n "%{%F{$2}%}$RIGHT_SEGMENT_SEPARATOR%{%f%}%{$bg%}%{$fg%} "
+  [[ -n "$4" ]] && echo -n "$4 %{%f%}"
 }
 
 ################################################################
