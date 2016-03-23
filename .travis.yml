@@ -6,11 +6,20 @@ addons:
     packages:
       - build-essential
 
+services:
+  - docker
+
 before_script:
   # Show the git version being used to test.
   - "git --version"
   # Show the zsh version being used to test.
   - "zsh --version"
+
+before_install:
+  - docker build -t powerlevel9k ./test
+  - docker run -d powerlevel9k /bin/zsh -c "cd /root/powerlevel9k"
+  - docker ps -a
+  - docker run powerlevel9k /bin/zsh -c "cd /root/powerlevel9k; ./test/executeTests.sh"
 
 install:
   - "sudo apt-get update -qq"
