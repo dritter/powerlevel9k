@@ -571,50 +571,49 @@ prompt_custom() {
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
 prompt_dir() {
   local current_path='%~'
-  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
 
-    set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
+  set_default POWERLEVEL9K_SHORTEN_DIR_LENGTH "2"
+  set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
 
-    case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
-      truncate_middle)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
-      ;;
-      truncate_from_right)
+  case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
+    truncate_middle)
+      current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
+    ;;
+    truncate_from_right)
+      current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
+    ;;
+    truncate_with_package_name)
+      local name repo_path package_path current_dir zero
+
+      # Get the path of the Git repo, which should have the package.json file
+      if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]; then
+        package_path=$(git rev-parse --show-toplevel)
+      elif [[ $(git rev-parse --is-inside-git-dir 2> /dev/null) == "true" ]]; then
+        package_path=${$(pwd)%%/.git*}
+      fi
+
+      zero='%([BSUbfksu]|([FB]|){*})'
+      current_dir=$(pwd)
+      # Then, find the length of the package_path string, and save the
+      # subdirectory path as a substring of the current directory's path from 0
+      # to the length of the package path's string
+      subdirectory_path=$(truncatePathFromRight "${current_dir:${#${(S%%)package_path//$~zero/}}}")
+      # Parse the 'name' from the package.json; if there are any problems, just
+      # print the file path
+      if name=$( cat "$package_path/package.json" 2> /dev/null | grep -m 1 "\"name\""); then
+        name=$(echo $name | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+
+        # Instead of printing out the full path, print out the name of the package
+        # from the package.json and append the current subdirectory
+        current_path="`echo $name | tr -d '"'`$subdirectory_path"
+      else
         current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
-      ;;
-      truncate_with_package_name)
-        local name repo_path package_path current_dir zero
-
-        # Get the path of the Git repo, which should have the package.json file
-        if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]; then
-          package_path=$(git rev-parse --show-toplevel)
-        elif [[ $(git rev-parse --is-inside-git-dir 2> /dev/null) == "true" ]]; then
-          package_path=${$(pwd)%%/.git*}
-        fi
-
-        zero='%([BSUbfksu]|([FB]|){*})'
-        current_dir=$(pwd)
-        # Then, find the length of the package_path string, and save the
-        # subdirectory path as a substring of the current directory's path from 0
-        # to the length of the package path's string
-        subdirectory_path=$(truncatePathFromRight "${current_dir:${#${(S%%)package_path//$~zero/}}}")
-        # Parse the 'name' from the package.json; if there are any problems, just
-        # print the file path
-        if name=$( cat "$package_path/package.json" 2> /dev/null | grep -m 1 "\"name\""); then
-          name=$(echo $name | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-
-          # Instead of printing out the full path, print out the name of the package
-          # from the package.json and append the current subdirectory
-          current_path="`echo $name | tr -d '"'`$subdirectory_path"
-        else
-          current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
-        fi
-      ;;
-      *)
-        current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
-      ;;
-    esac
-  fi
+      fi
+    ;;
+    truncate_folder)
+      current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
+    ;;
+  esac
 
   if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" ]]; then
     current_path=$(print -P "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")
