@@ -81,6 +81,12 @@ source $script_location/functions/utilities.zsh
 source $script_location/functions/colors.zsh
 
 ################################################################
+# Source truncation functions
+################################################################
+
+source $script_location/functions/truncation.zsh
+
+################################################################
 # Source VCS_INFO hooks / helper functions
 ################################################################
 
@@ -620,10 +626,12 @@ prompt_dir() {
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
       truncate_middle)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
+        local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
+        current_path=$(_p9k_truncateMiddle "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
       ;;
       truncate_from_right)
-        current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
+        local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
+        current_path=$(_p9k_truncateFromRight "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
       ;;
       truncate_with_package_name)
         local name repo_path package_path current_dir zero
@@ -652,7 +660,7 @@ prompt_dir() {
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
-        subdirectory_path=$(truncatePathFromRight "${current_dir:${#${(S%%)package_path//$~zero/}}}")
+        subdirectory_path=$(_p9k_truncateFromRight "${current_dir:${#${(S%%)package_path//$~zero/}}}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
         # Parse the 'name' from the package.json; if there are any problems, just
         # print the file path
         defined POWERLEVEL9K_DIR_PACKAGE_FILES || POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)
@@ -674,7 +682,8 @@ prompt_dir() {
           # from the package.json and append the current subdirectory
           current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
         else
-          current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
+          local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
+          current_path=$(_p9k_truncateFromRight "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" )
         fi
       ;;
       truncate_with_folder_marker)
