@@ -23,7 +23,7 @@ function _p9k_truncateMiddle() {
 
 # Given a directory path, truncate it according to the
 # settings for `truncate_from_right`
-function _p9k_truncateFromRight() {
+function _p9k_truncateRight() {
     local subject="${1}"
     local length="${2}"
     local delimiter="${3}"
