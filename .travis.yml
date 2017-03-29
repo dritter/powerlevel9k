@@ -23,6 +23,7 @@ script:
   - test/functions/utilities.spec
   - test/functions/colors.spec
   - test/functions/icons.spec
+  - test/functions/truncation.spec
   - test/segments/command_execution_time.spec
   - test/segments/dir.spec
   - test/segments/rust_version.spec
