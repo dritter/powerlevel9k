@@ -13,6 +13,14 @@ function _p9k_truncateHome() {
     echo "${subject}" | sed -e "s,^$HOME,${delimiter},"
 }
 
+# TODO: Make it work chained!
+function _p9k_truncateDirectories() {
+    local length="${1}"
+    local delimiter="${2}"
+
+    print -P "%$((${1}+1))(c:${delimiter}/:)%${length}c"
+}
+
 function _p9k_truncateMiddle() {
     local subject="${1}"
     local length="${2}"

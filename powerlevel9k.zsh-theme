@@ -713,7 +713,7 @@ prompt_dir() {
         current_path=$current_path${PWD#${last_marked_folder}*}
       ;;
       *)
-        current_path="$(print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
+        current_path="$(_p9k_truncateDirectories "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")"
       ;;
     esac
   fi
