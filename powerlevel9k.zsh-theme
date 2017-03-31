@@ -634,53 +634,11 @@ prompt_dir() {
         current_path=$(_p9k_truncateRight "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
       ;;
       truncate_with_package_name)
-        local name repo_path package_path current_dir zero
-
-        # Get the path of the Git repo, which should have the package.json file
-        if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]; then
-          # Get path from the root of the git repository to the current dir
-          local gitPath=$(git rev-parse --show-prefix)
-          # Remove trailing slash from git path, so that we can
-          # remove that git path from the pwd.
-          gitPath=${gitPath%/}
-          package_path=${$(pwd)%%$gitPath}
-          # Remove trailing slash
-          package_path=${package_path%/}
-        elif [[ $(git rev-parse --is-inside-git-dir 2> /dev/null) == "true" ]]; then
-          package_path=${$(pwd)%%/.git*}
-        fi
-
-        # Replace the shortest possible match of the marked folder from
-        # the current path. Remove the amount of characters up to the
-        # folder marker from the left. Count only the visible characters
-        # in the path (this is done by the "zero" pattern; see
-        # http://stackoverflow.com/a/40855342/5586433).
-        local zero='%([BSUbfksu]|([FB]|){*})'
-        current_dir=$(pwd)
-        # Then, find the length of the package_path string, and save the
-        # subdirectory path as a substring of the current directory's path from 0
-        # to the length of the package path's string
-        subdirectory_path=$(_p9k_truncateRight "${current_dir:${#${(S%%)package_path//$~zero/}}}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
-        # Parse the 'name' from the package.json; if there are any problems, just
-        # print the file path
-        defined POWERLEVEL9K_DIR_PACKAGE_FILES || POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)
-
-        local pkgFile="unknown"
-        for file in "${POWERLEVEL9K_DIR_PACKAGE_FILES[@]}"; do
-          if [[ -f "${package_path}/${file}" ]]; then
-            pkgFile="${package_path}/${file}"
-            break;
-          fi
-        done
-        
-        local packageName=$(jq '.name' ${pkgFile} 2> /dev/null \
-          || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
-          || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
-          )
-        if [[ -n "${packageName}" ]]; then
+        local truncatedPath=$(_p9k_truncatePackage "$(pwd)" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
+        if [[ -n "${truncatedPath}" ]]; then
           # Instead of printing out the full path, print out the name of the package
           # from the package.json and append the current subdirectory
-          current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
+          current_path="${truncatedPath}"
         else
           local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
           current_path=$(_p9k_truncateRight "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" )
