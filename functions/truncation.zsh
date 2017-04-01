@@ -70,7 +70,7 @@ function _p9k_truncatePackage() {
     # Then, find the length of the package_path string, and save the
     # subdirectory path as a substring of the current directory's path from 0
     # to the length of the package path's string
-    subdirectory_path=$(_p9k_truncateRight "${current_dir:${#${(S%%)package_path//$~zero/}}}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
+    subdirectory_path=$(_p9k_truncateRight "${current_dir:${#${(S%%)package_path//$~zero/}}}" "${length}" "${delimiter}")
     # Parse the 'name' from the package.json; if there are any problems, just
     # print the file path
     defined POWERLEVEL9K_DIR_PACKAGE_FILES || POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)
