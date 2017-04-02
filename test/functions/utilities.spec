@@ -106,4 +106,82 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
   unset segments
 }
 
+function testUpsearchFindsFileInCurrentFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/tmp/powerlevel9k-test"
+  local FOLDER="${BASEFOLDER}/1/12/123/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  touch "${STOPFILE}"
+
+  assertEquals "${FOLDER}" "$(upsearch "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  PWD="${OLD_PWD}"
+}
+
+function testUpsearchFindsFileInParentFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/tmp/powerlevel9k-test"
+  local PARENTFOLDER="${BASEFOLDER}/1/12/123"
+  local FOLDER="${PARENTFOLDER}/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  touch "${PARENTFOLDER}/${STOPFILE}"
+
+  assertEquals "${PARENTFOLDER}" "$(upsearch "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  PWD="${OLD_PWD}"
+}
+
+# This test originally should test if it is possible to
+# find a file in the root folder. Unfortunately it is
+# not possible for normal users to create a file in the
+# root folder. So we just test if upsearch finds a file
+# far up the directory tree..
+function testUpsearchFindsFileInTmpFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/tmp/powerlevel9k-test"
+  local FOLDER="${BASEFOLDER}/1/12/123/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  local STOPFILE_PATH="/tmp"
+  touch "${STOPFILE_PATH}/${STOPFILE}"
+
+  assertEquals "${STOPFILE_PATH}" "$(upsearch "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  rm -f "${STOPFILE_PATH}/${STOPFILE}"
+  PWD="${OLD_PWD}"
+}
+
+function testUpsearchFindsFileInHomeFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/${HOME}/.powerlevel9k-test"
+  local FOLDER="${BASEFOLDER}/1/12/123/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  local STOPFILE_PATH="${HOME}"
+  touch "${STOPFILE_PATH}/${STOPFILE}"
+
+  assertEquals "${STOPFILE_PATH}" "$(upsearch "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  rm -f "${STOPFILE_PATH}/${STOPFILE}"
+  PWD="${OLD_PWD}"
+}
+
 source shunit2/source/2.1/src/shunit2
