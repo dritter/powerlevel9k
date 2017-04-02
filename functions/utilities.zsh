@@ -204,13 +204,11 @@ function segmentShouldBeJoined() {
 # Search recursively in parent folders for given file.
 function upsearch () {
   local searchedFile="${1}"
-  if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
+  if [[ -e "${searchedFile}" ]]; then
     echo "$PWD"
-  elif test -e "${searchedFile}"; then
-    pushd .. > /dev/null
-    upsearch "${searchedFile}"
-    popd > /dev/null
-    echo "$PWD"
+
+    # Exit early: If file was found, bail out
+    return 0
   else
     pushd .. > /dev/null
     upsearch "${searchedFile}"
