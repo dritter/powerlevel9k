@@ -186,4 +186,84 @@ function testUpsearchFindsFileInHomeFolder() {
   PWD="${OLD_PWD}"
 }
 
+function testUpsearchToParentFolderFindsFileInCurrentFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/tmp/powerlevel9k-test"
+  local PARENTFOLDER="${BASEFOLDER}/1/12/123"
+  local FOLDER="${PARENTFOLDER}/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  touch "${FOLDER}/${STOPFILE}"
+
+  assertEquals "${PARENTFOLDER}" "$(upsearchToParentFolder "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  PWD="${OLD_PWD}"
+}
+
+function testUpsearchToParentFolderFindsFileInParentFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/tmp/powerlevel9k-test"
+  local GRANDPARENTFOLDER="${BASEFOLDER}/1/12"
+  local PARENTFOLDER="${GRANDPARENTFOLDER}/123"
+  local FOLDER="${PARENTFOLDER}/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  touch "${PARENTFOLDER}/${STOPFILE}"
+
+  assertEquals "${GRANDPARENTFOLDER}" "$(upsearchToParentFolder "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  PWD="${OLD_PWD}"
+}
+
+# This test originally should test if it is possible to
+# find a file in the root folder. Unfortunately it is
+# not possible for normal users to create a file in the
+# root folder. So we just test if upsearch finds a file
+# far up the directory tree..
+function testUpsearchToParentFolderFindsFileInTmpFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="/tmp/powerlevel9k-test"
+  local FOLDER="${BASEFOLDER}/1/12/123/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  local STOPFILE_PATH="/tmp"
+  touch "${STOPFILE_PATH}/${STOPFILE}"
+
+  assertEquals "/" "$(upsearchToParentFolder "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  rm -f "${STOPFILE_PATH}/${STOPFILE}"
+  PWD="${OLD_PWD}"
+}
+
+function testUpsearchToParentFolderFindsFileInHomeFolder() {
+  local OLD_PWD="${PWD}"
+  local BASEFOLDER="${HOME}/.powerlevel9k-test"
+  local FOLDER="${BASEFOLDER}/1/12/123/1234"
+  mkdir -p "${FOLDER}"
+  cd "${FOLDER}"
+
+  local STOPFILE=".p9k_test_stopfile"
+  local STOPFILE_PATH="${BASEFOLDER}"
+  touch "${STOPFILE_PATH}/${STOPFILE}"
+
+  assertEquals "${HOME}" "$(upsearchToParentFolder "${STOPFILE}")"
+
+  cd "${OLD_PWD}"
+  rm -fr "${BASEFOLDER}"
+  rm -f "${STOPFILE_PATH}/${STOPFILE}"
+  PWD="${OLD_PWD}"
+}
+
 source shunit2/source/2.1/src/shunit2
