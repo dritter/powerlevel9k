@@ -202,7 +202,21 @@ function segmentShouldBeJoined() {
 }
 
 # Search recursively in parent folders for given file.
-function upsearch () {
+# If a file was found, return the parent directory.
+function upsearchToParentFolder() {
+  local searchFile="${1}"
+
+  local folderFound="$(upsearch "${searchFile}")"
+  if [[ -n "${folderFound}" ]]; then
+    cd "${folderFound}/.."
+    echo "${PWD}"
+    cd -
+  fi
+}
+
+# Search recursively in parent folders for given file.
+# If a file was found, return the current directory.
+function upsearch() {
   local searchedFile="${1}"
   if [[ -e "${searchedFile}" ]]; then
     echo "$PWD"

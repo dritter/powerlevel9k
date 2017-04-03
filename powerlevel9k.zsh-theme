@@ -651,24 +651,12 @@ prompt_dir() {
         # Search for the folder marker in the parent directories and
         # buildup a pattern that is removed from the current path
         # later on.
-        for marked_folder in $(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER); do
-          if [[ "$marked_folder" == "/" ]]; then
-            # If we reached root folder, stop upsearch.
-            current_path="/"
-          elif [[ "$marked_folder" == "$HOME" ]]; then
-            # If we reached home folder, stop upsearch.
-            current_path="~"
-          elif [[ "${marked_folder%/*}" == $last_marked_folder ]]; then
-            current_path="${current_path%/}/${marked_folder##*/}"
-          else
-            current_path="${current_path%/}/$POWERLEVEL9K_SHORTEN_DELIMITER/${marked_folder##*/}"
-          fi
-          last_marked_folder=$marked_folder
-        done
-
-        # Replace the shortest possible match of the marked folder from
-        # the current path.
-        current_path=$current_path${PWD#${last_marked_folder}*}
+        local marked_folder="$(upsearchToParentFolder "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")"
+        if [[ -n "${marked_folder}" ]]; then
+          # Get first character as prefix
+          local path_prefix="${current_path[1,1]}"
+          current_path="${path_prefix}${POWERLEVEL9K_SHORTEN_DELIMITER}${current_path##$marked_folder}"
+        fi
       ;;
       *)
         current_path="$(_p9k_truncateDirectories "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")"

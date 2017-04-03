@@ -109,12 +109,13 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
 function testUpsearchFindsFileInCurrentFolder() {
   local OLD_PWD="${PWD}"
   local BASEFOLDER="/tmp/powerlevel9k-test"
-  local FOLDER="${BASEFOLDER}/1/12/123/1234"
+  local PARENTFOLDER="${BASEFOLDER}/1/12/123"
+  local FOLDER="${PARENTFOLDER}/1234"
   mkdir -p "${FOLDER}"
   cd "${FOLDER}"
 
   local STOPFILE=".p9k_test_stopfile"
-  touch "${STOPFILE}"
+  touch "${FOLDER}/${STOPFILE}"
 
   assertEquals "${FOLDER}" "$(upsearch "${STOPFILE}")"
 
@@ -126,7 +127,8 @@ function testUpsearchFindsFileInCurrentFolder() {
 function testUpsearchFindsFileInParentFolder() {
   local OLD_PWD="${PWD}"
   local BASEFOLDER="/tmp/powerlevel9k-test"
-  local PARENTFOLDER="${BASEFOLDER}/1/12/123"
+  local GRANDPARENTFOLDER="${BASEFOLDER}/1/12"
+  local PARENTFOLDER="${GRANDPARENTFOLDER}/123"
   local FOLDER="${PARENTFOLDER}/1234"
   mkdir -p "${FOLDER}"
   cd "${FOLDER}"
@@ -157,7 +159,7 @@ function testUpsearchFindsFileInTmpFolder() {
   local STOPFILE_PATH="/tmp"
   touch "${STOPFILE_PATH}/${STOPFILE}"
 
-  assertEquals "${STOPFILE_PATH}" "$(upsearch "${STOPFILE}")"
+  assertEquals "/tmp" "$(upsearch "${STOPFILE}")"
 
   cd "${OLD_PWD}"
   rm -fr "${BASEFOLDER}"
@@ -167,16 +169,16 @@ function testUpsearchFindsFileInTmpFolder() {
 
 function testUpsearchFindsFileInHomeFolder() {
   local OLD_PWD="${PWD}"
-  local BASEFOLDER="/${HOME}/.powerlevel9k-test"
+  local BASEFOLDER="${HOME}/.powerlevel9k-test"
   local FOLDER="${BASEFOLDER}/1/12/123/1234"
   mkdir -p "${FOLDER}"
   cd "${FOLDER}"
 
   local STOPFILE=".p9k_test_stopfile"
-  local STOPFILE_PATH="${HOME}"
+  local STOPFILE_PATH="${BASEFOLDER}"
   touch "${STOPFILE_PATH}/${STOPFILE}"
 
-  assertEquals "${STOPFILE_PATH}" "$(upsearch "${STOPFILE}")"
+  assertEquals "${BASEFOLDER}" "$(upsearch "${STOPFILE}")"
 
   cd "${OLD_PWD}"
   rm -fr "${BASEFOLDER}"
