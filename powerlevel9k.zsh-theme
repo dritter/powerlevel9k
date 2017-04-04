@@ -619,50 +619,34 @@ prompt_command_execution_time() {
 
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
+set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2505'
+set_default POWERLEVEL9K_SHORTEN_HOME_DELIMITER "~"
 prompt_dir() {
-  local current_path="$(print -P "%~")"
-  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" ]]; then
-    set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
+  defined POWERLEVEL9K_SHORTEN_STRATEGY || POWERLEVEL9K_SHORTEN_STRATEGY=("home" "middle")
 
-    case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
-      truncate_middle)
-        local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
-        current_path=$(_p9k_truncateMiddle "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
-      ;;
-      truncate_from_right)
-        local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
-        current_path=$(_p9k_truncateRight "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
-      ;;
-      truncate_with_package_name)
-        local truncatedPath=$(_p9k_truncatePackage "$(pwd)" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
-        if [[ -n "${truncatedPath}" ]]; then
-          # Instead of printing out the full path, print out the name of the package
-          # from the package.json and append the current subdirectory
-          current_path="${truncatedPath}"
-        else
-          local truncatedPath="$(_p9k_truncateHome "$(pwd)" '~')"
-          current_path=$(_p9k_truncateRight "${truncatedPath}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" )
-        fi
-      ;;
-      truncate_with_folder_marker)
-        local last_marked_folder marked_folder
-        set_default POWERLEVEL9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
-
-        # Search for the folder marker in the parent directories and
-        # buildup a pattern that is removed from the current path
-        # later on.
-        local marked_folder="$(upsearchToParentFolder "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")"
-        if [[ -n "${marked_folder}" ]]; then
-          # Get first character as prefix
-          local path_prefix="${current_path[1,1]}"
-          current_path="${path_prefix}${POWERLEVEL9K_SHORTEN_DELIMITER}${current_path##$marked_folder}"
-        fi
-      ;;
-      *)
-        current_path="$(_p9k_truncateDirectories "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")"
-      ;;
-    esac
-  fi
+  local current_path="$(pwd)"
+  for strategyName in "${=POWERLEVEL9K_SHORTEN_STRATEGY}"; do
+    # Capitalize the name of the strategy, so that we can
+    # call the right function.
+    local strategy="_p9k_truncate${(C)strategyName}"
+    local normalizedStrategyName="${(L)strategyName}"
+    if [[ "${normalizedStrategyName}" == "home" ]]; then
+      local truncatedPath="$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_HOME_DELIMITER}")"
+      if [[ -n "${truncatedPath}" ]]; then
+        current_path="${truncatedPath}"
+      fi
+    elif [[ "${normalizedStrategyName}" == "package" ]]; then
+      local truncatedPath="$(${strategy} "${current_path}")"
+      if [[ -n "${truncatedPath}" ]]; then
+        current_path="${truncatedPath}"
+      fi
+    else
+      local truncatedPath="$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")"
+      if [[ -n "${truncatedPath}" ]]; then
+        current_path="${truncatedPath}"
+      fi
+    fi
+  done
 
   if [[ "${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
     current_path="${current_path[2,-1]}"
@@ -678,6 +662,9 @@ prompt_dir() {
     "HOME"            "HOME_ICON"
     "HOME_SUBFOLDER"  "HOME_SUB_ICON"
   )
+  # Reevaluate the current path to determine
+  # if we are in the home folder, a subfolder
+  # or somewhere else.
   local current_state="DEFAULT"
   if [[ $(print -P "%~") == '~' ]]; then
     current_state="HOME"
