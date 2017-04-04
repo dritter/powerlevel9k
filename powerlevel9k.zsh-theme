@@ -632,6 +632,22 @@ prompt_dir() {
   fi
 
   local current_path="$(pwd)"
+  typeset -AH dir_states
+  dir_states=(
+    "DEFAULT"         "FOLDER_ICON"
+    "HOME"            "HOME_ICON"
+    "HOME_SUBFOLDER"  "HOME_SUB_ICON"
+  )
+  # Reevaluate the current path to determine
+  # if we are in the home folder, a subfolder
+  # or somewhere else.
+  local current_state="DEFAULT"
+  if [[ "${current_path}" == "${HOME}" ]]; then
+    current_state="HOME"
+  elif [[ "${current_path}" == "${HOME}"* ]]; then
+    current_state="HOME_SUBFOLDER"
+  fi
+
   for strategyName in "${=POWERLEVEL9K_SHORTEN_STRATEGY}"; do
     # Capitalize the name of the strategy, so that we can
     # call the right function.
@@ -663,21 +679,6 @@ prompt_dir() {
     current_path="$( echo "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
   fi
 
-  typeset -AH dir_states
-  dir_states=(
-    "DEFAULT"         "FOLDER_ICON"
-    "HOME"            "HOME_ICON"
-    "HOME_SUBFOLDER"  "HOME_SUB_ICON"
-  )
-  # Reevaluate the current path to determine
-  # if we are in the home folder, a subfolder
-  # or somewhere else.
-  local current_state="DEFAULT"
-  if [[ $(print -P "%~") == '~' ]]; then
-    current_state="HOME"
-  elif [[ $(print -P "%~") == '~'* ]]; then
-    current_state="HOME_SUBFOLDER"
-  fi
   "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
 }
 
