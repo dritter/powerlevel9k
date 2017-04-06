@@ -44,9 +44,9 @@ function _p9k_truncateRight() {
 function _p9k_truncatePackage() {
     local subject="${1}"
 
-    defined POWERLEVEL9K_DIR_PACKAGE_FILES || POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)
-    for stopfile in "${POWERLEVEL9K_DIR_PACKAGE_FILES}"; do
-        for marked_folder in $(upsearchToParentFolder "${stopfile}"); do
+    defined POWERLEVEL9K_DIR_PACKAGE_FILES || POWERLEVEL9K_DIR_PACKAGE_FILES=("package.json" "composer.json")
+    for stopfile in ${POWERLEVEL9K_DIR_PACKAGE_FILES}; do
+        for marked_folder in $(upsearch "${stopfile}"); do
             # Strip the path to the stopfile from the actual (deep),
             # path, so that we can prepend it with the package name.
             local pathSuffix="${subject:${#${(S%%)marked_folder//$~zero/}}}"

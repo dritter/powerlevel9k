@@ -223,6 +223,9 @@ function upsearch() {
 
     # Exit early: If file was found, bail out
     return 0
+  elif [[ "${PWD}" == "/" ]]; then
+    # Nothing found, exit upsearch
+    return 0
   else
     pushd .. > /dev/null
     upsearch "${searchedFile}"
