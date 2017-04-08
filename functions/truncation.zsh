@@ -66,3 +66,15 @@ function _p9k_truncatePackage() {
         done
     done
 }
+
+# Truncate via folder marker
+function _p9k_truncateFoldermarker() {
+    local subject="${1}"
+    local delimiter="${2}"
+    local stopfile="${3}"
+
+    local marked_folder="$(upsearchToParentFolder "${stopfile}")"
+    if [[ -n "${marked_folder}" ]]; then
+        echo "${delimiter}${PWD#${marked_folder}}"
+    fi
+}

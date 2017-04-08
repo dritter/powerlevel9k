@@ -623,12 +623,15 @@ set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2505'
 set_default POWERLEVEL9K_SHORTEN_HOME_DELIMITER "~"
 prompt_dir() {
   defined POWERLEVEL9K_SHORTEN_STRATEGY || POWERLEVEL9K_SHORTEN_STRATEGY=("home" "middle")
+
   # For backwards compatiblity, translate old variable value to new value
   if [[ ! "${(t)POWERLEVEL9K_SHORTEN_STRATEGY}" =~ "array" ]]; then
     [[ "${POWERLEVEL9K_SHORTEN_STRATEGY}" == "truncate_with_package_name" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("package" "home" "right")
     [[ "${POWERLEVEL9K_SHORTEN_STRATEGY}" == "truncate_from_right" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("home" "right")
     [[ "${POWERLEVEL9K_SHORTEN_STRATEGY}" == "truncate_middle" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("home" "middle")
-    [[ "${POWERLEVEL9K_SHORTEN_STRATEGY}" == "default" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("home" "directories")
+    [[ "${POWERLEVEL9K_SHORTEN_STRATEGY}" == "truncate_with_folder_marker" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("foldermarker")
+    # If it is still a string, just assume that the user has default strategy
+    [[ ! "${(t)POWERLEVEL9K_SHORTEN_STRATEGY}" =~ "array" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("home" "directories")
   fi
 
   local current_path="$(pwd)"
@@ -660,6 +663,11 @@ prompt_dir() {
       fi
     elif [[ "${normalizedStrategyName}" == "package" ]]; then
       local truncatedPath="$(${strategy} "${current_path}")"
+      if [[ -n "${truncatedPath}" ]]; then
+        current_path="${truncatedPath}"
+      fi
+    elif [[ "${normalizedStrategyName}" == "foldermarker" ]]; then
+      local truncatedPath="$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")"
       if [[ -n "${truncatedPath}" ]]; then
         current_path="${truncatedPath}"
       fi
