@@ -210,7 +210,7 @@ function upsearchToParentFolder() {
   if [[ -n "${folderFound}" ]]; then
     cd "${folderFound}/.."
     echo "${PWD}"
-    cd -
+    cd - >/dev/null
   fi
 }
 
@@ -219,7 +219,7 @@ function upsearchToParentFolder() {
 function upsearch() {
   local searchedFile="${1}"
   if [[ -e "${searchedFile}" ]]; then
-    echo "$PWD"
+    echo "${PWD}"
 
     # Exit early: If file was found, bail out
     return 0
@@ -227,8 +227,8 @@ function upsearch() {
     # Nothing found, exit upsearch
     return 0
   else
-    pushd .. > /dev/null
+    pushd -q ..
     upsearch "${searchedFile}"
-    popd > /dev/null
+    popd -q
   fi
 }
