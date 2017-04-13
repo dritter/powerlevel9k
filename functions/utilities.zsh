@@ -207,7 +207,9 @@ function upsearchToParentFolder() {
   local searchFile="${1}"
 
   local folderFound="$(upsearch "${searchFile}")"
-  if [[ -n "${folderFound}" ]]; then
+  if [[ "${folderFound}" == "/" ]]; then
+    echo "${folderFound}"
+  elif [[ -n "${folderFound}" ]]; then
     cd "${folderFound}/.."
     echo "${PWD}"
     cd - >/dev/null

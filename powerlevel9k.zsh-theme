@@ -651,43 +651,56 @@ prompt_dir() {
     current_state="HOME_SUBFOLDER"
   fi
 
+  # truncatedPath holds the truncated path. The truncation
+  # functions return an associative array that contain a
+  # key for the truncated path and a remainder that can be
+  # handled by other truncation strategies. All truncation
+  # strategies should apply their truncation from the left.
+  local truncatedPath
   for strategyName in "${=POWERLEVEL9K_SHORTEN_STRATEGY}"; do
     # Capitalize the name of the strategy, so that we can
     # call the right function.
     local strategy="_p9k_truncate${(C)strategyName}"
     local normalizedStrategyName="${(L)strategyName}"
-    if [[ "${normalizedStrategyName}" == "home" ]]; then
-      local truncatedPath="$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_HOME_DELIMITER}")"
-      if [[ -n "${truncatedPath}" ]]; then
-        current_path="${truncatedPath}"
-      fi
-    elif [[ "${normalizedStrategyName}" == "package" ]]; then
-      local truncatedPath="$(${strategy} "${current_path}")"
-      if [[ -n "${truncatedPath}" ]]; then
-        current_path="${truncatedPath}"
-      fi
-    elif [[ "${normalizedStrategyName}" == "foldermarker" ]]; then
-      local truncatedPath="$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")"
-      if [[ -n "${truncatedPath}" ]]; then
-        current_path="${truncatedPath}"
-      fi
-    else
-      local truncatedPath="$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")"
-      if [[ -n "${truncatedPath}" ]]; then
-        current_path="${truncatedPath}"
-      fi
+    if [[ "${normalizedStrategyName}" == "home" && -n "${current_path}" ]]; then
+      typeset -Ah truncationResult
+      truncationResult=($(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_HOME_DELIMITER}"))
+
+      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+    elif [[ "${normalizedStrategyName}" == "package" && -n "${current_path}" ]]; then
+      typeset -Ah truncationResult
+      truncationResult=($(${strategy} "${current_path}"))
+
+      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+    elif [[ "${normalizedStrategyName}" == "foldermarker" && -n "${current_path}" ]]; then
+      typeset -Ah truncationResult
+      truncationResult=($(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}"))
+      
+      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+    elif [[ -n "${current_path}" ]]; then
+      typeset -Ah truncationResult
+      truncationResult=($(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}"))
+      
+      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
     fi
   done
 
+  # Append the remainder
+  truncatedPath="${truncatedPath}${current_path}"
+
   if [[ "${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
-    current_path="${current_path[2,-1]}"
+    truncatedPath="${truncatedPath[2,-1]}"
   fi
 
   if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" ]]; then
-    current_path="$( echo "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
+    truncatedPath="$( echo "${truncatedPath}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
   fi
 
-  "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
+  "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${truncatedPath}" "${dir_states[$current_state]}"
 }
 
 # Docker machine

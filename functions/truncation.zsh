@@ -10,34 +10,55 @@ function _p9k_truncateHome() {
     local subject="${1}"
     local delimiter="${2}"
 
-    echo "${subject}" | sed -e "s,^$HOME,${delimiter},"
+    # We just cut off the piece that gets truncated,
+    # because we want to hand over the rest to the next
+    # truncation strategy. So our truncatedPath is just
+    # our delimiter..
+    local remainder="$(echo "${subject}" | sed -e "s,^$HOME,,")"
+    [[ -n "${remainder}" ]] || remainder=";false"
+    echo "truncated ${delimiter}"
+    echo "remainder ${remainder}"
 }
 
 # TODO: Make it work chained!
+#
+# This is a terminal truncation. After this one is
+# applied, no other truncation strategy can be applied.
 function _p9k_truncateDirectories() {
     local length="${1}"
     local delimiter="${2}"
 
-    print -P "%$((${1}+1))(c:${delimiter}/:)%${length}c"
+    local truncatedPath="$(print -P "%$((${1}+1))(c:${delimiter}/:)%${length}c")"
+    echo "truncated ${truncatedPath}"
+    echo "remainder ;false"
 }
 
+# This is a terminal truncation. After this one is
+# applied, no other truncation strategy can be applied.
 function _p9k_truncateMiddle() {
     local subject="${1}"
     local length="${2}"
     local delimiter="${3}"
-    
-    echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^/]{$length})[^/]+([^/]{$length})\//\1$delimiter\2\//g"
+
+    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^/]{$length})[^/]+([^/]{$length})\//\1$delimiter\2\//g")"
+    echo "truncated ${truncatedPath}"
+    echo "remainder ;false"
 }
 
 # Given a directory path, truncate it according to the
 # settings for `truncate_from_right`
+#
+# This is a terminal truncation. After this one is
+# applied, no other truncation strategy can be applied.
 function _p9k_truncateRight() {
     local subject="${1}"
     local length="${2}"
     local delimiter="${3}"
     local delimiterLength="${#delimiter}"
 
-    echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s@(([^/]{$((length))})([^/]{$delimiterLength}))[^/]+/@\2$delimiter/@g"
+    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s@(([^/]{$((length))})([^/]{$delimiterLength}))[^/]+/@\2$delimiter/@g")"
+    echo "truncated ${truncatedPath}"
+    echo "remainder ;false"
 }
 
 
@@ -58,13 +79,19 @@ function _p9k_truncatePackage() {
             )
 
             if [[ -n "${packageName}" ]]; then
-                echo -n "${packageName}${pathSuffix}"
+                echo "truncated ${packageName}"
+                echo "remainder ${pathSuffix}"
 
                 # Exit early. We got our information.
                 return 0
             fi
         done
     done
+
+    # Nothing truncated, just return
+    # the whole string as remainder.
+    echo "truncated ;false"
+    echo "remainder ${subject}"
 }
 
 # Truncate via folder marker
@@ -75,6 +102,14 @@ function _p9k_truncateFoldermarker() {
 
     local marked_folder="$(upsearchToParentFolder "${stopfile}")"
     if [[ -n "${marked_folder}" ]]; then
-        echo "${delimiter}${PWD#${marked_folder}}"
+        echo "truncated ${delimiter}"
+        echo "remainder ${PWD#${marked_folder}}"
+
+        return 0
     fi
+
+    # Nothing truncated, just return
+    # the whole string as remainder.
+    echo "truncated ;false"
+    echo "remainder ${subject}"
 }
