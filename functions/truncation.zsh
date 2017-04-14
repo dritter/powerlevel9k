@@ -79,6 +79,10 @@ function _p9k_truncatePackage() {
             )
 
             if [[ -n "${packageName}" ]]; then
+                # set pathSuffix to false if empty
+                if [[ -z "${pathSuffix}" ]]; then
+                    pathSuffix=";false"
+                fi
                 echo "truncated ${packageName}"
                 echo "remainder ${pathSuffix}"
 
@@ -87,6 +91,11 @@ function _p9k_truncatePackage() {
             fi
         done
     done
+
+    # set subject to false if empty
+    if [[ -z "${subject}" ]]; then
+        subject=";false"
+    fi
 
     # Nothing truncated, just return
     # the whole string as remainder.
