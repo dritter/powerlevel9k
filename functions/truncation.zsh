@@ -15,9 +15,9 @@ function _p9k_truncateHome() {
     # truncation strategy. So our truncatedPath is just
     # our delimiter..
     local remainder="$(echo "${subject}" | sed -e "s,^$HOME,,")"
-    [[ -n "${remainder}" ]] || remainder=";false"
-    echo "truncated ${delimiter}"
-    echo "remainder ${remainder}"
+    [[ -n "${remainder}" ]] || remainder="false"
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;${delimiter};remainder;${remainder}"
 }
 
 # TODO: Make it work chained!
@@ -29,8 +29,8 @@ function _p9k_truncateDirectories() {
     local delimiter="${2}"
 
     local truncatedPath="$(print -P "%$((${1}+1))(c:${delimiter}/:)%${length}c")"
-    echo "truncated ${truncatedPath}"
-    echo "remainder ;false"
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;${truncatedPath};remainder;false"
 }
 
 # This is a terminal truncation. After this one is
@@ -41,8 +41,8 @@ function _p9k_truncateMiddle() {
     local delimiter="${3}"
 
     local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^/]{$length})[^/]+([^/]{$length})\//\1$delimiter\2\//g")"
-    echo "truncated ${truncatedPath}"
-    echo "remainder ;false"
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;${truncatedPath};remainder;false"
 }
 
 # Given a directory path, truncate it according to the
@@ -57,8 +57,8 @@ function _p9k_truncateRight() {
     local delimiterLength="${#delimiter}"
 
     local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s@(([^/]{$((length))})([^/]{$delimiterLength}))[^/]+/@\2$delimiter/@g")"
-    echo "truncated ${truncatedPath}"
-    echo "remainder ;false"
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;${truncatedPath};remainder;false"
 }
 
 
@@ -81,10 +81,10 @@ function _p9k_truncatePackage() {
             if [[ -n "${packageName}" ]]; then
                 # set pathSuffix to false if empty
                 if [[ -z "${pathSuffix}" ]]; then
-                    pathSuffix=";false"
+                    pathSuffix="false"
                 fi
-                echo "truncated ${packageName}"
-                echo "remainder ${pathSuffix}"
+                # This is an encoded array! Delimiter is ";".
+                echo "truncated;${packageName};remainder;${pathSuffix}"
 
                 # Exit early. We got our information.
                 return 0
@@ -94,13 +94,13 @@ function _p9k_truncatePackage() {
 
     # set subject to false if empty
     if [[ -z "${subject}" ]]; then
-        subject=";false"
+        subject="false"
     fi
 
     # Nothing truncated, just return
     # the whole string as remainder.
-    echo "truncated ;false"
-    echo "remainder ${subject}"
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;false;remainder;${subject}"
 }
 
 # Truncate via folder marker
@@ -111,14 +111,14 @@ function _p9k_truncateFoldermarker() {
 
     local marked_folder="$(upsearchToParentFolder "${stopfile}")"
     if [[ -n "${marked_folder}" ]]; then
-        echo "truncated ${delimiter}"
-        echo "remainder ${PWD#${marked_folder}}"
+        # This is an encoded array! Delimiter is ";".
+        echo "truncated;${delimiter};remainder;${PWD#${marked_folder}}"
 
         return 0
     fi
 
     # Nothing truncated, just return
     # the whole string as remainder.
-    echo "truncated ;false"
-    echo "remainder ${subject}"
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;false;remainder;${subject}"
 }

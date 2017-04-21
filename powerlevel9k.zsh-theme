@@ -664,28 +664,32 @@ prompt_dir() {
     local normalizedStrategyName="${(L)strategyName}"
     if [[ "${normalizedStrategyName}" == "home" && -n "${current_path}" ]]; then
       typeset -Ah truncationResult
-      truncationResult=($(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_HOME_DELIMITER}"))
+      # Split by semicolon (see https://unix.stackexchange.com/a/28873)
+      truncationResult=("${(@s.;.)$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_HOME_DELIMITER}")}")
 
-      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
-      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+      [[ "${truncationResult[truncated]}" != 'false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == 'false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
     elif [[ "${normalizedStrategyName}" == "package" && -n "${current_path}" ]]; then
       typeset -Ah truncationResult
-      truncationResult=($(${strategy} "${current_path}"))
+      # Split by semicolon (see https://unix.stackexchange.com/a/28873)
+      truncationResult=("${(@s.;.)$(${strategy} "${current_path}")}")
 
-      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
-      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+      [[ "${truncationResult[truncated]}" != 'false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == 'false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
     elif [[ "${normalizedStrategyName}" == "foldermarker" && -n "${current_path}" ]]; then
       typeset -Ah truncationResult
-      truncationResult=($(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}"))
+      # Split by semicolon (see https://unix.stackexchange.com/a/28873)
+      truncationResult=("${(@s.;.)$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DELIMITER}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")}")
       
-      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
-      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+      [[ "${truncationResult[truncated]}" != 'false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == 'false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
     elif [[ -n "${current_path}" ]]; then
       typeset -Ah truncationResult
-      truncationResult=($(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}"))
+      # Split by semicolon (see https://unix.stackexchange.com/a/28873)
+      truncationResult=("${(@s.;.)$(${strategy} "${current_path}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")}")
       
-      [[ "${truncationResult[truncated]}" != ';false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
-      [[ "${truncationResult[remainder]}" == ';false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
+      [[ "${truncationResult[truncated]}" != 'false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+      [[ "${truncationResult[remainder]}" == 'false' ]] && current_path="" || current_path="${truncationResult[remainder]}"
     fi
   done
 
