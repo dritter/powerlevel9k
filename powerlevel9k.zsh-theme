@@ -1110,6 +1110,7 @@ powerlevel9k_vcs_init() {
 }
 
 prompt_vcs() {
+  # Global variables that are set in functions/vcs.zsh
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
   
