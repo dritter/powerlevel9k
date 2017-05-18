@@ -1112,7 +1112,8 @@ powerlevel9k_vcs_init() {
 prompt_vcs() {
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
-  current_state=""
+  
+  local current_state
 
   # The vcs segment can have three different states - defaults to 'clean'.
   typeset -gAH vcs_states
