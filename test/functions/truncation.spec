@@ -21,47 +21,89 @@ function tearDown() {
 
 function testTruncateHomeWorks() {
     export HOME="/home/dritter"
-    assertEquals "~/test" "$(_p9k_truncateHome "/home/dritter/test" "~")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateHome "/home/dritter/test" "~")}")
+
+    assertEquals "~/test" "${truncationResult[truncated]}${truncationResult[remainder]}"
 }
 
 function testTruncateHomeWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
-    assertEquals "*/test" "$(_p9k_truncateHome "/home/dritter/test" "*")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateHome "/home/dritter/test" "*")}")
+
+    assertEquals "*/test" "${truncationResult[truncated]}${truncationResult[remainder]}"
 }
 
 function testTruncateHomeWithWhitespaceInPathWorks() {
     export HOME="/home/drit ter"
-    assertEquals "~/test" "$(_p9k_truncateHome "/home/drit ter/test" "~")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateHome "/home/drit ter/test" "~")}")
+
+    assertEquals "~/test" "${truncationResult[truncated]}${truncationResult[remainder]}"
 }
 
 function testTruncateMiddleWorks() {
     export HOME="/home/dritter"
-    assertEquals "/home/dr…er/test" "$(_p9k_truncateMiddle "/home/dritter/test" "2" "…")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/dritter/test" "2" "…")}")
+
+    assertEquals "/home/dr…er/test" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
 }
 
 function testTruncateMiddleWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
-    assertEquals "/home/dr**er/test" "$(_p9k_truncateMiddle "/home/dritter/test" "2" "**")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/dritter/test" "2" "**")}")
+
+    assertEquals "/home/dr**er/test" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
 }
 
 function testTruncateMiddleWithWhitespaceInPathWorks() {
     export HOME="/home/drit ter"
-    assertEquals "/home/dr…er/test" "$(_p9k_truncateMiddle "/home/drit ter/test" "2" "…")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/drit ter/test" "2" "…")}")
+
+    assertEquals "/home/dr…er/test" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
 }
 
 function testTruncateRightWorks() {
     export HOME="/home/dritter"
-    assertEquals "/ho…/dr…/test" "$(_p9k_truncateRight "/home/dritter/test" "2" "…")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateRight "/home/dritter/test" "2" "…")}")
+
+    assertEquals "/ho…/dr…/test" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
 }
 
 function testTruncateRightWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
-    assertEquals "/home/dr**/test" "$(_p9k_truncateRight "/home/dritter/test" "2" "**")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateRight "/home/dritter/test" "2" "**")}")
+
+    assertEquals "/home/dr**/test" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
 }
 
 function testTruncateRightWithWhitespaceInPathWorks() {
     export HOME="/home/drit ter"
-    assertEquals "/ho…/dr…/test" "$(_p9k_truncateRight "/home/drit ter/test" "2" "…")"
+
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateRight "/home/drit ter/test" "2" "…")}")
+
+    assertEquals "/ho…/dr…/test" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
 }
 
 function testTruncateWithPackageNameWorks() {
@@ -82,7 +124,11 @@ function testTruncateWithPackageNameWorks() {
   # Go back to deeper folder
   cd "${FOLDER}"
 
-  assertEquals "My_Package/1/12/123/12…/12…/12…/12…/12…/123456789" "$(_p9k_truncatePackage "${FOLDER}" "2" "…")"
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncatePackage "${FOLDER}" "2" "…")}")
+
+  assertEquals "My_Package" "${truncationResult[truncated]}"
+  assertEquals "/1/12/123/1234/12345/123456/1234567/12345678/123456789" "${truncationResult[remainder]}"
 
   # Go back
   cd $p9kFolder
@@ -115,7 +161,11 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   local DEEP_LINKED_FOLDER="${BASEFOLDER}/linked-repo/asdfasdf/qwerqwer"
   cd "${DEEP_LINKED_FOLDER}"
 
-  assertEquals "My_Package/as…/qwerqwer" "$(_p9k_truncatePackage "${DEEP_LINKED_FOLDER}" "2" "…")"
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncatePackage "${DEEP_LINKED_FOLDER}" "2" "…")}")
+
+  assertEquals "My_Package" "${truncationResult[truncated]}"
+  assertEquals "/asdfasdf/qwerqwer" "${truncationResult[remainder]}"
 
   # Go back
   cd $p9kFolder
@@ -144,7 +194,11 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   local LINKED_GIT_FOLDER="${BASEFOLDER}/linked-repo/.git/refs/heads"
   cd "${LINKED_GIT_FOLDER}"
 
-  assertEquals "My_Package/.g…/re…/heads" "$(_p9k_truncatePackage "${LINKED_GIT_FOLDER}" "2" "…")"
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncatePackage "${LINKED_GIT_FOLDER}" "2" "…")}")
+
+  assertEquals "My_Package" "${truncationResult[truncated]}"
+  assertEquals "/.git/refs/heads" "${truncationResult[remainder]}"
 
   # Go back
   cd $p9kFolder
