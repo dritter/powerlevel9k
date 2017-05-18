@@ -1074,14 +1074,6 @@ powerlevel9k_vcs_init() {
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
 
-  # The vcs segment can have three different states - defaults to 'clean'.
-  typeset -gAH vcs_states
-  vcs_states=(
-    'clean'         'green'
-    'modified'      'yellow'
-    'untracked'     'green'
-  )
-
   VCS_CHANGESET_PREFIX=''
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     VCS_CHANGESET_PREFIX="$(print_icon 'VCS_COMMIT_ICON')%0.$POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH""i "
@@ -1121,6 +1113,14 @@ prompt_vcs() {
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
   current_state=""
+
+  # The vcs segment can have three different states - defaults to 'clean'.
+  typeset -gAH vcs_states
+  vcs_states=(
+    'clean'         'green'
+    'modified'      'yellow'
+    'untracked'     'green'
+  )
 
   # Actually invoke vcs_info manually to gather all information.
   vcs_info
