@@ -46,6 +46,15 @@ function testTruncateHomeWithWhitespaceInPathWorks() {
     assertEquals "~/test" "${truncationResult[truncated]}${truncationResult[remainder]}"
 }
 
+function testTruncateHomePrintsNothingIfNotInHomeDir() {
+  export HOME="/home/dritter"
+
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncateHome "/tmp/test" "~")}")
+
+  assertEquals "/tmp/test" "${truncationResult[truncated]}${truncationResult[remainder]}"
+}
+
 function testTruncateMiddleWorks() {
     export HOME="/home/dritter"
 

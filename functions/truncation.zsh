@@ -14,10 +14,19 @@ function _p9k_truncateHome() {
     # because we want to hand over the rest to the next
     # truncation strategy. So our truncatedPath is just
     # our substitute..
+    local truncatedPath="${substitute}"
     local remainder="$(echo "${subject}" | sed -e "s,^$HOME,,")"
     [[ -n "${remainder}" ]] || remainder="false"
+    # Check if $subject does not start with $HOME. If
+    # so, we are outside of $HOME and need to reset
+    # the truncatedPath and set $remainder to $subject.
+    if [[ "${subject}" != "${HOME}"* ]]; then
+        truncatedPath=""
+        remainder="${subject}"
+    fi
+
     # This is an encoded array! Delimiter is ";".
-    echo "truncated;${substitute};remainder;${remainder}"
+    echo "truncated;${truncatedPath};remainder;${remainder}"
 }
 
 # TODO: Make it work chained!
