@@ -8,16 +8,16 @@
 
 function _p9k_truncateHome() {
     local subject="${1}"
-    local delimiter="${2}"
+    local substitute="${2}"
 
     # We just cut off the piece that gets truncated,
     # because we want to hand over the rest to the next
     # truncation strategy. So our truncatedPath is just
-    # our delimiter..
+    # our substitute..
     local remainder="$(echo "${subject}" | sed -e "s,^$HOME,,")"
     [[ -n "${remainder}" ]] || remainder="false"
     # This is an encoded array! Delimiter is ";".
-    echo "truncated;${delimiter};remainder;${remainder}"
+    echo "truncated;${substitute};remainder;${remainder}"
 }
 
 # TODO: Make it work chained!
@@ -26,9 +26,9 @@ function _p9k_truncateHome() {
 # applied, no other truncation strategy can be applied.
 function _p9k_truncateDirectories() {
     local length="${1}"
-    local delimiter="${2}"
+    local substitute="${2}"
 
-    local truncatedPath="$(print -P "%$((${1}+1))(c:${delimiter}/:)%${length}c")"
+    local truncatedPath="$(print -P "%$((${1}+1))(c:${substitute}/:)%${length}c")"
     # This is an encoded array! Delimiter is ";".
     echo "truncated;${truncatedPath};remainder;false"
 }
@@ -38,9 +38,9 @@ function _p9k_truncateDirectories() {
 function _p9k_truncateMiddle() {
     local subject="${1}"
     local length="${2}"
-    local delimiter="${3}"
+    local substitute="${3}"
 
-    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^/]{$length})[^/]+([^/]{$length})\//\1$delimiter\2\//g")"
+    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^/]{$length})[^/]+([^/]{$length})\//\1$substitute\2\//g")"
     # This is an encoded array! Delimiter is ";".
     echo "truncated;${truncatedPath};remainder;false"
 }
@@ -53,10 +53,10 @@ function _p9k_truncateMiddle() {
 function _p9k_truncateRight() {
     local subject="${1}"
     local length="${2}"
-    local delimiter="${3}"
-    local delimiterLength="${#delimiter}"
+    local substitute="${3}"
+    local substituteLength="${#substitute}"
 
-    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s@(([^/]{$((length))})([^/]{$delimiterLength}))[^/]+/@\2$delimiter/@g")"
+    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s@(([^/]{$((length))})([^/]{$substituteLength}))[^/]+/@\2$substitute/@g")"
     # This is an encoded array! Delimiter is ";".
     echo "truncated;${truncatedPath};remainder;false"
 }
@@ -106,13 +106,13 @@ function _p9k_truncatePackage() {
 # Truncate via folder marker
 function _p9k_truncateFoldermarker() {
     local subject="${1}"
-    local delimiter="${2}"
+    local substitute="${2}"
     local stopfile="${3}"
 
     local marked_folder="$(upsearchToParentFolder "${stopfile}")"
     if [[ -n "${marked_folder}" ]]; then
         # This is an encoded array! Delimiter is ";".
-        echo "truncated;${delimiter};remainder;${PWD#${marked_folder}}"
+        echo "truncated;${substitute};remainder;${PWD#${marked_folder}}"
 
         return 0
     fi

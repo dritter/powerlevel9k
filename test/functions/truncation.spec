@@ -24,7 +24,7 @@ function testTruncateHomeWorks() {
     assertEquals "~/test" "$(_p9k_truncateHome "/home/dritter/test" "~")"
 }
 
-function testTruncateHomeWithChangedDelimiterWorks() {
+function testTruncateHomeWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
     assertEquals "*/test" "$(_p9k_truncateHome "/home/dritter/test" "*")"
 }
@@ -39,7 +39,7 @@ function testTruncateMiddleWorks() {
     assertEquals "/home/dr…er/test" "$(_p9k_truncateMiddle "/home/dritter/test" "2" "…")"
 }
 
-function testTruncateMiddleWithChangedDelimiterWorks() {
+function testTruncateMiddleWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
     assertEquals "/home/dr**er/test" "$(_p9k_truncateMiddle "/home/dritter/test" "2" "**")"
 }
@@ -54,7 +54,7 @@ function testTruncateRightWorks() {
     assertEquals "/ho…/dr…/test" "$(_p9k_truncateRight "/home/dritter/test" "2" "…")"
 }
 
-function testTruncateRightWithChangedDelimiterWorks() {
+function testTruncateRightWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
     assertEquals "/home/dr**/test" "$(_p9k_truncateRight "/home/dritter/test" "2" "**")"
 }
