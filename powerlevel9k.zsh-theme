@@ -1129,7 +1129,34 @@ prompt_vcs() {
   vcs_info
   local vcs_prompt="${vcs_info_msg_0_}"
 
-  if [[ -n "$vcs_prompt" ]]; then
+  # truncatedPath holds the truncated path. The truncation
+  # functions return an associative array that contain a
+  # key for the truncated path and a remainder that can be
+  # handled by other truncation strategies. All truncation
+  # strategies should apply their truncation from the left.
+  local truncatedPath
+  if [[ -n "${POWERLEVEL9K_VCS_SHORTEN_STRATEGY}" ]]; then
+    for strategyName in "${=POWERLEVEL9K_VCS_SHORTEN_STRATEGY}"; do
+      # Capitalize the name of the strategy, so that we can
+      # call the right function.
+      local strategy="_p9k_truncate${(C)strategyName}"
+      local normalizedStrategyName="${(L)strategyName}"
+
+      if [[ -n "${vcs_prompt}" ]]; then
+        typeset -Ah truncationResult
+        # Split by semicolon (see https://unix.stackexchange.com/a/28873)
+        truncationResult=("${(@s.;.)$(${strategy} "${vcs_prompt}" "${POWERLEVEL9K_SHORTEN_VCS_LENGTH}" "${POWERLEVEL9K_SHORTEN_VCS_DELIMITER}")}")
+
+        [[ "${truncationResult[truncated]}" != 'false' ]] && truncatedPath="${truncatedPath}${truncationResult[truncated]}"
+        [[ "${truncationResult[remainder]}" == 'false' ]] && vcs_prompt="" || vcs_prompt="${truncationResult[remainder]}"
+      fi
+    done
+  fi
+
+  # Append the remainder
+  truncatedPath="${truncatedPath}${vcs_prompt}"
+
+  if [[ -n "${truncatedPath}" ]]; then
     if [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
       # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
       # as we have there access to vcs_info internal hooks.
@@ -1141,7 +1168,7 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+    "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "${truncatedPath}" "$vcs_visual_identifier"
   fi
 }
 

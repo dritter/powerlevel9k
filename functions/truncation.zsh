@@ -50,9 +50,10 @@ function _p9k_truncateDirectories() {
 function _p9k_truncateMiddle() {
     local subject="${1}"
     local length="${2}"
-    local substitute="${3}"
+    local delimiter="${3}"
+    local substitute="${4}"
 
-    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^/]{$length})[^/]+([^/]{$length})\//\1$substitute\2\//g")"
+    local truncatedPath="$(echo "${subject}" | sed "${SED_EXTENDED_REGEX_PARAMETER}" "s/([^${delimiter}]{$length})[^${delimiter}]+([^${delimiter}]{$length})\//\1${substitute}\2\//g")"
     # This is an encoded array! Delimiter is ";".
     echo "truncated;${truncatedPath};remainder;false"
 }

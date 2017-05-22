@@ -73,7 +73,7 @@ function testTruncateMiddleWorks() {
     export HOME="/home/dritter"
 
     typeset -Ah truncationResult
-    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/dritter/test" "2" "…")}")
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/dritter/test" "2" "/" "…")}")
 
     assertEquals "/home/dr…er/test" "${truncationResult[truncated]}"
     assertFalse "${truncationResult[remainder]}"
@@ -83,7 +83,7 @@ function testTruncateMiddleWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
 
     typeset -Ah truncationResult
-    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/dritter/test" "2" "**")}")
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/dritter/test" "2" "/" "**")}")
 
     assertEquals "/home/dr**er/test" "${truncationResult[truncated]}"
     assertFalse "${truncationResult[remainder]}"
@@ -93,7 +93,7 @@ function testTruncateMiddleWithWhitespaceInPathWorks() {
     export HOME="/home/drit ter"
 
     typeset -Ah truncationResult
-    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/drit ter/test" "2" "…")}")
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/home/drit ter/test" "2" "/" "…")}")
 
     assertEquals "/home/dr…er/test" "${truncationResult[truncated]}"
     assertFalse "${truncationResult[remainder]}"
