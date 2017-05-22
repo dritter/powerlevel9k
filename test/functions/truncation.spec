@@ -46,6 +46,20 @@ function testTruncateHomeWithWhitespaceInPathWorks() {
     assertEquals "~/test" "${truncationResult[truncated]}${truncationResult[remainder]}"
 }
 
+function testTruncateDirectoriesWorks() {
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncateDirectories "/home/dritter/test" "1" "…")}")
+
+  assertEquals "…/test" "${truncationResult[truncated]}"
+}
+
+function testTruncateDirectoriesWorksWithDeepFolder() {
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncateDirectories "/home/dritter/test/a/b/c/d" "3" "…")}")
+
+  assertEquals "…/b/c/d" "${truncationResult[truncated]}"
+}
+
 function testTruncateHomePrintsNothingIfNotInHomeDir() {
   export HOME="/home/dritter"
 

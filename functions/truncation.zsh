@@ -34,10 +34,13 @@ function _p9k_truncateHome() {
 # This is a terminal truncation. After this one is
 # applied, no other truncation strategy can be applied.
 function _p9k_truncateDirectories() {
-    local length="${1}"
-    local substitute="${2}"
+    local subject="${1}"
+    local length="${2}"
+    local substitute="${3}"
 
-    local truncatedPath="$(print -P "%$((${1}+1))(c:${substitute}/:)%${length}c")"
+    local delimiterPosition="$(strindex "${subject}" "/" "${length}" "right")"
+    local truncatedPath="${substitute}${subject[$delimiterPosition,-1]}"
+
     # This is an encoded array! Delimiter is ";".
     echo "truncated;${truncatedPath};remainder;false"
 }

@@ -234,3 +234,45 @@ function upsearch() {
     popd -q
   fi
 }
+
+# Count the occurrences of character in string
+# Solution from http://www.codecodex.com/wiki/Count_the_number_of_occurrences_of_a_specific_character_in_a_string#Zsh
+#
+# Parameters:
+#   * $1 - character
+#   * $2 - string
+strcount() {
+  local character="${1}"
+	local string="${2}"
+	character=${string//[^${character}]/}
+	print ${(c)#character}
+}
+
+# Find the index of a string.
+# Taken from http://stackoverflow.com/a/5032641
+#
+# Parameters:
+#   * $1 - Haystack
+#   * $2 - Needle
+#   * $3 - nth, if you want not the first match
+#   * $4 - Direction. Either "left" or "right"
+strindex() {
+  local haystack="${1}"
+  local needle="${2}"
+  local nth="${3}"
+  local direction="${4}"
+
+  if [[ "${direction}" == "right" ]]; then
+    local totalCount="$(strcount "${needle}" "${haystack}")"
+    # Add one field again. This must be done, because we count
+    # the fields up to the matching one. So if we go from the
+    # right side, there would be one missing.
+    nth=$(( (totalCount - nth) + 1 ))
+  fi
+
+  # Cut off the right part of the string, up to where we found our
+  # needle. Then count the remaining characters, as this is the
+  # index of our needle.
+  local result="$(echo "${haystack}" | cut -d"${needle}" -f"1-${nth}")"
+  echo "$(( ${#result} + 1 ))"
+}

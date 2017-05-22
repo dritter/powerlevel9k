@@ -266,4 +266,54 @@ function testUpsearchToParentFolderFindsFileInHomeFolder() {
   PWD="${OLD_PWD}"
 }
 
+function testStrcountWorksAsExpected() {
+  local character="/"
+  local string="/Th/is Is / My #/ Teststrüng"
+
+  assertEquals "4" $(strcount "${character}" "${string}")
+}
+
+function testStrcountReturnsZeroIfNotFound() {
+  local character="+"
+  local string="/Th/is Is / My #/ Teststrüng"
+
+  assertEquals "0" $(strcount "${character}" "${string}")
+}
+
+function testStrindexWorksAsExpected() {
+  local haystack="this/is/my/teststring"
+  local needle="/"
+
+  local index="$(strindex "${haystack}" "${needle}" "1" "left")"
+
+  assertEquals "5" "${index}"
+}
+
+function testStrindexFindsFourthCharacterFromLeft() {
+  local haystack="//this /is/my/teststring"
+  local needle="/"
+
+  local index="$(strindex "${haystack}" "${needle}" "4" "left")"
+
+  assertEquals "11" "${index}"
+}
+
+function testStrindexFindsCharacterFromRight() {
+  local haystack="/this/is/my/teststring"
+  local needle="/"
+
+  local index="$(strindex "${haystack}" "${needle}" "1" "right")"
+
+  assertEquals "12" "${index}"
+}
+
+function testStrindexFindsSecondCharacterFromRight() {
+  local haystack="/this/is/my/teststring"
+  local needle="/"
+
+  local index="$(strindex "${haystack}" "${needle}" "2" "right")"
+
+  assertEquals "9" "${index}"
+}
+
 source shunit2/source/2.1/src/shunit2
