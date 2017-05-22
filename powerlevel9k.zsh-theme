@@ -621,6 +621,7 @@ prompt_command_execution_time() {
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
 set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2505'
 set_default POWERLEVEL9K_SHORTEN_HOME_DELIMITER "~"
+set_default POWERLEVEL9K_SHORTEN_DIR_LENGTH "1"
 prompt_dir() {
   defined POWERLEVEL9K_SHORTEN_STRATEGY || POWERLEVEL9K_SHORTEN_STRATEGY=("home" "middle")
 
