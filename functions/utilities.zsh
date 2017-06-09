@@ -79,11 +79,15 @@ function getRelevantItem() {
   done
 }
 
-# OS detection for the `os_icon` segment
+# OS detection
 case $(uname) in
     Darwin)
       OS='OSX'
       OS_ICON=$(print_icon 'APPLE_ICON')
+      ;;
+    CYGWIN_NT-*)
+      OS='Windows'
+      OS_ICON=$(print_icon 'WINDOWS_ICON')
       ;;
     FreeBSD)
       OS='BSD'
@@ -100,6 +104,14 @@ case $(uname) in
     Linux)
       OS='Linux'
       OS_ICON=$(print_icon 'LINUX_ICON')
+
+      # Check if we're running on Android
+      case $(uname -o 2>/dev/null) in
+        Android)
+          OS='Android'
+          OS_ICON=$(print_icon 'ANDROID_ICON')
+          ;;
+      esac
       ;;
     SunOS)
       OS='Solaris'

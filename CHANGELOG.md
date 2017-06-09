@@ -1,3 +1,42 @@
+## Next
+
+- Added `teardown` command to turn off P9k prompt.
+- Fixes for P9k in Cygwin and 32-bit systems.
+- Better colors in virtualization segments.
+- Added 'Gopher' icon to the `go_version` segment.
+- Improved detection in `nvm`
+- Added option to support command status reading from piped command sequences.
+
+### New Segments: `host` and `user`
+
+Provides two separate segments for `host` and `user` in case you don't wont both
+in one (per the `context` segment).
+
+### New Segment: `newline`
+
+Allows you to split segments across multiple lines.
+
+### New Segment: `kubecontext`
+
+Shows the current context of your `kubectl` configuration.
+
+### New Segment: `vpn`
+
+Shows current `vpn` interface.
+
+## v0.6.4
+
+- Significant enhancements to the `battery` segment. Check out the README to
+  read more!
+
+## v0.6.3
+
+- Fixed susceptibility to [pw3nage exploit](https://github.com/njhartwell/pw3nage).
+- Added support for Android
+- The abbreviation for $HOME is now configurable (doesn't have to be `~`).
+- Fixed colorization of VCS segment in Subversion repos.
+- Improved handling of symlinks in installation paths.
+
 ## v0.6.2
 
 - Fixed some issues with the new `nerdfont-fontconfig` option.
@@ -17,6 +56,11 @@ A new script `debug/font-issues.zsh` was added, so that problems with your font 
 ### `ram` changes
 
 The `ram` segment now shows the available ram instead of free.
+
+### Add new segments `host` and `user`
+
+The user and host segments allow you to have different icons and colors for both the user and host segments
+depending on their state.
 
 ## v0.6.0
 

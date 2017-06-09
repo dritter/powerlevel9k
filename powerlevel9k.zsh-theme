@@ -44,7 +44,7 @@ fi
 # Resolve the installation path
 if [[ -L "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # If this theme is sourced as a symlink, we need to locate the real URL
-  filename="$(realpath -P $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || readlink -f $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || perl -MCwd=abs_path -le 'print abs_path readlink(shift);' $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null)"
+  filename="${POWERLEVEL9K_INSTALLATION_PATH:A}"
 elif [[ -d "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # Directory
   filename="${POWERLEVEL9K_INSTALLATION_PATH}/powerlevel9k.zsh-theme"
@@ -304,7 +304,7 @@ prompt_anaconda() {
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
     set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
-    "$1_prompt_segment" "$0" "$2" "$3" "$4" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
   fi
 }
 
@@ -341,6 +341,23 @@ prompt_background_jobs() {
     fi
     "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
   fi
+}
+
+# A newline in your prompt, so you can segments on multiple lines.
+prompt_newline() {
+  local lws newline
+  [[ "$1" == "right" ]] && return
+  newline=$'\n'
+  lws=$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS
+  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
+    newline="${newline}$(print_icon 'MULTILINE_NEWLINE_PROMPT_PREFIX')"
+  fi
+  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
+  "$1_prompt_segment" \
+    "$0" \
+    "$2" \
+    "NONE" "NONE" "${newline}"
+  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=$lws
 }
 
 # Segment that indicates usage level of current partition.
@@ -431,11 +448,16 @@ prompt_battery() {
     esac
   fi
 
-  if [[ $OS =~ Linux ]]; then
+  if [[ "$OS" == 'Linux' ]] || [[ "$OS" == 'Android' ]]; then
     local sysp="/sys/class/power_supply"
+
     # Reported BAT0 or BAT1 depending on kernel version
     [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
+
+    # Android-related
+    # Tested on: Moto G falcon (CM 13.0)
+    [[ -a $sysp/battery ]] && local bat=$sysp/battery
 
     # Return if no battery found
     [[ -z $bat ]] && return
@@ -469,9 +491,24 @@ prompt_battery() {
     message="$bat_percent%%"
   fi
 
-  # Draw the prompt_segment
-  if [[ -n $bat_percent ]]; then
-    "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
+  # override default icon if we are using battery stages
+  if [[ -n "$POWERLEVEL9K_BATTERY_STAGES" ]]; then
+    local segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_STAGES} - 1 ) ))
+    if [[ $segment > 1 ]]; then
+      local offset=$(( ($bat_percent / $segment) + 1 ))
+      # check if the stages are in an array or a string
+      [[ "${(t)POWERLEVEL9K_BATTERY_STAGES}" =~ "array" ]] && POWERLEVEL9K_BATTERY_ICON="$POWERLEVEL9K_BATTERY_STAGES[$offset]" || POWERLEVEL9K_BATTERY_ICON=${POWERLEVEL9K_BATTERY_STAGES:$offset:1}
+    fi
+  fi
+
+  # override the default color if we are using a color level array
+  if [[ -n "$POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
+    local segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
+    local offset=$(( ($bat_percent / $segment) + 1 ))
+    "$1_prompt_segment" "$0_${current_state}" "$2" "${POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+  else
+    # Draw the prompt_segment
+    "$1_prompt_segment" "$0_${current_state}" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
   fi
 }
 
@@ -573,6 +610,61 @@ prompt_context() {
   "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${context_states[$current_state]}" "${content}"
 }
 
+################################################################
+# User: user (who am I)
+# Note that if $DEFAULT_USER is not set, this prompt segment will always print
+set_default POWERLEVEL9K_USER_TEMPLATE "%n"
+prompt_user() {
+  local current_state="DEFAULT"
+  typeset -AH user_state
+  if [[ "$POWERLEVEL9K_ALWAYS_SHOW_USER" == true ]] || [[ "$USER" != "$DEFAULT_USER" ]]; then
+    if [[ $(print -P "%#") == '#' ]]; then
+      user_state=(
+        "STATE"               "ROOT"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "ROOT_ICON"
+      )
+    else
+      user_state=(
+        "STATE"               "DEFAULT"
+        "CONTENT"             "$USER"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "011"
+        "VISUAL_IDENTIFIER"   "USER_ICON"
+      )
+    fi
+    "$1_prompt_segment" "${0}_${user_state[STATE]}" "$2" "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+  fi
+}
+
+################################################################
+# Host: machine (where am I)
+set_default POWERLEVEL9K_HOST_TEMPLATE "%m"
+prompt_host() {
+  local current_state="LOCAL"
+  typeset -AH host_state
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    host_state=(
+      "STATE"               "REMOTE"
+      "CONTENT"             "${POWERLEVEL9K_HOST_TEMPLATE}"
+      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+      "FOREGROUND_COLOR"    "yellow"
+      "VISUAL_IDENTIFIER"   "SSH_ICON"
+    )
+  else
+    host_state=(
+      "STATE"               "LOCAL"
+      "CONTENT"             "${POWERLEVEL9K_HOST_TEMPLATE}"
+      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+      "FOREGROUND_COLOR"    "011"
+      "VISUAL_IDENTIFIER"   "HOST_ICON"
+    )
+  fi
+  "$1_prompt_segment" "$0_${host_state[STATE]}" "$2" "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
+}
+
 # The 'custom` prompt provides a way for users to invoke commands and display
 # the output in a segment.
 prompt_custom() {
@@ -620,7 +712,7 @@ prompt_command_execution_time() {
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
 set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2505'
-set_default POWERLEVEL9K_SHORTEN_HOME_DELIMITER "~"
+set_default POWERLEVEL9K_HOME_FOLDER_ABBREVIATION "~"
 set_default POWERLEVEL9K_SHORTEN_DIR_LENGTH "1"
 prompt_dir() {
   defined POWERLEVEL9K_SHORTEN_STRATEGY || POWERLEVEL9K_SHORTEN_STRATEGY=("home" "middle")
@@ -667,7 +759,7 @@ prompt_dir() {
     typeset -ah strategyOptions
     case "${normalizedStrategyName}" in
       "home")
-        strategyOptions=("${POWERLEVEL9K_SHORTEN_HOME_DELIMITER}")
+        strategyOptions=("${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}")
       ;;
       "package")
         # No options for package truncation.
@@ -702,6 +794,10 @@ prompt_dir() {
     truncatedPath="$( echo "${truncatedPath}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
   fi
 
+  if [[ "${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}" != "~" ]]; then
+    truncatedPath="$( echo "${truncatedPath}" | sed "s/^~/${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}/")"
+  fi
+
   "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${truncatedPath}" "${dir_states[$current_state]}"
 }
 
@@ -717,9 +813,11 @@ prompt_docker_machine() {
 # GO prompt
 prompt_go_version() {
   local go_version
+  local go_path
   go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
+  go_path=$(go env GOPATH 2>/dev/null)
 
-  if [[ -n "$go_version" ]]; then
+  if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
     "$1_prompt_segment" "$0" "$2" "green" "255" "$go_version"
   fi
 }
@@ -731,20 +829,19 @@ prompt_history() {
 
 # Detection for virtualization (systemd based systems only)
 prompt_detect_virt() {
-  if ! command -v systemd-detect-virt;then
+  if ! command -v systemd-detect-virt > /dev/null; then
     return
   fi
   local virt=$(systemd-detect-virt)
-  local color="yellow"
   if [[ "$virt" == "none" ]]; then
     if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
       virt="chroot"
-      "$1_prompt_segment" "$0" "$2" "$color" "$DEFAULT_COLOR" "$virt"
+      "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
     else
       ;
     fi
   else
-    "$1_prompt_segment" "$0" "$2" "$color" "$DEFAULT_COLOR" "$virt"
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
   fi
 }
 
@@ -788,6 +885,17 @@ prompt_ip() {
 
   "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
 }
+
+set_default POWERLEVEL9K_VPN_IP_INTERFACE "tun"
+# prompt if vpn active
+prompt_vpn_ip() {
+  for vpn_iface in $(ip tuntap | grep -e ^"$POWERLEVEL9K_VPN_IP_INTERFACE" | cut -d":" -f1)
+  do
+    ip=$(ip -4 a show "$vpn_iface" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
+    "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
+  done
+}
+
 
 prompt_load() {
   # The load segment can have three different states
@@ -838,13 +946,16 @@ prompt_node_version() {
 # Node version from NVM
 # Only prints the segment if different than the default value
 prompt_nvm() {
-  [[ ! $(type nvm) =~ 'nvm is a shell function'* ]] && return
-  local node_version=$(nvm current)
-  [[ -z "${node_version}" ]] || [[ ${node_version} = "none" ]] && return
-  local nvm_default=$(cat $NVM_DIR/alias/default)
+  local node_version nvm_default
+  (( $+functions[nvm_version] )) || return
+
+  node_version=$(nvm_version current)
+  [[ -z "${node_version}" || ${node_version} == "none" ]] && return
+
+  nvm_default=$(nvm_version default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  $1_prompt_segment "$0" "$2" "green" "011" "${node_version:1}" 'NODE_ICON'
+  $1_prompt_segment "$0" "$2" "magenta" "black" "${node_version:1}" 'NODE_ICON'
 }
 
 # NodeEnv Prompt
@@ -968,15 +1079,35 @@ prompt_ssh() {
 # Status: return code if verbose, otherwise just an icon if an error occurred
 set_default POWERLEVEL9K_STATUS_VERBOSE true
 set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
+set_default POWERLEVEL9K_STATUS_SHOW_PIPESTATUS true
 prompt_status() {
-  if [[ "$RETVAL" -ne 0 ]]; then
+  local ec_text
+  local ec_sum
+  local ec
+
+  if [[ $POWERLEVEL9K_STATUS_SHOW_PIPESTATUS == true ]]; then
+    ec_text=${RETVALS[1]}
+    ec_sum=${RETVALS[1]}
+
+    for ec in "${(@)RETVALS[2,-1]}"; do
+      ec_text="${ec_text}|${ec}"
+      ec_sum=$(( $ec_sum + $ec ))
+    done
+  else
+    # We use RETVAL instead of the right-most RETVALS item because
+    # PIPE_FAIL may be set.
+    ec_text=${RETVAL}
+    ec_sum=${RETVAL}
+  fi
+
+  if (( ec_sum > 0 )); then
     if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$RETVAL" 'CARRIAGE_RETURN_ICON'
+      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$ec_text" 'CARRIAGE_RETURN_ICON'
     else
       "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
   elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "046" "" 'OK_ICON'
+    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
   fi
 }
 
@@ -1105,6 +1236,12 @@ powerlevel9k_vcs_init() {
   zstyle ':vcs_info:hg*:*' get-bookmarks true
   zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
 
+  # For svn, only
+  # TODO fix the %b (branch) format for svn. Using %b breaks
+  # color-encoding of the foreground for the rest of the powerline.
+  zstyle ':vcs_info:svn*:*' formats "$VCS_CHANGESET_PREFIX%c%u"
+  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     zstyle ':vcs_info:*' get-revision true
   fi
@@ -1228,6 +1365,24 @@ prompt_dir_writable() {
   fi
 }
 
+# Kubernetes Current Context
+prompt_kubecontext() {
+  local kubectl_version=$(kubectl version 2>/dev/null)
+
+  if [[ -n "$kubectl_version" ]]; then
+    # Get the current Kubernetes config context's namespaece
+    local k8s_namespace=$(kubectl config get-contexts --no-headers | grep '*' | awk '{print $5}')
+    # Get the current Kuberenetes context
+    local k8s_context=$(kubectl config current-context)
+
+    if [[ -z "$k8s_namespace" ]]; then
+      k8s_namespace="default"
+    fi
+    "$1_prompt_segment" "$0" "$2" "magenta" "white" "$k8s_context/$k8s_namespace" "KUBERNETES_ICON"
+  fi
+}
+
+
 ################################################################
 # Prompt processing and drawing
 ################################################################
@@ -1278,14 +1433,16 @@ powerlevel9k_preexec() {
 set_default POWERLEVEL9K_PROMPT_ADD_NEWLINE false
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
+  RETVALS=( "$pipestatus[@]" )
 
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
+
   # Reset start time
-  _P9K_TIMER_START=99999999999
+  _P9K_TIMER_START=0x7FFFFFFF
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+    PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
+$(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
       # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
@@ -1300,13 +1457,13 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
       RPROMPT_SUFFIX=''
     fi
   else
-    PROMPT="%f%b%k$(build_left_prompt)"
+    PROMPT='%f%b%k$(build_left_prompt)'
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    RPROMPT='$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX'
   fi
 NEWLINE='
 '
@@ -1314,13 +1471,27 @@ NEWLINE='
 }
 
 prompt_powerlevel9k_setup() {
+  # The value below was set to better support 32-bit CPUs.
+  # It's the maximum _signed_ integer value on 32-bit CPUs.
+  # Please don't change it until 19 January of 2038. ;)
+
   # Disable false display of command execution time
-  _P9K_TIMER_START=99999999999
+  _P9K_TIMER_START=0x7FFFFFFF
+
+  # The prompt function will set these prompt_* options after the setup function
+  # returns. We need prompt_subst so we can safely run commands in the prompt
+  # without them being double expanded and we need prompt_percent to expand the
+  # common percent escape sequences.
+  prompt_opts=(subst percent cr)
+
+  # Borrowed from promptinit, sets the prompt options in case the theme was
+  # not initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors
-  term_colors=$(echotc Co)
-  if (( $term_colors < 256 )); then
+  term_colors=$(echotc Co 2>/dev/null)
+  if (( ! $? && ${term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support less than 256 colors!"
     print -P "If your terminal supports 256 colors, please export the appropriate environment variable"
     print -P "_before_ loading this theme in your \~\/.zshrc. In most terminal emulators, putting"
@@ -1348,12 +1519,6 @@ prompt_powerlevel9k_setup() {
   )
   print_deprecation_warning deprecated_segments
 
-  setopt prompt_subst
-
-  setopt LOCAL_OPTIONS
-  unsetopt XTRACE KSH_ARRAYS
-  setopt PROMPT_CR PROMPT_PERCENT PROMPT_SUBST MULTIBYTE
-
   # initialize colors
   autoload -U colors && colors
 
@@ -1373,6 +1538,13 @@ prompt_powerlevel9k_setup() {
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
   add-zsh-hook preexec powerlevel9k_preexec
+}
+
+prompt_powerlevel9k_teardown() {
+  add-zsh-hook -D precmd powerlevel9k_\*
+  add-zsh-hook -D preexec powerlevel9k_\*
+  PROMPT='%m%# '
+  RPROMPT=
 }
 
 prompt_powerlevel9k_setup "$@"
