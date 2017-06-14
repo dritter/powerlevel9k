@@ -794,10 +794,6 @@ prompt_dir() {
     truncatedPath="$( echo "${truncatedPath}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
   fi
 
-  if [[ "${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}" != "~" ]]; then
-    truncatedPath="$( echo "${truncatedPath}" | sed "s/^~/${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}/")"
-  fi
-
   "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${truncatedPath}" "${dir_states[$current_state]}"
 }
 
