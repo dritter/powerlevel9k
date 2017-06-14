@@ -775,6 +775,7 @@ prompt_dir() {
 
     if [[ -n "${current_path}" ]]; then
       typeset -Ah truncationResult
+      # Actually invoke the truncation
       # Split by semicolon (see https://unix.stackexchange.com/a/28873)
       truncationResult=("${(@s.;.)$(${strategy} "${current_path}" ${(@)strategyOptions})}")
 
