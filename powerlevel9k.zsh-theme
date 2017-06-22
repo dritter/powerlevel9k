@@ -711,7 +711,7 @@ prompt_command_execution_time() {
 
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
-set_default POWERLEVEL9K_SHORTEN_ABBREVIATION $'\U2505'
+set_default POWERLEVEL9K_SHORTEN_ABBREVIATION $'\U2026'
 set_default POWERLEVEL9K_HOME_FOLDER_ABBREVIATION "~"
 set_default POWERLEVEL9K_SHORTEN_DIR_LENGTH "1"
 prompt_dir() {
