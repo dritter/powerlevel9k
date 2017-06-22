@@ -6,21 +6,22 @@ setopt shwordsplit
 SHUNIT_PARENT=$0
 
 function setUp() {
-  export TERM="xterm-256color"
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-
-  # Every test should at least use the dir segment
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
   # Resets
   OLD_POWERLEVEL9K_SHORTEN_STRATEGY="${POWERLEVEL9K_SHORTEN_STRATEGY}"
   unset POWERLEVEL9K_SHORTEN_STRATEGY
   OLD_POWERLEVEL9K_SHORTEN_DIR_LENGTH="${POWERLEVEL9K_SHORTEN_DIR_LENGTH}"
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+  OLD_POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}
+  # Every test should at least use the dir segment
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+
+  export TERM="xterm-256color"
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 }
 
 function tearDown() {
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=${OLD_POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}
   POWERLEVEL9K_SHORTEN_STRATEGY="${OLD_POWERLEVEL9K_SHORTEN_STRATEGY}"
   POWERLEVEL9K_SHORTEN_DIR_LENGTH="${OLD_POWERLEVEL9K_SHORTEN_DIR_LENGTH}"
 }
@@ -89,7 +90,7 @@ function testTruncateWithFolderMarkerWorks() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.shorten_folder_marker
   cd $FOLDER
-  assertEquals "%K{blue} %F{black}/…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -110,7 +111,7 @@ function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.xxx
   cd $FOLDER
-  assertEquals "%K{blue} %F{black}/…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -132,6 +133,8 @@ function testHomeFolderDetectionWorks() {
 }
 
 function testHomeSubfolderDetectionWorks() {
+  # We just want to test the icon, so we set the strategy to the easiest possible.
+  POWERLEVEL9K_SHORTEN_STRATEGY=(home)
   POWERLEVEL9K_HOME_SUB_ICON='sub-icon'
 
   FOLDER=~/powerlevel9k-test
@@ -143,9 +146,12 @@ function testHomeSubfolderDetectionWorks() {
   rm -fr $FOLDER
   unset FOLDER
   unset POWERLEVEL9K_HOME_SUB_ICON
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
 function testOtherFolderDetectionWorks() {
+  # We just want to test the icon, so we set the strategy to the easiest possible.
+  POWERLEVEL9K_SHORTEN_STRATEGY=(home)
   POWERLEVEL9K_FOLDER_ICON='folder-icon'
 
   FOLDER=/tmp/powerlevel9k-test
@@ -157,9 +163,12 @@ function testOtherFolderDetectionWorks() {
   rm -fr $FOLDER
   unset FOLDER
   unset POWERLEVEL9K_FOLDER_ICON
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
 function testChangingDirPathSeparator() {
+  # Set strategy to the easiest possible.
+  POWERLEVEL9K_SHORTEN_STRATEGY=(home)
   POWERLEVEL9K_DIR_PATH_SEPARATOR='xXx'
   local FOLDER="/tmp/powerlevel9k-test/1/2"
   mkdir -p $FOLDER
@@ -171,9 +180,12 @@ function testChangingDirPathSeparator() {
   unset FOLDER
   rm -fr /tmp/powerlevel9k-test
   unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
 function testOmittingFirstCharacterWorks() {
+  # Set strategy to the easiest possible.
+  POWERLEVEL9K_SHORTEN_STRATEGY=(home)
   POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
   POWERLEVEL9K_FOLDER_ICON='folder-icon'
   cd /tmp
@@ -183,9 +195,12 @@ function testOmittingFirstCharacterWorks() {
   cd -
   unset POWERLEVEL9K_FOLDER_ICON
   unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
 function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
+  # Set strategy to the easiest possible.
+  POWERLEVEL9K_SHORTEN_STRATEGY=(home)
   POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
   POWERLEVEL9K_DIR_PATH_SEPARATOR='xXx'
   POWERLEVEL9K_FOLDER_ICON='folder-icon'
@@ -199,6 +214,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   unset POWERLEVEL9K_FOLDER_ICON
   unset POWERLEVEL9K_DIR_PATH_SEPARATOR
   unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
 # This test makes it obvious that combining a truncation strategy

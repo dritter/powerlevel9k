@@ -79,6 +79,14 @@ function testTruncateMiddleWorks() {
     assertFalse "${truncationResult[remainder]}"
 }
 
+function testTruncateMiddleWorksWithDeepFolder() {
+    typeset -Ah truncationResult
+    truncationResult=("${(@s.;.)$(_p9k_truncateMiddle "/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789" "2" "/" "…")}")
+
+    assertEquals "/tmp/po…st/1/12/123/1234/12…45/12…56/12…67/12…78/123456789" "${truncationResult[truncated]}"
+    assertFalse "${truncationResult[remainder]}"
+}
+
 function testTruncateMiddleWithChangedSubstituteWorks() {
     export HOME="/home/dritter"
 
