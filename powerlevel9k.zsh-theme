@@ -772,6 +772,9 @@ prompt_dir() {
       "foldermarker")
         strategyOptions=("${POWERLEVEL9K_SHORTEN_ABBREVIATION}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")
       ;;
+      "middle")
+        strategyOptions=("${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "/" "${POWERLEVEL9K_SHORTEN_ABBREVIATION}")
+      ;;
       *)
         strategyOptions=("${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_ABBREVIATION}")
       ;;
