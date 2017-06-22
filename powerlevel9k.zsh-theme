@@ -711,12 +711,15 @@ prompt_command_execution_time() {
 
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
-set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2505'
+set_default POWERLEVEL9K_SHORTEN_ABBREVIATION $'\U2505'
 set_default POWERLEVEL9K_HOME_FOLDER_ABBREVIATION "~"
 set_default POWERLEVEL9K_SHORTEN_DIR_LENGTH "1"
 prompt_dir() {
   defined POWERLEVEL9K_SHORTEN_STRATEGY || POWERLEVEL9K_SHORTEN_STRATEGY=("home" "middle")
 
+  if [[ -n "${POWERLEVEL9K_SHORTEN_DELIMITER}" ]]; then
+    POWERLEVEL9K_SHORTEN_ABBREVIATION="${POWERLEVEL9K_SHORTEN_DELIMITER}"
+  fi
   # For backwards compatiblity, translate old variable value to new value
   if [[ ! "${(t)POWERLEVEL9K_SHORTEN_STRATEGY}" =~ "array" ]]; then
     [[ "${POWERLEVEL9K_SHORTEN_STRATEGY}" == "truncate_with_package_name" ]] && POWERLEVEL9K_SHORTEN_STRATEGY=("package" "home" "right")
@@ -766,10 +769,10 @@ prompt_dir() {
         # strategyOptions=()
       ;;
       "foldermarker")
-        strategyOptions=("${POWERLEVEL9K_SHORTEN_DELIMITER}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")
+        strategyOptions=("${POWERLEVEL9K_SHORTEN_ABBREVIATION}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")
       ;;
       *)
-        strategyOptions=("${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_DELIMITER}")
+        strategyOptions=("${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_ABBREVIATION}")
       ;;
     esac
 
