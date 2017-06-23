@@ -4,6 +4,13 @@
 # This file holds functions for truncate strings
 # after certain rules for the powerlevel9k-ZSH-theme
 # https://github.com/bhilburn/powerlevel9k
+#
+# Be careful if you rename the functions in this file, as
+# the truncation strategy name is used as key to access
+# this functions. The name is lowercased, but the first
+# character is uppercased and prefixed with "_p9k_truncate".
+# Example: If you set "FolderMarker" as your strategy,
+# "_p9k_truncateFoldermarker" will be called.
 ################################################################
 
 function _p9k_truncateHome() {
