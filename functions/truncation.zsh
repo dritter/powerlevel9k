@@ -132,7 +132,7 @@ function _p9k_truncateFoldermarker() {
     local marked_folder="$(upsearchToParentFolder "${stopfile}")"
     if [[ -n "${marked_folder}" ]]; then
         # This is an encoded array! Delimiter is ";".
-        echo "truncated;${substitute};remainder;${PWD#${marked_folder}}"
+        echo "truncated;${substitute};remainder;${subject#${marked_folder}}"
 
         return 0
     fi
