@@ -13,6 +13,9 @@
 # "_p9k_truncateFoldermarker" will be called.
 ################################################################
 
+# Parameters:
+#   * $1 - subject
+#   * $2 - substitute
 function _p9k_truncateHome() {
     local subject="${1}"
     local substitute="${2}"
@@ -40,6 +43,10 @@ function _p9k_truncateHome() {
 #
 # This is a terminal truncation. After this one is
 # applied, no other truncation strategy can be applied.
+# Parameters:
+#   * $1 - subject
+#   * $2 - length
+#   * $3 - substitute
 function _p9k_truncateDirectories() {
     local subject="${1}"
     local length="${2}"
@@ -54,6 +61,11 @@ function _p9k_truncateDirectories() {
 
 # This is a terminal truncation. After this one is
 # applied, no other truncation strategy can be applied.
+# Parameters:
+#   * $1 - subject
+#   * $2 - length
+#   * $3 - delimiter
+#   * $4 - substitute
 function _p9k_truncateMiddle() {
     local subject="${1}"
     local length="${2}"
@@ -70,6 +82,10 @@ function _p9k_truncateMiddle() {
 #
 # This is a terminal truncation. After this one is
 # applied, no other truncation strategy can be applied.
+# Parameters:
+#   * $1 - subject
+#   * $2 - length
+#   * $3 - substitute
 function _p9k_truncateRight() {
     local subject="${1}"
     local length="${2}"
@@ -81,7 +97,8 @@ function _p9k_truncateRight() {
     echo "truncated;${truncatedPath};remainder;false"
 }
 
-
+# Parameters:
+#   * $1 - subject
 function _p9k_truncatePackage() {
     local subject="${1}"
 
