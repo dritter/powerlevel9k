@@ -159,3 +159,33 @@ function _p9k_truncateFoldermarker() {
     # This is an encoded array! Delimiter is ";".
     echo "truncated;false;remainder;${subject}"
 }
+
+# Truncate if the terminal width exceeds a
+# defined value.
+# Parameters:
+#   * $1 - subject
+#   * $2 - substitute
+#   * $3 - percentage
+function _p9k_truncateTerminalwidth() {
+    local subject="${1}"
+    local substitute="${2}"
+    typeset -F 2 percentage
+    percentage="${3}"+0.00001
+
+    local maxShownColumns=$(( COLUMNS * (percentage / 100) ))
+    if [[ "${COLUMNS}" -gt "${maxShownColumns}" ]]; then
+        # truncate to $maxShownColumns max
+        local charsToTruncate=$(( int(rint(COLUMNS - maxShownColumns)) ))
+        local remainder="${subject[-${charsToTruncate},-1]}"
+
+        # This is an encoded array! Delimiter is ";".
+        echo "truncated;${substitute};remainder;${remainder}"
+
+        return 0
+    fi
+
+    # Nothing truncated, just return
+    # the whole string as remainder.
+    # This is an encoded array! Delimiter is ";".
+    echo "truncated;false;remainder;${subject}"
+}

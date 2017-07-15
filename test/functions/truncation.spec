@@ -6,6 +6,8 @@ setopt shwordsplit
 SHUNIT_PARENT=$0
 
 function setUp() {
+  # Load Math functions
+  zmodload zsh/mathfunc
   # Load Powerlevel9k
   source functions/icons.zsh
   source functions/utilities.zsh
@@ -234,6 +236,20 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   # Go back
   cd $p9kFolder
   rm -fr $BASEFOLDER
+}
+
+function testTruncateWithTerminalWidthWorks() {
+  local COLUMNS=10
+
+  local FOLDER="/asdf/as df/1234ü/12345678910"
+  local SUBSTITUTE="…"
+  local TRUNCATE_PERCENT=20
+
+  typeset -Ah truncationResult
+  truncationResult=("${(@s.;.)$(_p9k_truncateTerminalwidth "${FOLDER}" "${SUBSTITUTE}" "${TRUNCATE_PERCENT}")}")
+
+  assertEquals "${SUBSTITUTE}" "${truncationResult[truncated]}"
+  assertEquals "45678910" "${truncationResult[remainder]}"
 }
 
 source shunit2/source/2.1/src/shunit2

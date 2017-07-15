@@ -773,7 +773,12 @@ prompt_dir() {
         strategyOptions=("${POWERLEVEL9K_SHORTEN_ABBREVIATION}" "${POWERLEVEL9K_SHORTEN_FOLDER_MARKER}")
       ;;
       "middle")
+        # POWERLEVEL9K_SHORTEN_DIR_LENGTH means here characters of the directory name that should not get truncated
         strategyOptions=("${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "/" "${POWERLEVEL9K_SHORTEN_ABBREVIATION}")
+      ;;
+      "terminalwidth")
+        # POWERLEVEL9K_SHORTEN_DIR_LENGTH means here the percentage of $COLUMNS that the string gets truncated to
+        strategyOptions=("${POWERLEVEL9K_SHORTEN_ABBREVIATION}" "${POWERLEVEL9K_SHORTEN_DIR_LENGTH}")
       ;;
       *)
         strategyOptions=("${POWERLEVEL9K_SHORTEN_DIR_LENGTH}" "${POWERLEVEL9K_SHORTEN_ABBREVIATION}")
