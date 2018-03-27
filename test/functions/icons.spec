@@ -23,52 +23,58 @@ function tearDown() {
     POWERLEVEL9K_MODE="${_OLD_P9K_MODE}"
 }
 
-function testLcCtypeIsSetCorrectlyInDefaultMode() {
+function testLcCtypeDoesNotLeakInDefaultMode() {
   POWERLEVEL9K_MODE="default"
+  LC_CTYPE="xxx"
   # Load Powerlevel9k
   source functions/icons.zsh
 
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+  assertEquals 'xxx' "${LC_CTYPE}"
 }
 
-function testLcCtypeIsSetCorrectlyInAwesomePatchedMode() {
+function testLcCtypeDoesNotLeakInAwesomePatchedMode() {
   POWERLEVEL9K_MODE="awesome-patched"
+  LC_CTYPE="xxx"
   # Load Powerlevel9k
   source functions/icons.zsh
 
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+  assertEquals 'xxx' "${LC_CTYPE}"
 }
 
-function testLcCtypeIsSetCorrectlyInAwesomeFontconfigMode() {
+function testLcCtypeDoesNotLeakInAwesomeFontconfigMode() {
   POWERLEVEL9K_MODE="awesome-fontconfig"
+  LC_CTYPE="xxx"
   # Load Powerlevel9k
   source functions/icons.zsh
 
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+  assertEquals 'xxx' "${LC_CTYPE}"
 }
 
-function testLcCtypeIsSetCorrectlyInNerdfontFontconfigMode() {
+function testLcCtypeDoesNotLeakInNerdfontFontconfigMode() {
   POWERLEVEL9K_MODE="nerdfont-fontconfig"
+  LC_CTYPE="xxx"
   # Load Powerlevel9k
   source functions/icons.zsh
 
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+  assertEquals 'xxx' "${LC_CTYPE}"
 }
 
-function testLcCtypeIsSetCorrectlyInFlatMode() {
+function testLcCtypeDoesNotLeakInFlatMode() {
   POWERLEVEL9K_MODE="flat"
+  LC_CTYPE="xxx"
   # Load Powerlevel9k
   source functions/icons.zsh
 
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+  assertEquals 'xxx' "${LC_CTYPE}"
 }
 
-function testLcCtypeIsSetCorrectlyInCompatibleMode() {
+function testLcCtypeDoesNotLeakInCompatibleMode() {
   POWERLEVEL9K_MODE="compatible"
+  LC_CTYPE="xxx"
   # Load Powerlevel9k
   source functions/icons.zsh
 
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+  assertEquals 'xxx' "${LC_CTYPE}"
 }
 
 # Go through all icons defined in default mode, and
