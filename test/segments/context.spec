@@ -5,6 +5,8 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
+
 function setUp() {
   export TERM="xterm-256color"
 
