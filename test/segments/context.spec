@@ -26,12 +26,14 @@ function tearDown() {
 function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
   # Fix leaked state for travis
   unset P9K_CONTEXT_ALWAYS_SHOW
+  setopt xtrace
   local DEFAULT_USER=$(whoami)
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context custom_world)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  unsetopt xtrace
 }
 
 function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
