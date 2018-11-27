@@ -33,8 +33,7 @@ prompt_kubepods() {
   local namespace
   local ready
   setopt xtrace
-#   local rawData=$(command kubectl get pods --all-namespaces)
-  local rawData=$(kubectl get pods --all-namespaces)
+  local rawData=$(command kubectl get pods --all-namespaces)
   for data in "${(f@)rawData}"; do
     [[ "$data" =~ ^([^ ]+) ]] && namespace="${MATCH}"
     [[ ! "${namespace}" =~ "(${(j:|:)P9K_KUBEPODS_NAMESPACES:-.*)})" ]] && continue
