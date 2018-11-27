@@ -49,11 +49,11 @@ prompt_kubepods() {
   done
 
   # Build up info string
-  local info
+  local -ah info
   for desired_namespace in "${(f@)P9K_KUBEPODS_NAMESPACES}"; do
     local ready="${namespaces[${desired_namespace}_READY]}"
     local overall="${namespaces[${desired_namespace}_OVERALL]}"
-    info+="${desired_namespace}: ${ready}/${overall}"
+    info+=("${desired_namespace}: ${ready}/${overall}")
   done
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${info}"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${(j: :)info}"
 }
