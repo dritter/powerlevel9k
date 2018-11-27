@@ -4,7 +4,7 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-setopt localoptions extended_glob
+setopt localoptions
 
 (){
   # Set the right locale to protect special characters
@@ -16,7 +16,7 @@ setopt localoptions extended_glob
   #                                                        ⎈          ⎈         ⎈         ⎈         ⎈
   p9k::register_segment "KUBECONTEXT" "" "blue" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
 
-  p9k::set_default P9K_KUBEPODS_NAMESPACES ""
+  p9k::defined P9K_KUBEPODS_NAMESPACES || P9K_KUBEPODS_NAMESPACES=()
 }
 
 ################################################################
@@ -29,19 +29,31 @@ setopt localoptions extended_glob
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_kubepods() {
-  local info
-  local namespace
-  local ready
-  setopt xtrace
+  local -Ah namespaces
   local rawData=$(command kubectl get pods --all-namespaces)
+  local headline=1
   for data in "${(f@)rawData}"; do
-    [[ "$data" =~ ^([^ ]+) ]] && namespace="${MATCH}"
-    [[ ! "${namespace}" =~ "(${(j:|:)P9K_KUBEPODS_NAMESPACES:-.*)})" ]] && continue
-    [[ "$data" =~ ([0-9]+)/([0-9]+) ]] && ready="${MATCH}"
+    # Skip headline
+    [[ $headline == 1 ]] && headline=0 && continue
+    # Parse and aggregate data
+    if [[ "${data}" =~ ^([^ ]+).*([0-9]+)/([0-9]+) ]]; then
+      local current_namespace="${match[1]}"
+      local pods_ready="${match[2]}"
+      local pods_overall="${match[3]}"
 
-    info+="${namespace}: ${ready}"
+      local ready=${namespaces[${current_namespace}_READY]:0}
+      namespaces[${current_namespace}_READY]=$(( pods_ready + ready ))
+      local overall=${namespaces[${current_namespace}_OVERALL]:0}
+      namespaces[${current_namespace}_OVERALL]=$(( pods_overall + overall ))
+    fi
   done
-  unsetopt xtrace
 
+  # Build up info string
+  local info
+  for desired_namespace in "${(f@)P9K_KUBEPODS_NAMESPACES}"; do
+    local ready="${namespaces[${desired_namespace}_READY]}"
+    local overall="${namespaces[${desired_namespace}_OVERALL]}"
+    info+="${desired_namespace}: ${ready}/${overall}"
+  done
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${info}"
 }

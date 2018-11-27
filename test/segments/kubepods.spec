@@ -33,6 +33,7 @@ function mockKubectl() {
     echo \"NAMESPACE       NAME                       READY     STATUS    RESTARTS   AGE
 kube-system     kube-dns-ffd85c78c-6frzd   3/3       Running   0          5m
 my-namespace    kube-dns-fddsfs23h-gds32   0/3       Running   0          5m
+another-namespace  kube-xxxx-nflnl34   3/3       Running   0          5m
 my-namespace    kube-dns-lnklnknk-eerx33   2/4       Running   0          5m\"
 " > "${FOLDER}/bin/kubectl"
 chmod +x "${FOLDER}/bin/kubectl"
@@ -43,7 +44,7 @@ function testKubepodsSegmentWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubepods)
 
-  local P9K_KUBEPODS_NAMESPACES=(my-namespace kube-system)
+  local P9K_KUBEPODS_NAMESPACES=(my-namespace kube-system xxx)
 
   assertEquals "my-namespace: 2/7" "$(__p9k_build_left_prompt)"
 }
