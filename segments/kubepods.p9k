@@ -14,7 +14,7 @@ setopt localoptions
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                        ⎈          ⎈         ⎈         ⎈         ⎈
-  p9k::register_segment "KUBECONTEXT" "" "blue" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
+  p9k::register_segment "KUBEPODS" "" "blue" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
 
   p9k::defined P9K_KUBEPODS_NAMESPACES || P9K_KUBEPODS_NAMESPACES=()
 }
