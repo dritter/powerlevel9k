@@ -16,7 +16,10 @@ setopt localoptions
   #                                                        ⎈          ⎈         ⎈         ⎈         ⎈
   p9k::register_segment "KUBEPODS" "" "blue" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
 
+  # Only show this namespaces
   p9k::defined P9K_KUBEPODS_NAMESPACES || P9K_KUBEPODS_NAMESPACES=()
+  # Ignore the specified pods
+  p9k::defined P9K_KUBEPODS_IGNORE_PODS || P9K_KUBEPODS_IGNORE_PODS=()
 }
 
 ################################################################
@@ -36,10 +39,15 @@ prompt_kubepods() {
     # Skip headline
     [[ $headline == 1 ]] && headline=0 && continue
     # Parse and aggregate data
-    if [[ "${data}" =~ ^([^ ]+).*([0-9]+)/([0-9]+) ]]; then
+    if [[ "${data}" =~ "^([^ ]+)[ ]+([^ ]+).*([0-9]+)/([0-9]+)" ]]; then
       local current_namespace="${match[1]}"
-      local pods_ready="${match[2]}"
-      local pods_overall="${match[3]}"
+      local pod="${match[2]}"
+      local pods_ready="${match[3]}"
+      local pods_overall="${match[4]}"
+
+      for ignored_pod in ${(@)P9K_KUBEPODS_IGNORE_PODS}; do
+        [[ "${pod}" =~ "${ignored_pod}" ]] && continue 2
+      done
 
       local ready=${namespaces[${current_namespace}_READY]:0}
       namespaces[${current_namespace}_READY]=$(( pods_ready + ready ))
