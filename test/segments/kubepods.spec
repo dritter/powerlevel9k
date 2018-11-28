@@ -41,6 +41,22 @@ my-namespace    kube-ignored2-lnnk-exxe58   2/4       Running   0          5m\"
 chmod +x "${FOLDER}/bin/kubectl"
 }
 
+function mockEmptyKubectl() {
+    echo "#!/bin/sh\n\n
+    echo \"NAMESPACE       NAME                       READY     STATUS    RESTARTS   AGE\"
+" > "${FOLDER}/bin/kubectl"
+chmod +x "${FOLDER}/bin/kubectl"
+}
+
+function testKubepodsShowsNothingIfNoNamespacesAreRunning() {
+  mockEmptyKubectl
+  local P9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubepods custom_world)
+
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+}
+
 function testKubepodsSegmentWorks() {
   mockKubectl
   local -a P9K_LEFT_PROMPT_ELEMENTS
