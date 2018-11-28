@@ -46,7 +46,7 @@ function testKubepodsSegmentWorks() {
 
   local P9K_KUBEPODS_NAMESPACES=(my-namespace kube-system xxx)
 
-  assertEquals " my-namespace: 2/7 kube-system 3/3 xxx 0/0 %k%f " "$(__p9k_build_left_prompt)"
+  assertEquals " my-namespace: 2/7 kube-system: 3/3 xxx: 0/0 %k%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2
