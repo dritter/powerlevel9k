@@ -50,7 +50,7 @@ prompt_kubepods() {
 
   # Build up info string
   local -ah info
-  for desired_namespace in "${(f@)P9K_KUBEPODS_NAMESPACES}"; do
+  for desired_namespace in ${(@)P9K_KUBEPODS_NAMESPACES}; do
     local ready="${namespaces[${desired_namespace}_READY]}"
     local overall="${namespaces[${desired_namespace}_OVERALL]}"
     info+=("${desired_namespace}: ${ready:-0}/${overall:-0}")
