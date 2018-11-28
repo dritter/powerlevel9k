@@ -38,14 +38,31 @@ my-namespace    kube-dns-lnklnknk-eerx33   2/4       Running   0          5m
 my-namespace    kube-ignored1-lnnk-exxe56   2/4       Running   0          5m
 my-namespace    kube-ignored2-lnnk-exxe58   2/4       Running   0          5m\"
 " > "${FOLDER}/bin/kubectl"
-chmod +x "${FOLDER}/bin/kubectl"
+  chmod +x "${FOLDER}/bin/kubectl"
 }
 
 function mockEmptyKubectl() {
     echo "#!/bin/sh\n\n
     echo \"NAMESPACE       NAME                       READY     STATUS    RESTARTS   AGE\"
 " > "${FOLDER}/bin/kubectl"
-chmod +x "${FOLDER}/bin/kubectl"
+  chmod +x "${FOLDER}/bin/kubectl"
+}
+
+# Hack: Mock an error script that throws an error to
+# shadow potentially installed kubectl executable.
+function mockKubectlNotInstalled() {
+  echo "#!/bin/sh\n\n
+    exit 1" > "${FOLDER}/bin/kubectl"
+  chmod +x "${FOLDER}/bin/kubectl"
+}
+
+function testKubepodsShowsNothingIfKubectlIsNotInstalled() {
+  mockKubectlNotInstalled
+  local P9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubepods custom_world)
+
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testKubepodsShowsNothingIfNoNamespacesAreRunning() {
