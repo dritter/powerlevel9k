@@ -35,6 +35,7 @@ prompt_kubepods() {
   local -Ah namespaces
   local rawData=$(command kubectl get pods --all-namespaces)
   local headline=1
+  declare -aU all_namespaces
   for data in "${(f@)rawData}"; do
     # Skip headline
     [[ $headline == 1 ]] && headline=0 && continue
@@ -44,6 +45,9 @@ prompt_kubepods() {
       local pod="${match[2]}"
       local pods_ready="${match[3]}"
       local pods_overall="${match[4]}"
+
+      # Add to list of all pods
+      all_namespaces+=( "${current_namespace}" )
 
       for ignored_pod in ${(@)P9K_KUBEPODS_IGNORE_PODS}; do
         [[ "${pod}" =~ "${ignored_pod}" ]] && continue 2
@@ -56,9 +60,13 @@ prompt_kubepods() {
     fi
   done
 
+  local -a desired_namespaces
+  # Use the defined namespaces, or all, if no namespaces were defined.
+  desired_namespaces=${${P9K_KUBEPODS_NAMESPACES}:-${all_namespaces}}
+
   # Build up info string
   local -ah info
-  for desired_namespace in ${(@)P9K_KUBEPODS_NAMESPACES}; do
+  for desired_namespace in ${(@)desired_namespaces}; do
     local ready="${namespaces[${desired_namespace}_READY]}"
     local overall="${namespaces[${desired_namespace}_OVERALL]}"
     info+=("${desired_namespace}: ${ready:-0}/${overall:-0}")

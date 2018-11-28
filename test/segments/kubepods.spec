@@ -51,6 +51,14 @@ function testKubepodsSegmentWorks() {
   assertEquals "%K{004} %F{015}⎈ %f%F{015}my-namespace: 6/15 kube-system: 3/3 xxx: 0/0 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
+function testKubepodsSegmentShowsAllNamespacesIfNoNamespaceWasDefined() {
+  mockKubectl
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubepods)
+
+  assertEquals "%K{004} %F{015}⎈ %f%F{015}kube-system: 3/3 my-namespace: 6/15 another-namespace: 3/3 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+}
+
 function testKubepodsSegmentIgnoresSpecifiedPods() {
   mockKubectl
   local -a P9K_LEFT_PROMPT_ELEMENTS
