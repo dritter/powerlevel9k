@@ -32,11 +32,11 @@ function mockKubectl() {
     echo "#!/bin/sh\n\n
     echo \"NAMESPACE       NAME                       READY     STATUS    RESTARTS   AGE
 kube-system     kube-dns-ffd85c78c-6frzd   3/3       Running   0          5m
-my-namespace    kube-dns-fddsfs23h-gds32   0/3       Running   0          5m
+my-namespace    kube-dns-fddsfs23h-gds32   0/3       Running   1          5m
 another-namespace  kube-xxxx-nflnl34   2/3       Running   0          5m
 my-namespace    kube-dns-lnklnknk-eerx33   2/4       Running   0          5m
-my-namespace    kube-ignored1-lnnk-exxe56   2/4       Running   0          5m
-my-namespace    kube-ignored2-lnnk-exxe58   2/4       Running   0          5m\"
+my-namespace    kube-ignored1-lnnk-exxe56   2/4       Running   4          5m
+my-namespace    kube-ignored2-lnnk-exxe58   2/4       Running   1          5m\"
 " > "${FOLDER}/bin/kubectl"
   chmod +x "${FOLDER}/bin/kubectl"
 }
@@ -123,6 +123,17 @@ function testKubepodsSegmentDoesNotChangeOutputIfNotAllPodsAreRunning() {
   local P9K_KUBEPODS_NAMESPACES=(another-namespace)
 
   assertEquals "%K{004} %F{015}⎈ %f%F{015}another-namespace: 2/3 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+}
+
+function testKubepodsSegmentShowsRestarts() {
+  mockKubectl
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubepods)
+
+  local P9K_KUBEPODS_NAMESPACES=(my-namespace)
+  local P9K_KUBEPODS_SHOW_RESTARTS="true"
+
+  assertEquals "%K{004} %F{015}⎈ %f%F{015}my-namespace: 6/15/6 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

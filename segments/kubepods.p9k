@@ -20,6 +20,7 @@ setopt localoptions
   p9k::defined P9K_KUBEPODS_NAMESPACES || P9K_KUBEPODS_NAMESPACES=()
   # Ignore the specified pods
   p9k::defined P9K_KUBEPODS_IGNORE_PODS || P9K_KUBEPODS_IGNORE_PODS=()
+  p9k::set_default P9K_KUBEPODS_SHOW_RESTARTS "false"
 }
 
 ################################################################
@@ -40,11 +41,12 @@ prompt_kubepods() {
     # Skip headline
     [[ $headline == 1 ]] && headline=0 && continue
     # Parse and aggregate data
-    if [[ "${data}" =~ "^([^ ]+)[ ]+([^ ]+).*([0-9]+)/([0-9]+)" ]]; then
+    if [[ "${data}" =~ "^([^ ]+)[ ]+([^ ]+).*([0-9]+)/([0-9]+)[ ]+[a-zA-Z]+[ ]+([0-9]+)" ]]; then
       local current_namespace="${match[1]}"
       local pod="${match[2]}"
       local pods_ready="${match[3]}"
       local pods_overall="${match[4]}"
+      local pod_restarts="${match[5]}"
 
       # Add to list of all pods
       all_namespaces+=( "${current_namespace}" )
@@ -57,6 +59,8 @@ prompt_kubepods() {
       namespaces[${current_namespace}_READY]=$(( pods_ready + ready ))
       local overall=${namespaces[${current_namespace}_OVERALL]:0}
       namespaces[${current_namespace}_OVERALL]=$(( pods_overall + overall ))
+      local restarts=${namespaces[${current_namespace}_RESTARTS]:0}
+      namespaces[${current_namespace}_RESTARTS]=$(( pod_restarts + restarts ))
     fi
   done
 
@@ -70,7 +74,9 @@ prompt_kubepods() {
   for desired_namespace in ${(@)desired_namespaces}; do
     local ready="${${namespaces[${desired_namespace}_READY]}:-0}"
     local overall="${${namespaces[${desired_namespace}_OVERALL]}:-0}"
-    info+=("${desired_namespace}: ${ready}/${overall}")
+    local current_info="${desired_namespace}: ${ready}/${overall}"
+    [[ "${P9K_KUBEPODS_SHOW_RESTARTS}" == "true" ]] && current_info+="/${${namespaces[${desired_namespace}_RESTARTS]}:-0}"
+    info+=("${current_info}")
 
     [[ ${overall} > 0 && ${ready} != ${overall} ]] && all_running="false"
   done
