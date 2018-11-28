@@ -64,12 +64,18 @@ prompt_kubepods() {
   # Use the defined namespaces, or all, if no namespaces were defined.
   desired_namespaces=${${P9K_KUBEPODS_NAMESPACES}:-${all_namespaces}}
 
+  local all_running="true"
   # Build up info string
   local -ah info
   for desired_namespace in ${(@)desired_namespaces}; do
-    local ready="${namespaces[${desired_namespace}_READY]}"
-    local overall="${namespaces[${desired_namespace}_OVERALL]}"
-    info+=("${desired_namespace}: ${ready:-0}/${overall:-0}")
+    local ready="${${namespaces[${desired_namespace}_READY]}:-0}"
+    local overall="${${namespaces[${desired_namespace}_OVERALL]}:-0}"
+    info+=("${desired_namespace}: ${ready}/${overall}")
+
+    [[ ${overall} > 0 && ${ready} != ${overall} ]] && all_running="false"
   done
+  # If all pods are up & running, and a special "all running" string was defined, overwrite the info array.
+  [[ "${all_running}" == "true" && -n "${P9K_KUBEPODS_ALL_RUNNING_STRING}" ]] && info=( "${P9K_KUBEPODS_ALL_RUNNING_STRING}" )
+
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${(j: :)info}"
 }

@@ -33,7 +33,7 @@ function mockKubectl() {
     echo \"NAMESPACE       NAME                       READY     STATUS    RESTARTS   AGE
 kube-system     kube-dns-ffd85c78c-6frzd   3/3       Running   0          5m
 my-namespace    kube-dns-fddsfs23h-gds32   0/3       Running   0          5m
-another-namespace  kube-xxxx-nflnl34   3/3       Running   0          5m
+another-namespace  kube-xxxx-nflnl34   2/3       Running   0          5m
 my-namespace    kube-dns-lnklnknk-eerx33   2/4       Running   0          5m
 my-namespace    kube-ignored1-lnnk-exxe56   2/4       Running   0          5m
 my-namespace    kube-ignored2-lnnk-exxe58   2/4       Running   0          5m\"
@@ -89,7 +89,7 @@ function testKubepodsSegmentShowsAllNamespacesIfNoNamespaceWasDefined() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubepods)
 
-  assertEquals "%K{004} %F{015}⎈ %f%F{015}kube-system: 3/3 my-namespace: 6/15 another-namespace: 3/3 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{015}⎈ %f%F{015}kube-system: 3/3 my-namespace: 6/15 another-namespace: 2/3 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testKubepodsSegmentIgnoresSpecifiedPods() {
@@ -101,6 +101,28 @@ function testKubepodsSegmentIgnoresSpecifiedPods() {
   local P9K_KUBEPODS_IGNORE_PODS=(kube-ignored1 kube-ignored2)
 
   assertEquals "%K{004} %F{015}⎈ %f%F{015}my-namespace: 2/7 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+}
+
+function testKubepodsSegmentCanChangeOutputIfAllPodsAreRunning() {
+  mockKubectl
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubepods)
+
+  local P9K_KUBEPODS_ALL_RUNNING_STRING="All Up!"
+  local P9K_KUBEPODS_NAMESPACES=(kube-system)
+
+  assertEquals "%K{004} %F{015}⎈ %f%F{015}All Up! %k%F{004}%f " "$(__p9k_build_left_prompt)"
+}
+
+function testKubepodsSegmentDoesNotChangeOutputIfNotAllPodsAreRunning() {
+  mockKubectl
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubepods)
+
+  local P9K_KUBEPODS_ALL_RUNNING_STRING="All Up!"
+  local P9K_KUBEPODS_NAMESPACES=(another-namespace)
+
+  assertEquals "%K{004} %F{015}⎈ %f%F{015}another-namespace: 2/3 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2
