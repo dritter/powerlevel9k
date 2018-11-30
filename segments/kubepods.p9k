@@ -66,7 +66,7 @@ prompt_kubepods() {
 
   local -a desired_namespaces
   # Use the defined namespaces, or all, if no namespaces were defined.
-  desired_namespaces=${${P9K_KUBEPODS_NAMESPACES}:-${all_namespaces}}
+  desired_namespaces=(${${P9K_KUBEPODS_NAMESPACES}:-${all_namespaces}})
 
   local all_running="true"
   # Build up info string
