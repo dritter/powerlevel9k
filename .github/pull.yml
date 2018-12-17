@@ -1,0 +1,5 @@
+version: "1"
+rules:
+  - base: next
+    upstream: bhilburn:next        # change wei to the owner of upstream repo
+    autoMerge: true
