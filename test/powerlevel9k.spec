@@ -31,6 +31,7 @@ function testJoinedSegments() {
 function testTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  source segments/root_indicator.p9k
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
@@ -128,8 +129,9 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   __p9k_prepare_prompts
+  nl=$'\n'
   #             ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B
-  assertEquals '╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
+  assertEquals "╭─[39m[0m[49m[107m [30mworld [49m[97m[39m ${nl}╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B" "$(print -P ${PROMPT}${RPROMPT})"
 
 }
 
