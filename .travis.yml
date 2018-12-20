@@ -69,6 +69,8 @@ before_script:
       export PATH="$dest/bin:$PATH"
     }
   - setup_zsh $_ZSH_VERSION
+  # Show loaded ZSH modules
+  - "zsh -c 'echo Loaded ZSH Modules: ${(k@)modules}'"
   # Show the git version being used to test.
   - "git --version"
   # Show the mercurial version being used to test.
