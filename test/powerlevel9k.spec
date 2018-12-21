@@ -128,6 +128,10 @@ function testNewlineOnRpromptCanBeDisabled() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
+  echo "----------------------------------"
+  echo "Loaded ZSH Modules: ${(k@)modules}"
+  echo "----------------------------------"
+
   __p9k_prepare_prompts
 
   #               ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B
