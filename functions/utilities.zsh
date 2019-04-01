@@ -288,10 +288,6 @@ function p9k::get_relevant_item() {
   done
 }
 
-# Combine the PROMPT_ELEMENTS
-typeset -gU P9K_PROMPT_ELEMENTS
-P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
-
 ###############################################################
 # @description
 #   Determine if the passed segment is used in either the LEFT or
@@ -301,7 +297,11 @@ P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMEN
 #   $1 string The segment to be tested.
 ##
 function p9k::segment_in_use() {
-  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$1]}" ]] && return 0 || return 1
+  local key=$1
+  [[ -n "${P9K_LEFT_PROMPT_ELEMENTS[(r)${key}]}" ||
+     -n "${P9K_LEFT_PROMPT_ELEMENTS[(r)${key}_joined]}" ||
+     -n "${P9K_RIGHT_PROMPT_ELEMENTS[(r)${key}]}" ||
+     -n "${P9K_RIGHT_PROMPT_ELEMENTS[(r)${key}_joined]}" ]]
 }
 
 ###############################################################
