@@ -266,6 +266,7 @@ function __p9k_load_segments() {
   # Load Async libs at last, because before initializing
   # ZSH-Async, all functions must be defined.
   if ${load_async}; then
+      __P9K_ASYNC_ENV_TRANSPORT=$(mktemp -u ${TMPDIR:-/tmp}/p9k-$$-async-env-transport-fifo.XXXXXXXXXX)
       __P9K_DATA[async]=true
       # TODO: ZSH-ASYNC Path configurable!
       source ${__P9K_DIRECTORY}/zsh-async/async.zsh
