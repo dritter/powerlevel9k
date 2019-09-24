@@ -11,17 +11,17 @@ function setUp() {
 }
 
 function testGetColorCodeWithAnsiForegroundColor() {
-  p9k::get_color_code 'green'
+  __p9k_get_color_code 'green'
   assertEquals '002' "${__P9K_RETVAL}"
 }
 
 function testGetColorCodeWithAnsiBackgroundColor() {
-  p9k::get_color_code 'bg-green'
+  __p9k_get_color_code 'bg-green'
   assertEquals '002' "${__P9K_RETVAL}"
 }
 
 function testGetColorCodeWithNumericalColor() {
-  p9k::get_color_code '002'
+  __p9k_get_color_code '002'
   assertEquals '002' "${__P9K_RETVAL}"
 }
 
@@ -55,7 +55,7 @@ function testBrightColorsWork() {
   # ensure that all input channels for bright colors are handled
   # correctly.
   assertTrue "p9k::is_same_color 'lightcyan' '014'"
-  p9k::get_color_code 'lightcyan'
+  __p9k_get_color_code 'lightcyan'
   assertEquals '014' "${__P9K_RETVAL}"
   __p9k_get_color 'lightcyan'
   assertEquals '014' "${__P9K_RETVAL}"

@@ -320,7 +320,7 @@ function __p9k_term_colors() {
 function __p9k_get_color() {
   # no need to check numerical values
   if [[ "$1" != <-> ]] && [[ "$1" != '#'* ]]; then
-      p9k::get_color_code "${1}"
+      __p9k_get_color_code "${1}"
       1="${__P9K_RETVAL}"
   fi
   __P9K_RETVAL="${1}"
@@ -383,7 +383,7 @@ function __p9k_foreground_color() {
 # @note
 #   - The return value is set as variable __P9K_RETVAL
 ##
-function p9k::get_color_code() {
+function __p9k_get_color_code() {
   # Early exit: Check if given value is already numerical
   if [[ "$1" == <-> ]]; then
     # Pad color with zeroes
@@ -397,6 +397,29 @@ function p9k::get_color_code() {
     "none")
       __P9K_RETVAL='none'
     ;;
+    *)
+      # Strip eventual "bg-" prefixes
+      colorName=${colorName#bg-}
+      # Strip eventual "fg-" prefixes
+      colorName=${colorName#fg-}
+      # Strip eventual "br" prefixes ("bright" colors)
+      colorName=${colorName#br}
+      __P9K_RETVAL="$__P9K_COLORS[$colorName]"
+    ;;
+  esac
+}
+
+################################################################
+# @description
+#   Function to list color codes for manual testing purposes.
+##
+# @args
+#   $1 misc Number or string of color.
+##
+function p9k::get_color_code() {
+  local colorName="${1}"
+  # Check if value is none with any case.
+  case "${(L)colorName}" in
     "foreground")
       # for manual testing purposes in terminal
       # call via `p9k::get_color_code foreground`
@@ -419,15 +442,6 @@ function p9k::get_color_code() {
           print -P "${colorCode}${color} - ${i}%k"
       done
     ;;
-    *)
-      # Strip eventual "bg-" prefixes
-      colorName=${colorName#bg-}
-      # Strip eventual "fg-" prefixes
-      colorName=${colorName#fg-}
-      # Strip eventual "br" prefixes ("bright" colors)
-      colorName=${colorName#br}
-      __P9K_RETVAL="$__P9K_COLORS[$colorName]"
-    ;;
   esac
 }
 
@@ -444,9 +458,9 @@ function p9k::is_same_color() {
     return 1
   fi
 
-  p9k::get_color_code "$1"
+  __p9k_get_color_code "$1"
   local color1="${__P9K_RETVAL}"
-  p9k::get_color_code "$2"
+  __p9k_get_color_code "$2"
   local color2="${__P9K_RETVAL}"
 
   return $(( color1 != color2 ))
