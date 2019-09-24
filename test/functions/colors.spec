@@ -11,15 +11,18 @@ function setUp() {
 }
 
 function testGetColorCodeWithAnsiForegroundColor() {
-  assertEquals '002' "$(p9k::get_color_code 'green')"
+  p9k::get_color_code 'green'
+  assertEquals '002' "${__P9K_RETVAL}"
 }
 
 function testGetColorCodeWithAnsiBackgroundColor() {
-  assertEquals '002' "$(p9k::get_color_code 'bg-green')"
+  p9k::get_color_code 'bg-green'
+  assertEquals '002' "${__P9K_RETVAL}"
 }
 
 function testGetColorCodeWithNumericalColor() {
-  assertEquals '002' "$(p9k::get_color_code '002')"
+  p9k::get_color_code '002'
+  assertEquals '002' "${__P9K_RETVAL}"
 }
 
 function testIsSameColorComparesAnsiForegroundAndNumericalColorCorrectly() {
@@ -38,9 +41,12 @@ function testIsSameColorDoesNotYieldNotEqualColorsTruthy() {
 }
 
 function testGetColorCodeWithTrueColor() {
-  assertEquals '#fff8e7' "$(p9k::get_color '#fff8e7')"  # truecolor (hex)
-  assertEquals '137' "$(p9k::get_color '137')"          # number (dec)
-  assertEquals '100' "$(p9k::get_color 'yellow4')"      # named
+  __p9k_get_color '#fff8e7'
+  assertEquals '#fff8e7' "${__P9K_RETVAL}"  # truecolor (hex)
+  __p9k_get_color '137'
+  assertEquals '137' "${__P9K_RETVAL}"          # number (dec)
+  __p9k_get_color 'yellow4'
+  assertEquals '100' "${__P9K_RETVAL}"      # named
 }
 
 function testBrightColorsWork() {
@@ -49,8 +55,10 @@ function testBrightColorsWork() {
   # ensure that all input channels for bright colors are handled
   # correctly.
   assertTrue "p9k::is_same_color 'lightcyan' '014'"
-  assertEquals '014' "$(p9k::get_color_code 'lightcyan')"
-  assertEquals '014' "$(p9k::get_color 'lightcyan')"
+  p9k::get_color_code 'lightcyan'
+  assertEquals '014' "${__P9K_RETVAL}"
+  __p9k_get_color 'lightcyan'
+  assertEquals '014' "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

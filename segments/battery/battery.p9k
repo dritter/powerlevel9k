@@ -219,7 +219,8 @@ prompt_battery() {
   if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
     segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
     offset=$(( (${bat_percent} / $segment) + 1 ))
-    overideBg="$(p9k::background_color ${P9K_BATTERY_LEVEL_BACKGROUND[$offset]})"
+    __p9k_background_color "${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}"
+    overideBg="${__P9K_RETVAL}"
   fi
   unset offset
 

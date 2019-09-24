@@ -206,8 +206,9 @@ prompt_dir() {
   fi
   # determine is the user has set a last directory color
   local dir_state_user_foreground=P9K_DIR_${current_state}_FOREGROUND
-  local dir_state_foreground=$(p9k::foreground_color ${(P)dir_state_user_foreground})
-  # if the user foreground is an empty string, p9k::foreground_color will return "%f" (reset foreground color)
+  __p9k_foreground_color "${(P)dir_state_user_foreground})"
+  local dir_state_foreground="${__P9K_RETVAL}"
+  # if the user foreground is an empty string, __p9k_foreground_color will return "%f" (reset foreground color)
   [[ ${dir_state_foreground} == "%f" ]] && dir_state_foreground=${__P9K_DATA[DIR_${current_state}_FG]}
 
   local dir_name base_name
@@ -230,7 +231,8 @@ prompt_dir() {
 
   # if the user wants the last directory colored...
   if [[ -n ${P9K_DIR_PATH_HIGHLIGHT_FOREGROUND} ]]; then
-    local dir_path_highlight_foreground="$(p9k::foreground_color ${P9K_DIR_PATH_HIGHLIGHT_FOREGROUND})"
+    __p9k_foreground_color "${P9K_DIR_PATH_HIGHLIGHT_FOREGROUND}"
+    local dir_path_highlight_foreground="${__P9K_RETVAL}"
     current_path+="${bld_on}${dir_path_highlight_foreground}${base_name}${bld_off}"
   else # no coloring
     current_path+="${bld_on}${base_name}${bld_off}"
@@ -247,7 +249,8 @@ prompt_dir() {
 
   # check if the user wants the separator colored.
   if [[ -n ${P9K_DIR_PATH_SEPARATOR_FOREGROUND} && ${path_opt} != "/" ]]; then
-    local dir_path_separator_foreground=$(p9k::foreground_color ${P9K_DIR_PATH_SEPARATOR_FOREGROUND})
+    __p9k_foreground_color "${P9K_DIR_PATH_SEPARATOR_FOREGROUND}"
+    local dir_path_separator_foreground="${__P9K_RETVAL}"
     # because this contains color changing codes, it is easier to set a variable for what should be replaced
     local repl="${dir_path_separator_foreground}/${dir_state_foreground}"
     # escape the / with a \

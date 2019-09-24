@@ -52,7 +52,7 @@ You can find the list of all states with their detailed decription in their resp
 ## Usable Colors
 
 You can set colors in three different way:
-- <colorstring> : For example "red" (get a full list with `p9k::get_color foreground` or `p9k::get_color background`)
+- <colorstring> : For example "red" (get a full list with `p9k::get_color_code foreground` or `p9k::get_color_code background`)
 - 0-255 : A decimal number (Be aware that 0-16 are dynamic and might get changed by your terminal theme)
 - "#000000"-"#ffffff" : A hexadecimal number. This is only available in zsh version >=5.7
   and if your terminal emulator supports truecolor/24bit colors. We also recommend

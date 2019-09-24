@@ -96,7 +96,7 @@ function p9k::register_icon() {
 #   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
 ##
 # @usage
-#   p9k::register_segment "segmentName" "stateNameOrEmpty" "p9k::background_color" "p9k::foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'${CODEPOINT_OF_AWESOME_xxx} '\uXXX'
+#   p9k::register_segment "segmentName" "stateNameOrEmpty" "__p9k_background_color" "__p9k_foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'${CODEPOINT_OF_AWESOME_xxx} '\uXXX'
 ##
 # @example
 #   p9k::register_segment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
@@ -110,23 +110,28 @@ function p9k::register_segment() {
 
   local BG_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
   if p9k::defined "${BG_USER_VARIABLE}"; then # check for background override first
-    __P9K_DATA[${STATEFUL_NAME}_BG]="$(p9k::background_color ${(P)BG_USER_VARIABLE})"
+    __p9k_background_color "${(P)BG_USER_VARIABLE}"
+    __P9K_DATA[${STATEFUL_NAME}_BG]="${__P9K_RETVAL}"
   else
-    __P9K_DATA[${STATEFUL_NAME}_BG]="$(p9k::background_color $3)"
+    __p9k_background_color "${3}"
+    __P9K_DATA[${STATEFUL_NAME}_BG]="${__P9K_RETVAL}"
   fi
 
   local FG_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
   if p9k::defined "${FG_USER_VARIABLE}"; then # check for foreground override first
-    __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color ${(P)FG_USER_VARIABLE})"
+    __p9k_foreground_color "${(P)FG_USER_VARIABLE}"
+    __P9K_DATA[${STATEFUL_NAME}_FG]="${__P9K_RETVAL}"
   else
-    __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
+    __p9k_foreground_color "${4}"
+    __P9K_DATA[${STATEFUL_NAME}_FG]="${__P9K_RETVAL}"
   fi
 
   p9k::register_icon "${STATEFUL_NAME}" "${5:-}" "${6:-}" "${7:-}" "${8:-}" "${9:-}"
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "${ICON_COLOR_VARIABLE}"; then
-    __P9K_DATA[${STATEFUL_NAME}_VI]="$(p9k::foreground_color ${(P)ICON_COLOR_VARIABLE})"
+    __p9k_foreground_color "${(P)ICON_COLOR_VARIABLE}"
+    __P9K_DATA[${STATEFUL_NAME}_VI]="${__P9K_RETVAL}"
   else
     __P9K_DATA[${STATEFUL_NAME}_VI]=${__P9K_DATA[${STATEFUL_NAME}_FG]}
   fi

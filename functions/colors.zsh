@@ -314,10 +314,16 @@ function __p9k_term_colors() {
 # @args
 #   $1 misc Color to check (as a number or string)
 ##
-function p9k::get_color() {
+# @note
+#   - The return value is set as variable __P9K_RETVAL
+##
+function __p9k_get_color() {
   # no need to check numerical values
-  [[ "$1" != <-> ]] && [[ "$1" != '#'* ]] && 1=$(p9k::get_color_code $1)
-  echo -n "$1"
+  if [[ "$1" != <-> ]] && [[ "$1" != '#'* ]]; then
+      p9k::get_color_code "${1}"
+      1="${__P9K_RETVAL}"
+  fi
+  __P9K_RETVAL="${1}"
 }
 
 ################################################################
@@ -331,10 +337,16 @@ function p9k::get_color() {
 #   An escape code string for (re)setting the background color.
 ##
 # @note
-#   An empty paramenter resets (stops) background color.
+#   - An empty paramenter resets (stops) background color.
+#   - The return value is set as variable __P9K_RETVAL
 ##
-function p9k::background_color() {
-  [[ -n $1 ]] && echo -n "%K{$(p9k::get_color $1)}" || echo -n "%k"
+function __p9k_background_color() {
+  if [[ -n $1 ]]; then
+      __p9k_get_color "${1}"
+      __P9K_RETVAL="%K{${__P9K_RETVAL}}"
+  else
+      __P9K_RETVAL="%k"
+  fi
 }
 
 ################################################################
@@ -348,10 +360,16 @@ function p9k::background_color() {
 #   An escape code string for (re)setting the foreground color.
 ##
 # @note
-#   An empty paramenter resets (stops) foreground color.
+#   - An empty paramenter resets (stops) foreground color.
+#   - The return value is set as variable __P9K_RETVAL
 ##
-function p9k::foreground_color() {
-  [[ -n $1 ]] && echo -n "%F{$(p9k::get_color $1)}" || echo -n "%f"
+function __p9k_foreground_color() {
+  if [[ -n $1 ]]; then
+      __p9k_get_color "${1}"
+      __P9K_RETVAL="%F{${__P9K_RETVAL}}"
+  else
+      __P9K_RETVAL="%f"
+  fi
 }
 
 ################################################################
@@ -362,11 +380,14 @@ function p9k::foreground_color() {
 # @args
 #   $1 misc Number or string of color.
 ##
+# @note
+#   - The return value is set as variable __P9K_RETVAL
+##
 function p9k::get_color_code() {
   # Early exit: Check if given value is already numerical
   if [[ "$1" == <-> ]]; then
     # Pad color with zeroes
-    echo -n "${(l:3::0:)1}"
+    __P9K_RETVAL="${(l:3::0:)1}"
     return
   fi
 
@@ -374,19 +395,28 @@ function p9k::get_color_code() {
   # Check if value is none with any case.
   case "${(L)colorName}" in
     "none")
-      echo -n 'none'
+      __P9K_RETVAL='none'
     ;;
     "foreground")
-      # for testing purposes in terminal
+      # for manual testing purposes in terminal
       # call via `p9k::get_color_code foreground`
       for i in "${(k@)__P9K_COLORS}"; do
-          print -P "$(p9k::foreground_color $i)$(p9k::get_color $i) - $i%f"
+          __p9k_get_color "${i}"
+          local color="${__P9K_RETVAL}"
+          __p9k_foreground_color "${i}"
+          local colorCode="${__P9K_RETVAL}"
+          print -P "${colorCode}${color} - ${i}%f"
       done
     ;;
     "background")
+      # for manual testing purposes in terminal
       # call via `p9k::get_color_code background`
       for i in "${(k@)__P9K_COLORS}"; do
-          print -P "$(p9k::background_color $i)$(p9k::get_color $i) - $i%k"
+          __p9k_get_color "${i}"
+          local color="${__P9K_RETVAL}"
+          __p9k_background_color "${i}"
+          local colorCode="${__P9K_RETVAL}"
+          print -P "${colorCode}${color} - ${i}%k"
       done
     ;;
     *)
@@ -396,7 +426,7 @@ function p9k::get_color_code() {
       colorName=${colorName#fg-}
       # Strip eventual "br" prefixes ("bright" colors)
       colorName=${colorName#br}
-      echo -n $__P9K_COLORS[$colorName]
+      __P9K_RETVAL="$__P9K_COLORS[$colorName]"
     ;;
   esac
 }
@@ -414,8 +444,10 @@ function p9k::is_same_color() {
     return 1
   fi
 
-  local color1=$(p9k::get_color_code "$1")
-  local color2=$(p9k::get_color_code "$2")
+  p9k::get_color_code "$1"
+  local color1="${__P9K_RETVAL}"
+  p9k::get_color_code "$2"
+  local color2="${__P9K_RETVAL}"
 
   return $(( color1 != color2 ))
 }
