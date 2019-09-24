@@ -459,9 +459,9 @@ function __p9k_prepare_prompts() {
       __P9K_PROMPT="${(e)left}"
       __P9K_RPROMPT="${(e)right}"
       p9k::prompt_length "${__P9K_PROMPT}"
-      local leftPromptWidth=${_P9K_RETVAL}
+      local leftPromptWidth=${__P9K_RETVAL}
       p9k::prompt_length "${__P9K_RPROMPT}"
-      local rightPromptWidth=${_P9K_RETVAL}
+      local rightPromptWidth=${__P9K_RETVAL}
       local spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth + ZLE_RPROMPT_INDENT) ))
       if (( spacerWidth > 0 )); then
         local spacerChar=' '

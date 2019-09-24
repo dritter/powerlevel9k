@@ -304,7 +304,7 @@ function p9k::prompt_length() {
       typeset ${${(%):-$1%$m(l.x.y)}[-1]}=$m
     done
   fi
-  _P9K_RETVAL=$x
+  __P9K_RETVAL=$x
 }
 
 ###############################################################
