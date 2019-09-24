@@ -471,14 +471,16 @@ function __p9k_find_first_defined() {
 #   $* List of variable names.
 # @returns
 #   First non empty variable value, or it's name if '-n' is passed.
+# @note
+#   - The return value is set as variable __P9K_RETVAL
 ##
-function p9k::find_first_non_empty() {
+function __p9k_find_first_non_empty() {
   local returnName
   while [ $# -ne 0 ]; do
     if [[ "$1" == "-n" ]]; then
       returnName=true
     elif [[ -n "${(P)1}" ]]; then
-      [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
+      [[ -n $returnName ]] && __P9K_RETVAL="$1" || __P9K_RETVAL="${(P)1}"
       break
     fi
     shift

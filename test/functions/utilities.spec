@@ -232,8 +232,10 @@ function testFindingFirstDefinedOrNonEmptyVariableNyName() {
   __p9k_find_first_defined -n "var0" "var1" "var2"
   assertEquals "var1" "${__P9K_RETVAL}" # var1 name
 
-  assertEquals "some value" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
-  assertEquals "var2" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
+  __p9k_find_first_non_empty "var0" "var1" "var2"
+  assertEquals "some value" "${__P9K_RETVAL}" # var2 value
+  __p9k_find_first_non_empty -n "var0" "var1" "var2"
+  assertEquals "var2" "${__P9K_RETVAL}" # var2 name
 
   local var0=""
   __p9k_find_first_defined "var0" "var1" "var2"
@@ -241,8 +243,10 @@ function testFindingFirstDefinedOrNonEmptyVariableNyName() {
   __p9k_find_first_defined -n "var0" "var1" "var2"
   assertEquals "var0" "${__P9K_RETVAL}" # var1 name
   var0="other value"
-  assertEquals "other value" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
-  assertEquals "var0" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
+  __p9k_find_first_non_empty "var0" "var1" "var2"
+  assertEquals "other value" "${__P9K_RETVAL}" # var2 value
+  __p9k_find_first_non_empty -n "var0" "var1" "var2"
+  assertEquals "var0" "${__P9K_RETVAL}" # var2 name
 
   function internal() {
     local var0="qwe"
@@ -250,8 +254,10 @@ function testFindingFirstDefinedOrNonEmptyVariableNyName() {
     assertEquals "qwe" "${__P9K_RETVAL}" # var1 value
     __p9k_find_first_defined -n "var0" "var1" "var2"
     assertEquals "var0" "${__P9K_RETVAL}" # var1 name
-    assertEquals "qwe" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
-    assertEquals "var0" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
+    __p9k_find_first_non_empty "var0" "var1" "var2"
+    assertEquals "qwe" "${__P9K_RETVAL}" # var2 value
+    __p9k_find_first_non_empty -n "var0" "var1" "var2"
+    assertEquals "var0" "${__P9K_RETVAL}" # var2 name
   }
 
   internal
