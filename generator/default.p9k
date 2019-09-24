@@ -274,6 +274,7 @@ function __p9k_prompt_custom() {
 
   p9k::register_segment "${STATEFUL_NAME}" "" "white" "black"
 
+  __P9K_RETVAL=''
   if [[ -n ${segment_content} ]]; then
     p9k::prepare_segment "${STATEFUL_NAME}" "" "$1" $2 $3 "$segment_content"
   fi
