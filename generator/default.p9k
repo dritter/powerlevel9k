@@ -30,9 +30,9 @@
 ################################################################
 
 # The `CURRENT_BG` variable is used to remember what the last BG color used was
-# when building the left-hand prompt. Because the RPROMPT is created from
-# right-left but reads the opposite, this isn't necessary for the other side.
+# when building the left-hand prompt.
 CURRENT_BG='NONE'
+CURRENT_RIGHT_BG='NONE'
 
 p9k::set_default last_left_element_index 1
 p9k::set_default P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
@@ -126,8 +126,6 @@ function __p9k_left_prompt_end() {
   __P9K_RETVAL+="%f${__P9K_ICONS[LEFT_SEGMENT_END_SEPARATOR]}"
   CURRENT_BG=''
 }
-
-CURRENT_RIGHT_BG='NONE'
 
 p9k::set_default last_right_element_index 1
 p9k::set_default last_right_element_stateful_name ""
@@ -257,16 +255,6 @@ function p9k::prepare_segment() {
     "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${SEGMENT_ICON}"
   fi
 }
-
-
-################################################################
-# Prompt Segment Definitions
-################################################################
-
-# The `CURRENT_BG` variable is used to remember what the last BG color used was
-# when building the left-hand prompt. Because the RPROMPT is created from
-# right-left but reads the opposite, this isn't necessary for the other side.
-CURRENT_BG='NONE'
 
 ################################################################
 # @description
