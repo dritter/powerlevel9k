@@ -45,5 +45,6 @@ prompt_swap() {
     base='K'
   fi
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$(p9k::print_size_human_readable "$swap_used" $base)"
+  __p9k_print_size_human_readable "${swap_used}" "${base}"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${__P9K_RETVAL}"
 }

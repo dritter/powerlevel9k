@@ -322,6 +322,27 @@ function p9k::prompt_length() {
 #   The base can be any of the following: B, K, M, G, T, P, E, Z, Y.
 ##
 function p9k::print_size_human_readable() {
+  __p9k_print_size_human_readable "${1}" "${2}"
+  echo "${__P9K_RETVAL}"
+}
+
+###############################################################
+# @description
+#   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
+##
+# @args
+#   $1 integer The number which should be prettified.
+#   $2 string The base of the number (default Bytes).
+##
+# @returns
+#   String with the size in human readable format.
+##
+# @note
+#   - The base can be any of the following: B, K, M, G, T, P, E, Z, Y.
+#   - The return value is set as variable __P9K_RETVAL.
+##
+
+function __p9k_print_size_human_readable() {
   typeset -F 2 size
   size="${1}"+0.00001
   local extension
@@ -344,7 +365,7 @@ function p9k::print_size_human_readable() {
     index=$(( ${index} + 1 ))
   done
 
-  echo "${size}${extension[$index]}"
+  __P9K_RETVAL="${size}${extension[$index]}"
 }
 
 ###############################################################

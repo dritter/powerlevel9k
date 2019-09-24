@@ -43,11 +43,13 @@ function testSetDefaultSetsVariable() {
 
 function testPrintSizeHumanReadableWithBigNumber() {
   # Interesting: Currently we can't support numbers bigger than that.
-  assertEquals '0.87E' "$(p9k::print_size_human_readable 1000000000000000000)"
+  __p9k_print_size_human_readable 1000000000000000000
+  assertEquals '0.87E' "${__P9K_RETVAL}"
 }
 
 function testPrintSizeHumanReadableWithExabytesAsBase() {
-  assertEquals '9.77Z' "$(p9k::print_size_human_readable 10000 'E')"
+  __p9k_print_size_human_readable 10000 'E'
+  assertEquals '9.77Z' "${__P9K_RETVAL}"
 }
 
 function testGetRelevantItem() {

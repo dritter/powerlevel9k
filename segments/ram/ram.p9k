@@ -48,5 +48,6 @@ prompt_ram() {
     fi
   fi
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$(p9k::print_size_human_readable "$ramfree" $base)"
+  __p9k_print_size_human_readable "${ramfree}" "${base}"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${__P9K_RETVAL}"
 }
