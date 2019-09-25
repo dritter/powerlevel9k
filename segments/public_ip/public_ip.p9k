@@ -101,7 +101,8 @@ prompt_public_ip() {
 
     # Check VPN is on if VPN interface is set
     if [[ -n $P9K_PUBLIC_IP_VPN_INTERFACE ]]; then
-      local vpnIp="$(p9k::parseIp "${P9K_PUBLIC_IP_VPN_INTERFACE}" "${ROOT_PREFIX}")"
+      p9k::parseIp "${P9K_PUBLIC_IP_VPN_INTERFACE}" "${ROOT_PREFIX}"
+      local vpnIp="${__P9K_RETVAL}"
       if [[ -n "$vpnIp" ]]; then
         icon="VPN_ICON"
       fi

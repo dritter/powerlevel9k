@@ -27,7 +27,8 @@
 ##
 prompt_ip() {
   local ROOT_PREFIX="${4}"
-  local ip=$(p9k::parseIp "${P9K_IP_INTERFACE}" "${ROOT_PREFIX}")
+  p9k::parseIp "${P9K_IP_INTERFACE}" "${ROOT_PREFIX}"
+  local ip="${__P9K_RETVAL}"
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "$ip"
 }

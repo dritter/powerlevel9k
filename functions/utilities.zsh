@@ -515,6 +515,7 @@ function __p9k_find_first_non_empty() {
 #   $1 - string The desired Interface
 #   $2 - string A root prefix for testing purposes
 # @returns
+#   Nothing - Returnvalue is stored in _P9K_RETVAL.
 #   The parsed IP address
 ##
 function p9k::parseIp() {
@@ -548,7 +549,7 @@ function p9k::parseIp() {
         local ipFound="${match[3]}"
         local -a interfaceStates=(${(s:,:)match[1]})
         if [[ "${interfaceStates[(r)UP]}" == "UP" ]]; then
-          echo "${ipFound}"
+          __P9K_RETVAL="${ipFound}"
           return 0
         fi
       fi
@@ -559,7 +560,7 @@ function p9k::parseIp() {
     local pattern="^${desiredInterface}[ ]+UP[ ]+([^/ ]+)"
     for interface in "${(@)interfaces}"; do
       if [[ "$interface" =~ $pattern ]]; then
-        echo "${match[1]}"
+        __P9K_RETVAL="${match[1]}"
         return 0
       fi
     done
