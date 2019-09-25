@@ -118,13 +118,14 @@ function __p9k_left_prompt_segment() {
 # @noargs
 ##
 function __p9k_left_prompt_end() {
+  __P9K_RETVAL=''
   if [[ -n ${CURRENT_BG} && ${(U)CURRENT_BG} != 'NONE' ]]; then
     __P9K_RETVAL+="%k%F${CURRENT_BG#%K}${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
   else
     __P9K_RETVAL+="%k"
   fi
   __P9K_RETVAL+="%f${__P9K_ICONS[LEFT_SEGMENT_END_SEPARATOR]}"
-  CURRENT_BG=''
+  CURRENT_BG='NONE'
 }
 
 p9k::set_default last_right_element_index 1
