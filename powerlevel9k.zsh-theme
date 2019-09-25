@@ -49,7 +49,6 @@ else
     __P9K_DIRECTORY=${${(%):-%x}:A:h}
   fi
 fi
-readonly __P9K_DIRECTORY
 
 typeset -g __P9K_RETVAL
 
