@@ -48,7 +48,8 @@ function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   # uses an alternative host.
   alias dig='nodig'
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias dig
 }
@@ -62,7 +63,8 @@ function testPublicIpSegmentPrintsNoticeIfNotConnected() {
   # uses an alternative host.
   alias dig='nodig'
 
-  assertEquals "%K{000} %F{015}\${:-\"disconnected\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"disconnected\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias dig
 }
@@ -76,7 +78,8 @@ function testPublicIpSegmentWorksWithWget() {
     echo "wget 1.2.3.4"
   }
 
-  assertEquals "%K{000} %F{015}\${:-\"wget 1.2.3.4\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"wget 1.2.3.4\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction wget
   unalias dig
@@ -92,7 +95,8 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
     echo "curl 1.2.3.4"
   }
 
-  assertEquals "%K{000} %F{015}\${:-\"curl 1.2.3.4\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"curl 1.2.3.4\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction curl
   unalias dig
@@ -109,7 +113,8 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
   }
 
   # Load Powerlevel9k
-  assertEquals "%K{000} %F{015}\${:-\"dig 1.2.3.4\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"dig 1.2.3.4\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
   unalias curl
@@ -124,14 +129,16 @@ function testPublicIpSegmentCachesFile() {
     echo "first"
   }
 
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   dig() {
     echo "second"
   }
 
   # Segment should not have changed!
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
@@ -144,7 +151,8 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
     echo "first"
   }
 
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   sleep 3
   dig() {
@@ -152,7 +160,8 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
   }
 
   # Segment should have changed!
-  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
@@ -164,7 +173,8 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
     echo "first"
   }
 
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   # Truncate cache file
   echo "" >! $P9K_PUBLIC_IP_FILE
@@ -174,7 +184,8 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   }
 
   # Segment should have changed!
-  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
@@ -186,7 +197,8 @@ function testPublicIpSegmentWhenGoingOnline() {
   local P9K_PUBLIC_IP_NONE="disconnected"
   alias dig="nodig"
 
-  assertEquals "%K{000} %F{015}\${:-\"disconnected\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"disconnected\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias dig
 
@@ -195,7 +207,8 @@ function testPublicIpSegmentWhenGoingOnline() {
   }
 
   # Segment should have changed!
-  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+    __p9k_build_left_prompt
+  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
