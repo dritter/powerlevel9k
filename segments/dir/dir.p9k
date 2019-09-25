@@ -206,7 +206,7 @@ prompt_dir() {
   fi
   # determine is the user has set a last directory color
   local dir_state_user_foreground=P9K_DIR_${current_state}_FOREGROUND
-  __p9k_foreground_color "${(P)dir_state_user_foreground})"
+  __p9k_foreground_color "${(P)dir_state_user_foreground}"
   local dir_state_foreground="${__P9K_RETVAL}"
   # if the user foreground is an empty string, __p9k_foreground_color will return "%f" (reset foreground color)
   [[ ${dir_state_foreground} == "%f" ]] && dir_state_foreground=${__P9K_DATA[DIR_${current_state}_FG]}
