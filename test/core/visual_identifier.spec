@@ -21,7 +21,8 @@ function testOverwritingIconsWork() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%K{015} %F{000}icon-here %F{000}\${:-\"world1\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}icon-here %F{000}\${:-\"world1\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
@@ -31,7 +32,8 @@ function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%K{015} %F{000}icon-here %F{000}\${:-\"world1\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}icon-here %F{000}\${:-\"world1\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
@@ -41,7 +43,8 @@ function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}icon-here%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}icon-here%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testVisualIdentifierPrintsNothingIfNotAvailable() {
@@ -50,7 +53,8 @@ function testVisualIdentifierPrintsNothingIfNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
 
-  assertEquals "%K{015} %F{000}\${:-\"world1\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world1\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testVisualIdentifierWorksWithUnicodeIcon() {
@@ -60,7 +64,8 @@ function testVisualIdentifierWorksWithUnicodeIcon() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='\u2714'
 
-  assertEquals "%K{015} %F{000}✔ %F{000}\${:-\"world1\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}✔ %F{000}\${:-\"world1\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

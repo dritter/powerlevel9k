@@ -27,8 +27,10 @@ function testNoBoldOnregularSegment(){
   local P9K_DATE_ICON="date-icon"
   source segments/date/date.p9k
   
-  assertEquals "%K{015} %F{000}date-icon %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"%D{%d.%m.%y}\"} %F{000}date-icon%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}date-icon %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"%D{%d.%m.%y}\"} %F{000}date-icon%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testBoldOnRegularSegments() {
@@ -38,8 +40,10 @@ function testBoldOnRegularSegments() {
   local P9K_DATE_BOLD=true
   source segments/date/date.p9k
 
-  assertEquals "%K{015} %F{000}date-icon %F{000}\${:-\"%B%D{%d.%m.%y}%b\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"%B%D{%d.%m.%y}%b\"} %F{000}date-icon%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}date-icon %F{000}\${:-\"%B%D{%d.%m.%y}%b\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"%B%D{%d.%m.%y}%b\"} %F{000}date-icon%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testBoldOnRegularSegmentVisualIdentifiers() {
@@ -49,8 +53,10 @@ function testBoldOnRegularSegmentVisualIdentifiers() {
   local P9K_DATE_ICON_BOLD=true
   source segments/date/date.p9k
 
-  assertEquals "%K{015} %F{000}%Bdate-icon%b %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"%D{%d.%m.%y}\"} %F{000}%Bdate-icon%b%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}%Bdate-icon%b %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"%D{%d.%m.%y}\"} %F{000}%Bdate-icon%b%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 # Stateful Segment
@@ -62,8 +68,10 @@ function testNotBoldOnStatefulSegment() {
   local SSH_CLIENT="x"
   source segments/host/host.p9k
 
-  assertEquals "%K{003} %F{000}ssh-icon %F{000}\${:-\"%m\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{003}%K{003}%F{000} \${:-\"%m\"} %F{000}ssh-icon%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}ssh-icon %F{000}\${:-\"%m\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{003}%K{003}%F{000} \${:-\"%m\"} %F{000}ssh-icon%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testBoldOnStatefulSegment() {
@@ -75,8 +83,10 @@ function testBoldOnStatefulSegment() {
   local SSH_CLIENT="x"
   source segments/host/host.p9k
 
-  assertEquals "%K{003} %F{000}ssh-icon %F{000}\${:-\"%B%m%b\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{003}%K{003}%F{000} \${:-\"%B%m%b\"} %F{000}ssh-icon%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}ssh-icon %F{000}\${:-\"%B%m%b\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{003}%K{003}%F{000} \${:-\"%B%m%b\"} %F{000}ssh-icon%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testBoldOnStatefulVisualIdentifiers() {
@@ -88,8 +98,10 @@ function testBoldOnStatefulVisualIdentifiers() {
   local SSH_CLIENT="x"
   source segments/host/host.p9k
 
-  assertEquals "%K{003} %F{000}%Bssh-icon%b %F{000}\${:-\"%m\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{003}%K{003}%F{000} \${:-\"%m\"} %F{000}%Bssh-icon%b%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}%Bssh-icon%b %F{000}\${:-\"%m\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{003}%K{003}%F{000} \${:-\"%m\"} %F{000}%Bssh-icon%b%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 # Custom Segment
@@ -99,8 +111,10 @@ function testNotBoldOnCustomSegment() {
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_CUSTOM_WORLD_ICON='CW'
 
-  assertEquals "%K{015} %F{000}CW %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"world\"} %F{000}CW%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}CW %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"world\"} %F{000}CW%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testBoldOnCustomSegment() {
@@ -110,8 +124,10 @@ function testBoldOnCustomSegment() {
   local P9K_CUSTOM_WORLD_ICON='CW'
   local P9K_CUSTOM_WORLD_BOLD=true
 
-  assertEquals "%K{015} %F{000}CW %F{000}\${:-\"%Bworld%b\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"%Bworld%b\"} %F{000}CW%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}CW %F{000}\${:-\"%Bworld%b\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"%Bworld%b\"} %F{000}CW%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 function testBoldOnCustomSegmentVisualIdentifiers() {
@@ -121,8 +137,10 @@ function testBoldOnCustomSegmentVisualIdentifiers() {
   local P9K_CUSTOM_WORLD_ICON='CW'
   local P9K_CUSTOM_WORLD_ICON_BOLD=true
 
-  assertEquals "%K{015} %F{000}%BCW%b %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"world\"} %F{000}%BCW%b%f %E%f%k%b" "$(__p9k_build_right_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}%BCW%b %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  __p9k_build_right_prompt
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"world\"} %F{000}%BCW%b%f %E%f%k%b" "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

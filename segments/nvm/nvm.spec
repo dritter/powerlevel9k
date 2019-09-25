@@ -39,7 +39,8 @@ function testNvmSegmentPrintsNothingIfNvmIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
   local P9K_CUSTOM_WORLD='echo world'
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testNvmSegmentWorksWithoutHavingADefaultAlias() {
@@ -50,7 +51,8 @@ function testNvmSegmentWorksWithoutHavingADefaultAlias() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{005} %F{000}⬢ %F{000}\${:-\"4.6.0\"} %k%F{005}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{005} %F{000}⬢ %F{000}\${:-\"4.6.0\"} %k%F{005}%f " "${__P9K_RETVAL}"
 }
 
 function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
@@ -62,7 +64,8 @@ function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v4.6.0'
   }
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testNvmSegmentAppendsSystemWhenUsingSystem() {
@@ -82,7 +85,8 @@ function testNvmSegmentAppendsSystemWhenUsingSystem() {
     [[ ${1} == 'current' ]] && echo 'system' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{005} %F{000}⬢ %F{000}\${:-\"11.3.0 system\"} %k%F{005}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{005} %F{000}⬢ %F{000}\${:-\"11.3.0 system\"} %k%F{005}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

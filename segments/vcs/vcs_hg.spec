@@ -45,7 +45,8 @@ function testColorOverridingForCleanStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{015} %F{006}\${:-\" default\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{006}\${:-\" default\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testColorOverridingForModifiedStateWorks() {
@@ -62,7 +63,8 @@ function testColorOverridingForModifiedStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{003} %F{001}\${:-\" default ●\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{001}\${:-\" default ●\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 # There is no staging area in mercurial, therefore there are no "untracked"
@@ -79,7 +81,8 @@ function testAddedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{003} %F{000}\${:-\" default ●\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}\${:-\" default ●\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 # We don't support tagging in mercurial right now..
@@ -97,7 +100,8 @@ function testTagIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{002} %F{000}\${:-\" default Tv0.0.1\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}\${:-\" default Tv0.0.1\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testTagIconInDetachedHeadState() {
@@ -119,7 +123,8 @@ function testTagIconInDetachedHeadState() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{002} %F{000}\${:-\" ${hash} Tv0.0.1\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}\${:-\" ${hash} Tv0.0.1\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testActionHintWorks() {
@@ -142,7 +147,8 @@ function testActionHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{003} %F{000}\${:-\" default %F{001}| merging%f\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}\${:-\" default %F{001}| merging%f\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testShorteningCommitHashWorks() {
@@ -163,7 +169,8 @@ function testShorteningCommitHashWorks() {
   # the changeset is truncated.
   __p9k_vcs_init
 
-  assertEquals "%K{002} %F{000}\${:-\"${hash}  default\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}\${:-\"${hash}  default\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
@@ -183,7 +190,8 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # the changeset is truncated.
   __p9k_vcs_init
 
-  assertEquals "%K{002} %F{000}\${:-\" default\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}\${:-\" default\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testMercurialIconWorks() {
@@ -194,7 +202,8 @@ function testMercurialIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{002} %F{000}HG-icon %F{000}\${:-\" default\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}HG-icon %F{000}\${:-\" default\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBookmarkIconWorks() {
@@ -206,7 +215,8 @@ function testBookmarkIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{002} %F{000}\${:-\" default Binitial\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}\${:-\" default Binitial\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBranchNameScriptingVulnerability() {
@@ -219,7 +229,8 @@ function testBranchNameScriptingVulnerability() {
   hg add . >/dev/null
   hg commit -m "Initial commit" >/dev/null
 
-  assertEquals '%K{002} %F{000}${:-" \$(./evil_script.sh)"} %k%F{002}%f ' "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals '%K{002} %F{000}${:-" \$(./evil_script.sh)"} %k%F{002}%f ' "${__P9K_RETVAL}"
 }
 
 function testVcsSegmentDoesNotLeakPercentEscapesInMercurialRepo() {
@@ -234,7 +245,8 @@ function testVcsSegmentDoesNotLeakPercentEscapesInMercurialRepo() {
 
   hg branch '%E%K{red}' >/dev/null
 
-  assertEquals "%K{002} %F{000}\${:-\" %%E%%K{red}\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}\${:-\" %%E%%K{red}\"} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

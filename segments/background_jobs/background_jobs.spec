@@ -22,7 +22,8 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   # Load Powerlevel9k
   source segments/background_jobs/background_jobs.p9k
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs() {
@@ -35,7 +36,8 @@ function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs()
   # Load Powerlevel9k
   source segments/background_jobs/background_jobs.p9k
 
-  assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"0\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"0\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
@@ -47,7 +49,8 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
 
   # Load Powerlevel9k
   source segments/background_jobs/background_jobs.p9k
-  assertEquals "%K{003} %F{000}⚙ %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}⚙ %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
@@ -60,7 +63,8 @@ function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
   # Load Powerlevel9k
   source segments/background_jobs/background_jobs.p9k
 
-  assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"3\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"3\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testBackgroundJobsSegmentWithVerboseMode() {
@@ -73,7 +77,8 @@ function testBackgroundJobsSegmentWithVerboseMode() {
     # Load Powerlevel9k
     source segments/background_jobs/background_jobs.p9k
 
-    assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"3\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+    __p9k_build_left_prompt
+    assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"3\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testBackgroundJobsSegmentWorksWithExpandedMode() {
@@ -87,7 +92,8 @@ function testBackgroundJobsSegmentWorksWithExpandedMode() {
   # Load Powerlevel9k
   source segments/background_jobs/background_jobs.p9k
 
-  assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"1r 2s\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{000}⚙ %F{000}\${:-\"1r 2s\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

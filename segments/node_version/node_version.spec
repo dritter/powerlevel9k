@@ -20,7 +20,8 @@ function testNodeVersionSegmentPrintsNothingWithoutNode() {
   local P9K_CUSTOM_WORLD='echo world'
   alias node="nonode 2>/dev/null"
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias node
 }
@@ -32,7 +33,8 @@ function testNodeVersionSegmentWorks() {
     echo "v1.2.3"
   }
 
-  assertEquals "%K{002} %F{015}⬢ %F{015}\${:-\"1.2.3\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{015}⬢ %F{015}\${:-\"1.2.3\"} %k%F{002}%f " "${__P9K_RETVAL}"
 
   unfunction node
 }

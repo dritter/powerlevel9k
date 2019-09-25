@@ -19,7 +19,8 @@ function testDynamicColoringOfSegmentsWork() {
   local P9K_DATE_BACKGROUND='red'
   source segments/date/date.p9k
 
-  assertEquals "%K{001} %F{000}date-icon %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{001} %F{000}date-icon %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testDynamicColoringOfVisualIdentifiersWork() {
@@ -28,7 +29,8 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_DATE_ICON_COLOR='green'
   source segments/date/date.p9k
 
-  assertEquals "%K{015} %F{002}date-icon %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{002}date-icon %F{000}\${:-\"%D{%d.%m.%y}\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
@@ -39,7 +41,8 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DATE_BACKGROUND='yellow'
   source segments/date/date.p9k
 
-  assertEquals "%K{003} %F{002}date-icon %F{001}\${:-\"%D{%d.%m.%y}\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{002}date-icon %F{001}\${:-\"%D{%d.%m.%y}\"} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testColorOverridingOfStatefulSegment() {
@@ -51,7 +54,8 @@ function testColorOverridingOfStatefulSegment() {
   local SSH_CLIENT="x"
   source segments/host/host.p9k
 
-  assertEquals "%K{001} %F{002}ssh-icon %F{002}\${:-\"%m\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{001} %F{002}ssh-icon %F{002}\${:-\"%m\"} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testColorOverridingOfCustomSegment() {
@@ -62,7 +66,8 @@ function testColorOverridingOfCustomSegment() {
   local P9K_CUSTOM_WORLD_FOREGROUND='red'
   local P9K_CUSTOM_WORLD_BACKGROUND='red'
 
-  assertEquals "%K{001} %F{002}CW %F{001}\${:-\"world\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{001} %F{002}CW %F{001}\${:-\"world\"} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

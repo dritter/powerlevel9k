@@ -23,7 +23,8 @@ function testNewlineDoesNotCreateExtraSegmentSeparator() {
 
     local newline=$'\n'
 
-    assertEquals "%K{015} %F{000}\${:-\"world1\"} %k%F{015}\${:-\"${newline}\"}%k \${:-\"${newline}\"}%k \${:-\"${newline}\"}%K{015} %F{000}\${:-\"world2\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+    __p9k_build_left_prompt
+    assertEquals "%K{015} %F{000}\${:-\"world1\"} %k%F{015}\${:-\"${newline}\"}%k \${:-\"${newline}\"}%k \${:-\"${newline}\"}%K{015} %F{000}\${:-\"world2\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testNewlineMakesPreviousSegmentEndWell() {
@@ -36,7 +37,8 @@ function testNewlineMakesPreviousSegmentEndWell() {
 
     local newline=$'\n'
 
-    assertEquals "%K{015} %F{000}\${:-\"world1\"} %k%F{015}\${:-\"${newline}\"}%k%f " "$(__p9k_build_left_prompt)"
+    __p9k_build_left_prompt
+    assertEquals "%K{015} %F{000}\${:-\"world1\"} %k%F{015}\${:-\"${newline}\"}%k%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

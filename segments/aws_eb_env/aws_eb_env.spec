@@ -20,7 +20,8 @@ function testAwsEbEnvSegmentPrintsNothingIfNoElasticBeanstalkEnvironmentIsSet() 
   # Load Powerlevel9k
   source segments/aws_eb_env/aws_eb_env.p9k
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSet() {
@@ -34,7 +35,8 @@ function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSet() {
   echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
   cd /tmp/powerlevel9k-test
 
-  assertEquals "%K{000} %F{002}🌱  %F{002}\${:-\"test\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{002}🌱  %F{002}\${:-\"test\"} %k%F{000}%f " "${__P9K_RETVAL}"
 
   rm -fr /tmp/powerlevel9k-test
   cd -
@@ -55,7 +57,8 @@ function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSetInParentDirec
   echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
   cd /tmp/powerlevel9k-test/1/12/123/1234/12345
 
-  assertEquals "%K{000} %F{002}🌱  %F{002}test %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{000} %F{002}🌱  %F{002}test %k%F{000}%f " "${__P9K_RETVAL}"
 
   rm -fr /tmp/powerlevel9k-test
   cd -

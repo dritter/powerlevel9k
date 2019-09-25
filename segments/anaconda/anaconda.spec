@@ -24,7 +24,8 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   unset CONDA_ENV_PATH
   unset CONDA_PREFIX
 
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -38,7 +39,8 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   CONDA_ENV_PATH=/tmp
   unset CONDA_PREFIX
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp)\"} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -52,7 +54,8 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   unset CONDA_ENV_PATH
   local CONDA_PREFIX="test"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(test)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(test)\"} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaSegmentWorks() {
@@ -66,7 +69,8 @@ function testAnacondaSegmentWorks() {
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="test"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmptest)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmptest)\"} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaDoesNotLeadTermcapChars() {
@@ -80,7 +84,8 @@ function testAnacondaDoesNotLeadTermcapChars() {
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="\r\n%K{blue}leaking%F{red}string"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp\\r\\n%%K{blue}leaking%%F{red}string)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp\\r\\n%%K{blue}leaking%%F{red}string)\"} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

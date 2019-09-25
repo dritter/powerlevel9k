@@ -61,7 +61,8 @@ function testJoinedSegments() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -72,7 +73,8 @@ function testTransitiveJoinedSegments() {
   source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -86,7 +88,8 @@ function testJoiningWithConditionalSegment() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${:-\"/tmp\"}  %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"}  %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -99,7 +102,8 @@ function testDynamicColoringOfSegmentsWork() {
 
   cd /tmp
 
-  assertEquals "%K{001} %F{000}\${:-\"/tmp\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{001} %F{000}\${:-\"/tmp\"} %k%F{001}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -113,7 +117,8 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{002}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{004} %F{002}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -133,7 +138,8 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{003} %F{002}icon-here %F{001}\${:-\"/tmp\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  __p9k_build_left_prompt
+  assertEquals "%K{003} %F{002}icon-here %F{001}\${:-\"/tmp\"} %k%F{003}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -150,7 +156,8 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+    __p9k_build_left_prompt
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
   # rm -fr ~/$testFolder
