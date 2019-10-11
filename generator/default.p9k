@@ -68,7 +68,7 @@ function __p9k_left_prompt_segment() {
 
   # Escape all unwanted characters. This works by quoting the content
   # and set it up as a fallback.
-  [[ -n "${4}" ]] && content="\${:-${(qqq)content}}"
+  [[ -n "${4}" ]] && content="\${(Q)\${:-${(qqq)content}}}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -165,7 +165,7 @@ function __p9k_right_prompt_segment() {
 
   # Escape all unwanted characters. This works by quoting the content
   # and set it up as a fallback.
-  [[ -n "${4}" ]] && content="\${:-${(qqq)content}}"
+  [[ -n "${4}" ]] && content="\${(Q)\${:-${(qqq)content}}}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -234,9 +234,10 @@ function __p9k_right_prompt_segment() {
 function p9k::prepare_segment() {
   local STATEFUL_NAME="${${(U)1}#PROMPT_}"
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
+  local content="${6//$'\n\r'/\\\n}"
 
   # Precompile condition.
-  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7:-true}" "${6}"; then
+  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7:-true}" "${content}"; then
     local SEGMENT_ICON
     if [[ -z "${8:-}" ]]; then
       SEGMENT_ICON=${__P9K_ICONS[${STATEFUL_NAME}]}
@@ -253,7 +254,7 @@ function p9k::prepare_segment() {
     # Foreground overide
     [[ -n "${10:-}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${10}"
 
-    "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${SEGMENT_ICON}"
+    "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${content}" "${SEGMENT_ICON}"
   fi
 }
 
