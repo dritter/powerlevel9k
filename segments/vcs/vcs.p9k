@@ -379,7 +379,7 @@ __p9k_vcs_init() {
 
   # A list of formats, used if there is a special action going on in your current repository; like an interactive rebase or a merge conflict.
   __p9k_foreground_color ${P9K_VCS_ACTIONFORMAT_FOREGROUND}
-  local actionColor="${__P9k_RETVAL}"
+  local actionColor="${__P9K_RETVAL}"
   zstyle ':vcs_info:*' actionformats "%b ${actionColor}| %a%m%f"
 
   # This string will be used in the %c escape if there are staged changes in the repository.
