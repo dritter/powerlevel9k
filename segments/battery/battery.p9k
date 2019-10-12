@@ -175,10 +175,10 @@ prompt_battery() {
     fi
 
     # calculate (dis)charging time
+    local tstring
     if [[ $battery_status_full == true ]]; then
       # ignore full case (this just keeps a flat if structure)
     elif [[ $power_now > 0 ]]; then
-      local tstring
       if [[ $battery_status_charging == true ]]; then
         tstring=$(( 60 * ($energy_full - $energy_now) / $power_now ))
       else
