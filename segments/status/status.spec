@@ -49,7 +49,7 @@ function testStatusPrintsNothingIfReturnCodeIsZeroAndVerboseIsUnset() {
   local P9K_STATUS_SHOW_PIPESTATUS=false
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
@@ -69,7 +69,7 @@ function testStatusInGeneralErrorCase() {
   local P9K_STATUS_SHOW_PIPESTATUS=false
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}↵ %F{226}\${:-\"1\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}↵ %F{226}\${(Q)\${:-\"1\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testPipestatusInErrorCase() {
@@ -80,7 +80,7 @@ function testPipestatusInErrorCase() {
   local P9K_STATUS_SHOW_PIPESTATUS=true
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}↵ %F{226}\${:-\"0|0|1|0\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}↵ %F{226}\${(Q)\${:-\"0|0|1|0\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testStatusCrossWinsOverVerbose() {
@@ -102,7 +102,7 @@ function testStatusShowsSignalNameInErrorCase() {
   local P9K_STATUS_HIDE_SIGNAME=false
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}↵ %F{226}\${:-\"SIGILL(4)\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}↵ %F{226}\${(Q)\${:-\"SIGILL(4)\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testStatusSegmentIntegrated() {

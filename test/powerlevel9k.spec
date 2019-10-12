@@ -62,7 +62,7 @@ function testJoinedSegments() {
   cd /tmp
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -74,7 +74,7 @@ function testTransitiveJoinedSegments() {
   cd /tmp
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -89,7 +89,7 @@ function testJoiningWithConditionalSegment() {
   cd /tmp
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}\${:-\"/tmp\"}  %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}}  %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -103,7 +103,7 @@ function testDynamicColoringOfSegmentsWork() {
   cd /tmp
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{000}\${:-\"/tmp\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -118,7 +118,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   cd /tmp
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{002}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{002}icon-here %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -139,7 +139,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   cd /tmp
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{002}icon-here %F{001}\${:-\"/tmp\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{002}icon-here %F{001}\${(Q)\${:-\"/tmp\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 
   cd -
 }
@@ -157,7 +157,7 @@ function testOverwritingIconsWork() {
 
   cd /tmp
     __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   cd -
   # rm -fr ~/$testFolder
@@ -179,7 +179,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  local expected='%f%b%k╭─%K{015} %F{000}${:-"world"} %k%F{015}%f ${(pl.79.. .)}${__P9K_RPROMPT}
+  local expected='%f%b%k╭─%K{015} %F{000}${(Q)${:-"world"}} %k%F{015}%f ${(pl.79.. .)}${__P9K_RPROMPT}
 ╰─ %f%b%k'
   local _real=$(stripEsc "${PROMPT}${RPROMPT}")
 

@@ -25,7 +25,7 @@ function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
   local _P9K_COMMAND_DURATION=2
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testCommandExecutionTimeThresholdCouldBeChanged() {
@@ -36,7 +36,7 @@ function testCommandExecutionTimeThresholdCouldBeChanged() {
   local LC_ALL="en_US.utf8"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"2.03s\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"2.03s\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testCommandExecutionTimeThresholdCouldBeSetToZero() {
@@ -47,7 +47,7 @@ function testCommandExecutionTimeThresholdCouldBeSetToZero() {
   local LC_ALL="en_US.utf8"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"0.03s\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"0.03s\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testCommandExecutionTimePrecisionCouldBeChanged() {
@@ -59,7 +59,7 @@ function testCommandExecutionTimePrecisionCouldBeChanged() {
   local LC_ALL="en_US.utf8"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"0.0001s\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"0.0001s\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testCommandExecutionTimePrecisionCouldBeSetToZero() {
@@ -70,7 +70,7 @@ function testCommandExecutionTimePrecisionCouldBeSetToZero() {
   local LC_ALL="en_US.utf8"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"24s\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"24s\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() {
@@ -80,7 +80,7 @@ function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() 
   local LC_ALL="en_US.utf8"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"03:00\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"03:00\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
@@ -90,7 +90,7 @@ function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
   local LC_ALL="en_US.utf8"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"02:00:00\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"02:00:00\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

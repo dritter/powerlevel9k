@@ -51,7 +51,7 @@ function testVagrantSegmentPrintsNothingIfVirtualboxIsNotAvailable() {
   local PATH=/bin:/usr/bin
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testVagrantSegmentSaysVmIsDownIfVirtualboxIsNotAvailableButVagrantFolderExists() {
@@ -63,7 +63,7 @@ function testVagrantSegmentSaysVmIsDownIfVirtualboxIsNotAvailableButVagrantFolde
   mockVagrantFolder "some-id"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{000}V %F{000}\${:-\"DOWN\"} %K{015}%F{001} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{000}V %F{000}\${(Q)\${:-\"DOWN\"}} %K{015}%F{001} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testVagrantSegmentWorksIfVmIsUp() {
@@ -74,7 +74,7 @@ function testVagrantSegmentWorksIfVmIsUp() {
   mockVagrantFolder "${vagrantId}"
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}V %F{000}\${:-\"UP\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}V %F{000}\${(Q)\${:-\"UP\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testVagrantSegmentWorksIfVmIsDown() {
@@ -85,7 +85,7 @@ function testVagrantSegmentWorksIfVmIsDown() {
   mockVagrantFolder "another-vm-id"
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{000}V %F{000}\${:-\"DOWN\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{000}V %F{000}\${(Q)\${:-\"DOWN\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 }
 
 function testVagrantSegmentWorksIfVmIsUpFromWithinSubdir() {
@@ -99,7 +99,7 @@ function testVagrantSegmentWorksIfVmIsUpFromWithinSubdir() {
   cd subfolder/1/2/3
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}V %F{000}\${:-\"UP\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}V %F{000}\${(Q)\${:-\"UP\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testVagrantSegmentWithChangedString() {
@@ -109,13 +109,13 @@ function testVagrantSegmentWithChangedString() {
   mockVagrantFolder "${vagrantId}"
 
   local P9K_VAGRANT_DOWN_STRING="Nope"
-    __p9k_build_left_prompt
-  assertEquals "%K{001} %F{000}V %F{000}\${:-\"Nope\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  __p9k_build_left_prompt
+  assertEquals "%K{001} %F{000}V %F{000}\${(Q)\${:-\"Nope\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 
   mockVBoxManage "${vagrantId}"
   local P9K_VAGRANT_UP_STRING="Yep"
-    __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}V %F{000}\${:-\"Yep\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  __p9k_build_left_prompt
+  assertEquals "%K{002} %F{000}V %F{000}\${(Q)\${:-\"Yep\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

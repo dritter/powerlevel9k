@@ -37,7 +37,7 @@ function testRust() {
   P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
   __p9k_build_left_prompt
-  assertEquals "%K{208} %F{000}Rust %F{000}\${:-\"0.4.1a-alpha\"} %k%F{208}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{208} %F{000}Rust %F{000}\${(Q)\${:-\"0.4.1a-alpha\"}} %k%F{208}%f " "${__P9K_RETVAL}"
 }
 
 function testRustPrintsNothingIfRustIsNotAvailable() {
@@ -47,7 +47,7 @@ function testRustPrintsNothingIfRustIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unset P9K_CUSTOM_WORLD
   unalias rustc

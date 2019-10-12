@@ -21,7 +21,7 @@ function testNodeVersionSegmentPrintsNothingWithoutNode() {
   alias node="nonode 2>/dev/null"
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias node
 }
@@ -34,7 +34,7 @@ function testNodeVersionSegmentWorks() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{015}⬢ %F{015}\${:-\"1.2.3\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{015}⬢ %F{015}\${(Q)\${:-\"1.2.3\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 
   unfunction node
 }

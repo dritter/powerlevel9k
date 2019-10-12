@@ -38,7 +38,7 @@ function testSwiftSegmentPrintsNothingIfSwiftIsNotAvailable() {
   alias swift="noswift"
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias swift
 }
@@ -51,7 +51,7 @@ function testSwiftSegmentWorks() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{005} %F{015}Swift %F{015}\${:-\"3.0.1\"} %k%F{005}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{005} %F{015}Swift %F{015}\${(Q)\${:-\"3.0.1\"}} %k%F{005}%f " "${__P9K_RETVAL}"
 
   unfunction swift
 }

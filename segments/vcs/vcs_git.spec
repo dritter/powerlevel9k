@@ -75,7 +75,7 @@ function testColorOverridingForCleanStateWorks() {
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{006}\${:-\" master\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{006}\${(Q)\${:-\" master\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testColorOverridingForModifiedStateWorks() {
@@ -91,7 +91,7 @@ function testColorOverridingForModifiedStateWorks() {
   echo "test" > testfile
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{001}\${:-\" master ●\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{001}\${(Q)\${:-\" master ●\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testColorOverridingForUntrackedStateWorks() {
@@ -104,7 +104,7 @@ function testColorOverridingForUntrackedStateWorks() {
   touch testfile
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{006}? %F{006}\${:-\" master ?\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{006}? %F{006}\${(Q)\${:-\" master ?\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testGitIconWorks() {
@@ -113,7 +113,7 @@ function testGitIconWorks() {
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}Git-icon %F{000}\${:-\" master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}Git-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testGitlabIconWorks() {
@@ -127,7 +127,7 @@ function testGitlabIconWorks() {
   git remote add origin https://gitlab.com/dritter/gitlab-test-project.git
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}GL-icon %F{000}\${:-\" master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}GL-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBitbucketIconWorks() {
@@ -141,7 +141,7 @@ function testBitbucketIconWorks() {
   git remote add origin https://dritter@bitbucket.org/dritter/dr-test.git
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}BB-icon %F{000}\${:-\" master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}BB-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testGitHubIconWorks() {
@@ -155,7 +155,7 @@ function testGitHubIconWorks() {
   git remote add origin https://github.com/dritter/test.git
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}GH-icon %F{000}\${:-\" master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}GH-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testUntrackedFilesIconWorks() {
@@ -167,7 +167,7 @@ function testUntrackedFilesIconWorks() {
   touch "i-am-untracked.txt"
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testStagedFilesIconWorks() {
@@ -184,7 +184,7 @@ function testStagedFilesIconWorks() {
   git add i-am-added.txt &>/dev/null
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{000}\${:-\" master +\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{000}\${(Q)\${:-\" master +\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testUnstagedFilesIconWorks() {
@@ -200,7 +200,7 @@ function testUnstagedFilesIconWorks() {
   echo "xx" > i-am-modified.txt
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{000}\${:-\" master M\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{000}\${(Q)\${:-\" master M\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testStashIconWorks() {
@@ -217,7 +217,7 @@ function testStashIconWorks() {
   git stash 1>/dev/null
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master S1\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master S1\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testTagIconWorks() {
@@ -232,7 +232,7 @@ function testTagIconWorks() {
   git tag "v0.0.1"
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master Tv0.0.1\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master Tv0.0.1\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testTagIconInDetachedHeadState() {
@@ -252,7 +252,7 @@ function testTagIconInDetachedHeadState() {
   local hash=$(git rev-list -n 1 --abbrev-commit --abbrev=8 HEAD)
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" ${hash} Tv0.0.1\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" ${hash} Tv0.0.1\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testActionHintWorks() {
@@ -274,7 +274,7 @@ function testActionHintWorks() {
   git pull --no-ff  &>/dev/null
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{000}\${:-\" master %F{001}| merge 1/1 ↑1 ↓1%f\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{000}\${(Q)\${:-\" master %F{001}| merge 1/1 ↑1 ↓1%f\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 }
 
 function testIncomingHintWorks() {
@@ -295,7 +295,7 @@ function testIncomingHintWorks() {
   git fetch &>/dev/null
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master I1\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master I1\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testOutgoingHintWorks() {
@@ -316,7 +316,7 @@ function testOutgoingHintWorks() {
   git commit -a -m "Modified file" &>/dev/null
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master O1\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master O1\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testShorteningCommitHashWorks() {
@@ -335,7 +335,7 @@ function testShorteningCommitHashWorks() {
   # the changeset is truncated.
   __p9k_vcs_init
     __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\"${hash}  master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\"${hash}  master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
@@ -353,7 +353,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # the changeset is truncated.
   __p9k_vcs_init
     __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBranchNameTruncatingShortenLength() {
@@ -367,11 +367,11 @@ function testBranchNameTruncatingShortenLength() {
   touch testfile
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 
   local P9K_VCS_SHORTEN_LENGTH=3
     __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" mas… ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" mas… ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBranchNameTruncatingMinLength() {
@@ -385,12 +385,12 @@ function testBranchNameTruncatingMinLength() {
   touch testfile
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 
   local P9K_VCS_SHORTEN_MIN_LENGTH=7
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBranchNameTruncatingShortenStrategy() {
@@ -404,12 +404,12 @@ function testBranchNameTruncatingShortenStrategy() {
   touch testfile
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" mas… ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" mas… ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 
   local P9K_VCS_SHORTEN_STRATEGY="truncate_middle"
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" mas…ter ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" mas…ter ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testRemoteBranchNameIdenticalToTag() {
@@ -435,7 +435,7 @@ function testRemoteBranchNameIdenticalToTag() {
   git checkout test 1>/dev/null 2>&1
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" test test\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" test test\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testAlwaysShowRemoteBranch() {
@@ -452,11 +452,11 @@ function testAlwaysShowRemoteBranch() {
   cd ../vcs-test2
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master→origin/master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master→origin/master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
     __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" master\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testGitDirClobber() {
@@ -491,7 +491,7 @@ function testGitDirClobber() {
   cd vcs-test2
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{000}\${:-\"✘ clob /tmp/powerlevel9k-test/test-dotfiles  master ✚ ?\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{000}\${(Q)\${:-\"✘ clob /tmp/powerlevel9k-test/test-dotfiles  master ✚ ?\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 
   unset GIT_DIR
   unset GIT_WORK_TREE
@@ -523,7 +523,7 @@ function testDetectingUntrackedFilesInSubmodulesWork() {
   cd -
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
@@ -549,7 +549,7 @@ function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
   touch "i-am-untracked.txt"
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testDetectingUntrackedFilesInNestedSubmodulesWork() {
@@ -592,7 +592,7 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   cd -
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
@@ -615,7 +615,7 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
   cd clean-folder
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}? %F{000}\${:-\" master ?\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}? %F{000}\${(Q)\${:-\" master ?\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testBranchNameScriptingVulnerability() {
@@ -630,7 +630,7 @@ function testBranchNameScriptingVulnerability() {
   git commit -m "Initial commit" >/dev/null
 
   __p9k_build_left_prompt
-  assertEquals '%K{002} %F{000}${:-" \$(./evil_script.sh)"} %k%F{002}%f ' "${__P9K_RETVAL}"
+  assertEquals '%K{002} %F{000}${(Q)${:-" \$(./evil_script.sh)"}} %k%F{002}%f ' "${__P9K_RETVAL}"
 }
 
 function testGitSubmoduleWorks() {
@@ -654,10 +654,10 @@ function testGitSubmoduleWorks() {
 
   cd submodule
 
-  local result="$(__p9k_build_left_prompt 2>&1)"
-  [[ "$result" =~ ".*(is outside repository)+" ]] && return 1
+  __p9k_build_left_prompt 2>&1
+  [[ "${__P9K_RETVAL}" =~ ".*(is outside repository)+" ]] && return 1
 
-  assertEquals "%K{002} %F{000}\${:-\" master\"} %k%F{002}%f " "$result"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 function testVcsSegmentDoesNotLeakPercentEscapesInGitRepo() {
@@ -674,7 +674,7 @@ function testVcsSegmentDoesNotLeakPercentEscapesInGitRepo() {
   git tag '%E%F{blue}' >/dev/null
 
   __p9k_build_left_prompt
-  assertEquals "%K{002} %F{000}\${:-\" %%E%%K{red} %%E%%F{blue}\"} %k%F{002}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\" %%E%%K{red} %%E%%F{blue}\"}} %k%F{002}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

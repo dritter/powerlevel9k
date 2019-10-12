@@ -25,7 +25,7 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   unset CONDA_PREFIX
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -40,7 +40,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   unset CONDA_PREFIX
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp)\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(tmp)\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -55,7 +55,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   local CONDA_PREFIX="test"
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(test)\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(test)\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaSegmentWorks() {
@@ -70,7 +70,7 @@ function testAnacondaSegmentWorks() {
   local CONDA_PREFIX="test"
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmptest)\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(tmptest)\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 function testAnacondaDoesNotLeadTermcapChars() {
@@ -85,7 +85,7 @@ function testAnacondaDoesNotLeadTermcapChars() {
   local CONDA_PREFIX="\r\n%K{blue}leaking%F{red}string"
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp\\r\\n%%K{blue}leaking%%F{red}string)\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(tmp\\\r\\\n%%K{blue}leaking%%F{red}string)\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

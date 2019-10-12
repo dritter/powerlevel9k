@@ -153,7 +153,7 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
  -InternalBattery-0 (id=1234567)	4%; discharging; 0:05 remaining present: true"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{001}🔋 %F{001}\${:-\"4%% (0:05)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{001}🔋 %F{001}\${(Q)\${:-\"4%% (0:05)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
@@ -162,7 +162,7 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
  -InternalBattery-0 (id=1234567)	4%; charging; 0:05 remaining present: true"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"4%% (0:05)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"4%% (0:05)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnOSX() {
@@ -171,7 +171,7 @@ function testBatterySegmentIfBatteryIsNormalWhileDischargingOnOSX() {
  -InternalBattery-0 (id=1234567)	98%; discharging; 3:57 remaining present: true"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"98%% (3:57)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"98%% (3:57)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnOSX() {
@@ -180,7 +180,7 @@ function testBatterySegmentIfBatteryIsNormalWhileChargingOnOSX() {
  -InternalBattery-0 (id=1234567)	98%; charging; 3:57 remaining present: true"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"98%% (3:57)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"98%% (3:57)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsFullOnOSX() {
@@ -189,7 +189,7 @@ function testBatterySegmentIfBatteryIsFullOnOSX() {
  -InternalBattery-0 (id=1234567)	99%; charged; 0:00 remaining present: true"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{002}🔋 %F{002}\${:-\"99%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{002}🔋 %F{002}\${(Q)\${:-\"99%%\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
@@ -198,7 +198,7 @@ function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
  -InternalBattery-0 (id=1234567)	99%; discharging; (no estimate) present: true"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"99%% (...)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"99%% (...)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
@@ -206,7 +206,7 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
   makeBatterySay "4" "Discharging"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{001}🔋 %F{001}\${:-\"4%% (0:05)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{001}🔋 %F{001}\${(Q)\${:-\"4%% (0:05)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
@@ -214,7 +214,7 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
   makeBatterySay "4" "Charging"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"4%% (2:14)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"4%% (2:14)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileUnknownOnLinux() {
@@ -222,7 +222,7 @@ function testBatterySegmentIfBatteryIsLowWhileUnknownOnLinux() {
   makeBatterySay "4" "Unknown"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{001}🔋 %F{001}\${:-\"4%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{001}🔋 %F{001}\${(Q)\${:-\"4%%\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
@@ -230,7 +230,7 @@ function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
   makeBatterySay "98" "Discharging"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"98%% (2:17)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"98%% (2:17)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
@@ -238,7 +238,7 @@ function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
   makeBatterySay "98" "Charging"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"98%% (0:02)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"98%% (0:02)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileUnknownOnLinux() {
@@ -246,7 +246,7 @@ function testBatterySegmentIfBatteryIsNormalWhileUnknownOnLinux() {
   makeBatterySay "98" "Unknown"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"98%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"98%%\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsFullOnLinux() {
@@ -254,7 +254,7 @@ function testBatterySegmentIfBatteryIsFullOnLinux() {
   makeBatterySay "100" "Full"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{002}🔋 %F{002}\${:-\"100%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{002}🔋 %F{002}\${(Q)\${:-\"100%%\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryNearlyFullButNotChargingOnLinux() {
@@ -262,7 +262,7 @@ function testBatterySegmentIfBatteryNearlyFullButNotChargingOnLinux() {
   makeBatterySay "98" "Unknown" "0"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"98%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"98%%\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
@@ -270,7 +270,7 @@ function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
   makeBatterySay "99" "Charging" "0"
 
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"99%% (...)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"99%% (...)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnWindows() {
@@ -278,7 +278,7 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnWindows() {
   makeBatterySay "4" "5" "4"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{001}🔋 %F{001}\${:-\"4%% (0:05)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{001}🔋 %F{001}\${(Q)\${:-\"4%% (0:05)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnWindows() {
@@ -286,7 +286,7 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnWindows() {
   makeBatterySay "4" "5" "7"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"4%% (0:05)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"4%% (0:05)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileUnknownOnWindows() {
@@ -294,7 +294,7 @@ function testBatterySegmentIfBatteryIsLowWhileUnknownOnWindows() {
   makeBatterySay "4" "Unknown" "5"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{001}🔋 %F{001}\${:-\"4%% (...)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{001}🔋 %F{001}\${(Q)\${:-\"4%% (...)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnWindows() {
@@ -302,7 +302,7 @@ function testBatterySegmentIfBatteryIsNormalWhileDischargingOnWindows() {
   makeBatterySay "98" "215" "1"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"98%% (3:35)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"98%% (3:35)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnWindows() {
@@ -310,7 +310,7 @@ function testBatterySegmentIfBatteryIsNormalWhileChargingOnWindows() {
   makeBatterySay "98" "298" "2"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"98%% (4:58)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"98%% (4:58)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsFullOnWindows() {
@@ -318,7 +318,7 @@ function testBatterySegmentIfBatteryIsFullOnWindows() {
   makeBatterySay "100" "181" "1"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{015}🔋 %F{015}\${:-\"100%% (3:01)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}🔋 %F{015}\${(Q)\${:-\"100%% (3:01)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnWindows() {
@@ -326,7 +326,7 @@ function testBatterySegmentIfBatteryIsCalculatingOnWindows() {
   makeBatterySay "99" "" "2"
 
   prompt_battery "left" 1 false "${FOLDER}/usr/bin/"
-  assertEquals "%K{000} %F{003}🔋 %F{003}\${:-\"99%% (...)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}🔋 %F{003}\${(Q)\${:-\"99%% (...)\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatteryStagesString() {
@@ -337,23 +337,27 @@ function testBatteryStagesString() {
 
   makeBatterySay "1" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}a %F{003}\${:-\"1%% (2:18)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}a %F{003}\${(Q)\${:-\"1%% (2:18)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "26" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}b %F{003}\${:-\"26%% (1:43)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}b %F{003}\${(Q)\${:-\"26%% (1:43)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "52" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}c %F{003}\${:-\"52%% (1:07)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}c %F{003}\${(Q)\${:-\"52%% (1:07)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "99" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}d %F{003}\${:-\"99%% (0:01)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}d %F{003}\${(Q)\${:-\"99%% (0:01)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "100" "Full"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{002}e %F{002}\${:-\"100%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{002}e %F{002}\${(Q)\${:-\"100%%\"}} " "${__P9K_RETVAL}"
 }
 
 function testBatteryStagesArray() {
@@ -362,23 +366,27 @@ function testBatteryStagesArray() {
 
   makeBatterySay "1" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}charge! %F{003}\${:-\"1%% (2:18)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}charge! %F{003}\${(Q)\${:-\"1%% (2:18)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "26" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}low %F{003}\${:-\"26%% (1:43)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}low %F{003}\${(Q)\${:-\"26%% (1:43)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "52" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}med %F{003}\${:-\"52%% (1:07)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}med %F{003}\${(Q)\${:-\"52%% (1:07)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "99" "Charging"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{003}high %F{003}\${:-\"99%% (0:01)\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}high %F{003}\${(Q)\${:-\"99%% (0:01)\"}} " "${__P9K_RETVAL}"
+  CURRENT_BG='NONE'
 
   makeBatterySay "100" "Full"
   prompt_battery "left" 1 false "${FOLDER}"
-  assertEquals "%K{000} %F{002}full %F{002}\${:-\"100%%\"} " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{002}full %F{002}\${(Q)\${:-\"100%%\"}} " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

@@ -49,7 +49,7 @@ function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
   P9K_LEFT_PROMPT_ELEMENTS=(context custom_world)
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
@@ -58,7 +58,7 @@ function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"%n@%m\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"%n@%m\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 }
 
 function testContextSegmentWithForeignUser() {
@@ -66,7 +66,7 @@ function testContextSegmentWithForeignUser() {
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"%n@%m\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"%n@%m\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 }
 
 function testContextSegmentWithRootUser() {
@@ -75,7 +75,7 @@ function testContextSegmentWithRootUser() {
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"%n@%m\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"%n@%m\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 }
 
 function testOverridingContextTemplate() {
@@ -84,7 +84,7 @@ function testOverridingContextTemplate() {
   local P9K_CONTEXT_TEMPLATE=xx
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"xx\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"xx\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 }
 
 function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
@@ -94,7 +94,7 @@ function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
   local DEFAULT_USER=$(whoami)
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"%n@%m\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"%n@%m\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 }
 
 function testContextSegmentIsShownIfForced() {
@@ -104,7 +104,7 @@ function testContextSegmentIsShownIfForced() {
   local DEFAULT_USER=$(whoami)
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"$(whoami)\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"$(whoami)\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 }
 
 source shunit2/shunit2

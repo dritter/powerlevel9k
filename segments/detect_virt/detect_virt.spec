@@ -21,7 +21,7 @@ function testDetectVirtSegmentPrintsNothingIfSystemdIsNotAvailable() {
   alias systemd-detect-virt="novirt"
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias systemd-detect-virt
 }
@@ -32,7 +32,7 @@ function testDetectVirtSegmentIfSystemdReturnsPlainName() {
   alias systemd-detect-virt="echo 'xxx'"
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"xxx\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"xxx\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias systemd-detect-virt
 }
@@ -50,7 +50,7 @@ function testDetectVirtSegmentIfRootFsIsOnExpectedInode() {
   alias ls="echo '2'"
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"none\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"none\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias ls
   unalias systemd-detect-virt
@@ -69,7 +69,7 @@ function testDetectVirtSegmentIfRootFsIsNotOnExpectedInode() {
   alias ls="echo '3'"
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{003}\${:-\"chroot\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{003}\${(Q)\${:-\"chroot\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias ls
   unalias systemd-detect-virt

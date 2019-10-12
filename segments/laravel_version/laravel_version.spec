@@ -36,7 +36,7 @@ function testLaravelVersionSegment() {
   source segments/laravel_version/laravel_version.p9k
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{015}x %F{015}\${:-\"5.4.23\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{015}x %F{015}\${(Q)\${:-\"5.4.23\"}} %k%F{001}%f " "${__P9K_RETVAL}"
   unalias php
 }
 
@@ -49,7 +49,7 @@ function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   source segments/laravel_version/laravel_version.p9k
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias php
 }
@@ -63,7 +63,7 @@ function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   source segments/laravel_version/laravel_version.p9k
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias php
 }

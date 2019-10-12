@@ -39,7 +39,7 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{015}hdd  %F{015}\${:-\"97%%\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{015}hdd  %F{015}\${(Q)\${:-\"97%%\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 
   unfunction df
 }
@@ -53,7 +53,7 @@ function testDiskUsageSegmentWhenDiskIsVeryFull() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{000}hdd  %F{000}\${:-\"94%%\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{000}hdd  %F{000}\${(Q)\${:-\"94%%\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 
   unfunction df
 }
@@ -67,7 +67,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{046}hdd  %F{046}\${:-\"4%%\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{046}hdd  %F{046}\${(Q)\${:-\"4%%\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction df
 }
@@ -84,7 +84,7 @@ function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShoul
   local P9K_CUSTOM_WORLD='echo world'
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unfunction df
 }
@@ -99,7 +99,7 @@ function testDiskUsageSegmentWarningLevelCouldBeAdjusted() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{003} %F{000}hdd  %F{000}\${:-\"11%%\"} %k%F{003}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{003} %F{000}hdd  %F{000}\${(Q)\${:-\"11%%\"}} %k%F{003}%f " "${__P9K_RETVAL}"
 
   unfunction df
 }
@@ -115,7 +115,7 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{001} %F{015}hdd  %F{015}\${:-\"11%%\"} %k%F{001}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{001} %F{015}hdd  %F{015}\${(Q)\${:-\"11%%\"}} %k%F{001}%f " "${__P9K_RETVAL}"
 
   unfunction df
 }

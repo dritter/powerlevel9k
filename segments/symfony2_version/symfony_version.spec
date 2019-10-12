@@ -38,7 +38,7 @@ function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   alias php="nophp"
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias php
 }
@@ -52,7 +52,7 @@ function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
@@ -68,7 +68,7 @@ function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unfunction php
 }
@@ -85,7 +85,7 @@ function testSymfonyVersionSegmentWorks() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{240} %F{000}SF%f %F{000}\${:-\"3.1.4\"} %k%F{240}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{240} %F{000}SF%f %F{000}\${(Q)\${:-\"3.1.4\"}} %k%F{240}%f " "${__P9K_RETVAL}"
 
   unfunction php
 }
@@ -105,7 +105,7 @@ function testSymfonyVersionSegmentWorksInNestedFolder() {
   cd src/P9K/AppBundle
 
   __p9k_build_left_prompt
-  assertEquals "%K{240} %F{000}SF%f %F{000}\${:-\"3.1.4\"} %k%F{240}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{240} %F{000}SF%f %F{000}\${(Q)\${:-\"3.1.4\"}} %k%F{240}%f " "${__P9K_RETVAL}"
 
   unfunction php
 }

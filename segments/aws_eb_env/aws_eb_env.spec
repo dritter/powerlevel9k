@@ -21,7 +21,7 @@ function testAwsEbEnvSegmentPrintsNothingIfNoElasticBeanstalkEnvironmentIsSet() 
   source segments/aws_eb_env/aws_eb_env.p9k
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 }
 
 function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSet() {
@@ -36,7 +36,7 @@ function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSet() {
   cd /tmp/powerlevel9k-test
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{002}🌱  %F{002}\${:-\"test\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{002}🌱  %F{002}\${(Q)\${:-\"test\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   rm -fr /tmp/powerlevel9k-test
   cd -

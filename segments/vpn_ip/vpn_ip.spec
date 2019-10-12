@@ -152,7 +152,8 @@ echo "not connected"
 EOF
   chmod +x $FOLDER/sbin/ip
 
-  assertEquals "" "$(prompt_vpn_ip left 1 false "$FOLDER")"
+  prompt_vpn_ip left 1 false "$FOLDER"
+  assertEquals "" "${__P9K_RETVAL}"
 }
 
 function testVpnIpSegmentWorksOnOsxWithInterfaceSpecified() {
@@ -165,7 +166,8 @@ function testVpnIpSegmentWorksOnOsxWithInterfaceSpecified() {
   source segments/vpn_ip/vpn_ip.p9k
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{006} %F{000}(vpn) %F{000}\${:-\"1.2.3.4\"} " "$(prompt_vpn_ip left 1 false "$FOLDER")"
+  prompt_vpn_ip left 1 false "$FOLDER"
+  assertEquals "%K{006} %F{000}(vpn) %F{000}\${(Q)\${:-\"1.2.3.4\"}} " "${__P9K_RETVAL}"
 }
 
 function testVpnIpSegmentWorksOnLinuxWithInterfaceSpecified() {
@@ -178,7 +180,8 @@ function testVpnIpSegmentWorksOnLinuxWithInterfaceSpecified() {
     source segments/vpn_ip/vpn_ip.p9k
     local OS='Linux' # Fake Linux
 
-    assertEquals "%K{006} %F{000}(vpn) %F{000}\${:-\"1.2.3.4\"} " "$(prompt_vpn_ip left 1 false "$FOLDER")"
+    prompt_vpn_ip left 1 false "$FOLDER"
+    assertEquals "%K{006} %F{000}(vpn) %F{000}\${(Q)\${:-\"1.2.3.4\"}} " "${__P9K_RETVAL}"
 }
 
 # vpn_ip is not capable of handling multiple vpn interfaces ATM.
@@ -192,9 +195,8 @@ function testVpnIpSegmentWorksOnLinuxWithInterfaceSpecified() {
 #     source segments/vpn_ip/vpn_ip.p9k
 #     local OS='Linux' # Fake Linux
 
-# setopt xtrace
-#     assertEquals "%K{006} %F{000}(vpn) %F{000}\${:-\"10.0.2.15\"} " "$(prompt_vpn_ip left 1 false "$FOLDER")"
-#     unsetopt xtrace
+#     prompt_vpn_ip left 1 false "$FOLDER"
+#     assertEquals "%K{006} %F{000}(vpn) %F{000}\${(Q)\${:-\"10.0.2.15\"}} " "${__P9K_RETVAL}"
 # }
 
 source shunit2/shunit2

@@ -74,7 +74,7 @@ function testKubeContext() {
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{015}⎈ %F{015}\${:-\"minikube/default\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{015}⎈ %F{015}\${(Q)\${:-\"minikube/default\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
@@ -85,7 +85,7 @@ function testKubeContextOtherNamespace() {
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
   __p9k_build_left_prompt
-  assertEquals "%K{004} %F{015}⎈ %F{015}\${:-\"minikube/kube-system\"} %k%F{004}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{004} %F{015}⎈ %F{015}\${(Q)\${:-\"minikube/kube-system\"}} %k%F{004}%f " "${__P9K_RETVAL}"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
@@ -97,7 +97,7 @@ function testKubeContextPrintsNothingIfKubectlNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_CUSTOM_WORLD

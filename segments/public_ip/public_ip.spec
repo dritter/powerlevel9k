@@ -49,7 +49,7 @@ function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   alias dig='nodig'
 
   __p9k_build_left_prompt
-  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "${__P9K_RETVAL}"
 
   unalias dig
 }
@@ -64,7 +64,7 @@ function testPublicIpSegmentPrintsNoticeIfNotConnected() {
   alias dig='nodig'
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"disconnected\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"disconnected\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias dig
 }
@@ -79,7 +79,7 @@ function testPublicIpSegmentWorksWithWget() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"wget 1.2.3.4\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"wget 1.2.3.4\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction wget
   unalias dig
@@ -96,7 +96,7 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"curl 1.2.3.4\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"curl 1.2.3.4\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction curl
   unalias dig
@@ -114,7 +114,7 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
 
   # Load Powerlevel9k
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"dig 1.2.3.4\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"dig 1.2.3.4\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
   unalias curl
@@ -130,7 +130,7 @@ function testPublicIpSegmentCachesFile() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"first\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   dig() {
     echo "second"
@@ -138,7 +138,7 @@ function testPublicIpSegmentCachesFile() {
 
   # Segment should not have changed!
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"first\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
@@ -152,7 +152,7 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"first\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   sleep 3
   dig() {
@@ -161,7 +161,7 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
 
   # Segment should have changed!
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"second\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
@@ -174,7 +174,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   }
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"first\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"first\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   # Truncate cache file
   echo "" >! $P9K_PUBLIC_IP_FILE
@@ -185,7 +185,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
 
   # Segment should have changed!
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"second\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
@@ -198,7 +198,7 @@ function testPublicIpSegmentWhenGoingOnline() {
   alias dig="nodig"
 
   __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"disconnected\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"disconnected\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unalias dig
 
@@ -208,7 +208,7 @@ function testPublicIpSegmentWhenGoingOnline() {
 
   # Segment should have changed!
     __p9k_build_left_prompt
-  assertEquals "%K{000} %F{015}\${:-\"second\"} %k%F{000}%f " "${__P9K_RETVAL}"
+  assertEquals "%K{000} %F{015}\${(Q)\${:-\"second\"}} %k%F{000}%f " "${__P9K_RETVAL}"
 
   unfunction dig
 }
