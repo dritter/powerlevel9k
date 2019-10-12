@@ -27,6 +27,7 @@
 ################################################################
 # Shows the status of the vagrant VM (Up or Down)
 prompt_vagrant() {
+  __P9K_RETVAL=''
   local current_state="NOT_FOUND"
   local current_string
   for vagrantFolder in $(__p9k_upsearch ".vagrant" "/"); do

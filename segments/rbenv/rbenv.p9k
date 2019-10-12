@@ -29,6 +29,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rbenv() {
+  __P9K_RETVAL=''
   if [ ${commands[rbenv]} ]; then
     local rbenv_version_name="$(rbenv version-name 2>/dev/null)"
     local rbenv_global="$(rbenv global)"

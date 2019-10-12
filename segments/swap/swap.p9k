@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_swap() {
+  __P9K_RETVAL=''
   local ROOT_PREFIX="${4}"
   local swap_used=0
   local base=''

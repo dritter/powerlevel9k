@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_nodeenv() {
+  __P9K_RETVAL=''
   if [[ -n "$NODE_VIRTUAL_ENV" ]]; then
     local info="$(node -v)[${NODE_VIRTUAL_ENV:t}]"
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$info"

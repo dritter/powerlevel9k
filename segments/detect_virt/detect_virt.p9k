@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_detect_virt() {
+  __P9K_RETVAL=''
   local virt=$(systemd-detect-virt 2> /dev/null)
   if [[ "$virt" == "none" ]]; then
     [[ "$(ls -di / | grep -o 2)" != "2" ]] && virt="chroot"

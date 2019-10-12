@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rvm() {
+  __P9K_RETVAL=''
   if [ $commands[rvm-prompt] ]; then
     local version_and_gemset=${$(rvm-prompt v p)/ruby-}
 

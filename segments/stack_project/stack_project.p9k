@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_stack_project() {
+  __P9K_RETVAL=''
   local haskellstack_version=$(stack --version 2>/dev/null)
   # Check for both a global Stack installation and a stack.yaml files (in current or parent directories)
   if [[ "${haskellstack_version}" =~ "([0-9.]+)" ]]; then

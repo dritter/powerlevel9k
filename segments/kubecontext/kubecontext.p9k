@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_kubecontext() {
+  __P9K_RETVAL=''
   local kubectl_version="$(kubectl version --client 2>/dev/null)"
 
   if [[ -n "$kubectl_version" ]]; then

@@ -17,6 +17,7 @@
 #   This is not an actual prompt segment, it is just a workaround to allow more newlines in your prompt.
 ##
 prompt_newline() {
+  __P9K_RETVAL=''
   [[ "$1" == "right" ]] && return
 
   local newline=$'\n'

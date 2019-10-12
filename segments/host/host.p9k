@@ -33,6 +33,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_host() {
+  __P9K_RETVAL=''
   local current_state="LOCAL"
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
     current_state="REMOTE"

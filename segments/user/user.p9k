@@ -43,6 +43,7 @@
 #   If ${DEFAULT_USER} is not set, this prompt segment will always print.
 ##
 prompt_user() {
+  __P9K_RETVAL=''
   local current_state="DEFAULT"
   local content=""
   local me=$(whoami)

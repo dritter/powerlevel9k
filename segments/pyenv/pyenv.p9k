@@ -32,6 +32,7 @@
 #   [Choosing the Python Version](https://github.com/pyenv/pyenv#choosing-the-python-version)
 ##
 prompt_pyenv() {
+  __P9K_RETVAL=''
   if [ $commands[pyenv] ]; then
     local pyenv_version_name="$(pyenv version-name 2>/dev/null)"
     local pyenv_global="$(pyenv global)"

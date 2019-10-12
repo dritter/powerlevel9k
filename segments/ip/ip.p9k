@@ -26,6 +26,7 @@
 #   $4 Root Prefix: string - Root prefix for testing purposes
 ##
 prompt_ip() {
+  __P9K_RETVAL=''
   local ROOT_PREFIX="${4}"
   p9k::parseIp "${P9K_IP_INTERFACE}" "${ROOT_PREFIX}"
   local ip="${__P9K_RETVAL}"

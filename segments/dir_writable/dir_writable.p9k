@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_dir_writable() {
+  __P9K_RETVAL=''
   if [[ ! -w "$PWD" ]]; then
     p9k::prepare_segment "$0" "FORBIDDEN" $1 "$2" $3 "" "[[ true ]]"
   fi

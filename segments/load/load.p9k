@@ -31,6 +31,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_load() {
+  __P9K_RETVAL=''
   local ROOT_PREFIX="${4}"
   # The load segment can have three different states
   local current_state="unknown"

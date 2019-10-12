@@ -429,6 +429,7 @@ __p9k_vcs_init() {
 #   ${3} boolean Whether the segment should be joined
 ##
 prompt_vcs() {
+  __P9k_RETVAL=''
   VCS_WORKDIR_CLOBBERED=false
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false

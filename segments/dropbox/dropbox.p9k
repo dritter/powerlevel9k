@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_dropbox() {
+  __P9K_RETVAL=''
   # The first column is just the directory, so cut it
   local dropbox_status="$(dropbox-cli filestatus . | cut -d\  -f2-)"
 

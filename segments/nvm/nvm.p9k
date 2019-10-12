@@ -28,6 +28,7 @@
 #   Only prints the segment if different than the default value.
 ##
 prompt_nvm() {
+  __P9K_RETVAL=''
   local node_version nvm_default is_system
   is_system=false
   (( $+functions[nvm_version] )) || return

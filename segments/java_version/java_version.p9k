@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_java_version() {
+  __P9K_RETVAL=''
   local java_version
   # Stupid: Java prints its version on STDERR.
   # The first version ouput will print nothing, we just

@@ -294,8 +294,8 @@ function __p9k_prompt_custom() {
 # @noargs
 ##
 function __p9k_build_left_prompt() {
-  [[ ${P9K_LEFT_PROMPT_ELEMENTS[1]} == "" ]] && return
   __P9K_RETVAL=''
+  [[ ${P9K_LEFT_PROMPT_ELEMENTS[1]} == "" ]] && return
   local index=1
   local element joined
   local result=''
@@ -334,8 +334,8 @@ function __p9k_build_left_prompt() {
 # @noargs
 ##
 function __p9k_build_right_prompt() {
-  [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]:-} == "" ]] && return
   __P9K_RETVAL=''
+  [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]:-} == "" ]] && return
   local index=1
   local element joined
   local result=''

@@ -32,6 +32,7 @@
 #   [chruby_auto issue with ZSH](https://github.com/postmodern/chruby/issues/245).
 ##
 prompt_chruby() {
+  __P9K_RETVAL=''
   # Uses ${RUBY_VERSION} and ${RUBY_ENGINE} set by chruby
   local chruby_label=""
 

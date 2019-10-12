@@ -17,6 +17,7 @@ source $__P9K_DIRECTORY/segments/test_stats.p9k
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_symfony2_tests() {
+  __P9K_RETVAL=''
   if [[ (-d src && -d app && -f app/AppKernel.php) ]]; then
     local code_amount tests_amount
     code_amount=$(ls -1 src/**/*.php | grep -vc Tests)

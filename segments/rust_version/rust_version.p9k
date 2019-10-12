@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rust_version() {
+  __P9K_RETVAL=''
   local rust_version
   rust_version=$(rustc --version 2>/dev/null)
   # Remove "rustc " (including the whitespace) from the beginning

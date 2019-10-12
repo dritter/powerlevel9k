@@ -47,6 +47,7 @@ exit_code_or_status() {
 }
 
 prompt_status() {
+  __P9K_RETVAL=''
   local ec_text
   local ec_sum
   local ec

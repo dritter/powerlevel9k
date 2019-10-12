@@ -42,6 +42,7 @@ add-zsh-hook precmd __p9k_background_jobs
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_background_jobs() {
+  __P9K_RETVAL=''
   local jobs_print=""
   local -r total_jobs=$(( jobs_running + jobs_suspended ))
 

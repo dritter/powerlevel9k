@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_php_version() {
+  __P9K_RETVAL=''
   local php_version
   [[ "$(php -v 2>&1)" =~ "^PHP[[:blank:]]*([0-9.]+)" ]] && php_version="${match[1]}"
   if [[ -n "$php_version" ]]; then

@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_node_version() {
+  __P9K_RETVAL=''
   local node_version=$(node -v 2>/dev/null)
   [[ -z "${node_version}" ]] && return
 

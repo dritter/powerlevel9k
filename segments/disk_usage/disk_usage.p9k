@@ -36,6 +36,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_disk_usage() {
+  __P9K_RETVAL=''
   local current_state="unknown"
   local disk_usage="${$(\df -P $P9K_DISK_USAGE_PATH | sed -n '2p' | awk '{ print $5 }')%%\%}"
 

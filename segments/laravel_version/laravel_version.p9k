@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_laravel_version() {
+  __P9K_RETVAL=''
   local laravel_version="$(php artisan --version 2> /dev/null)"
   if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
     # Strip out everything but the version

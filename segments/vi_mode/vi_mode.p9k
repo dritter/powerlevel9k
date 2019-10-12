@@ -51,6 +51,7 @@
 #   [zsh-vimode-visual](https://github.com/b4b4r07/zsh-vimode-visual)
 ##
 prompt_vi_mode() {
+  __P9K_RETVAL=''
   local current_state
   typeset -gAH vi_states
   case "${VIM_MODE_KEYMAP:-$KEYMAP}" in

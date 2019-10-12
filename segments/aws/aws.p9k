@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_aws() {
+  __P9K_RETVAL=''
   local aws_profile="${AWS_PROFILE:-$P9K_AWS_DEFAULT_PROFILE}"
 
   if [[ -n "$aws_profile" ]]; then

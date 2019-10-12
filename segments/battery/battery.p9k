@@ -35,6 +35,7 @@
 #   $4 Root Prefix: string - Root prefix for testing purposes
 ##
 prompt_battery() {
+  __P9K_RETVAL=''
   local ROOT_PREFIX="${4}"
   # The battery can have four different states - default to 'unknown'.
   local current_state='unknown'

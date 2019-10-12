@@ -17,6 +17,7 @@ source $__P9K_DIRECTORY/segments/test_stats.p9k
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rspec_stats() {
+  __P9K_RETVAL=''
   if [[ (-d app && -d spec) ]]; then
     local code_amount tests_amount
     code_amount=$(ls -1 app/**/*.rb | wc -l)

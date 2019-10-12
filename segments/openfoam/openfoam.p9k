@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_openfoam() {
+  __P9K_RETVAL=''
   local wm_project_version="$WM_PROJECT_VERSION"
   local wm_fork="$WM_FORK"
   if [[ -n "$wm_project_version" ]] &&  [[ -z "$wm_fork" ]] ; then

@@ -30,6 +30,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_command_execution_time() {
+  __P9K_RETVAL=''
   if (( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
     # Print time in human readable format
     # For that use `strftime` and convert

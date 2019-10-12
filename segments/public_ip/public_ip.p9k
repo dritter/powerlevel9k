@@ -43,6 +43,7 @@
 #   $3 Joined: bool - If the segment should be joined
 #   $4 Root Prefix: string - Root prefix for testing purposes
 prompt_public_ip() {
+  __P9K_RETVAL=''
   local ROOT_PREFIX="${4}"
   # Do we need a fresh IP?
   local refresh_ip=false

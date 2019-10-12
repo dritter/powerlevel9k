@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_ram() {
+  __P9K_RETVAL=''
   local ROOT_PREFIX="${4}"
   local base=''
   local ramfree=0

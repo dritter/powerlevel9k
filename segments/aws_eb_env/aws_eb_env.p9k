@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_aws_eb_env() {
+  __P9K_RETVAL=''
   local eb_env=${${(s: :)$(grep environment .elasticbeanstalk/config.yml 2> /dev/null)}[2]}
 
   if [[ -n "$eb_env" ]]; then
